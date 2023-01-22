@@ -1,0 +1,21 @@
+.App{
+    padding: 20px;
+}
+.Top{
+    margin: 0;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(147, 170, 214);
+}
+#topLogo{
+    padding-left: 100px;
+    float: left;
+}
+#topSearch{
+    padding-left: 20px;
+    padding-right: 50px;
+}
+.TopSpace{
+    width:300px;
+}
