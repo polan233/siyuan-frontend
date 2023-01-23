@@ -1,12 +1,18 @@
+
 .App{
     padding: 20px;
+    background-color: #e6f4ff;
+}
+.Page{
+    
+    background-color: #e6f4ff;
 }
 .Top{
     margin: 0;
     padding: 0px;
     width: 100%;
     height: 100%;
-    background-color: rgb(147, 170, 214);
+    background-color: #bae0ff;
 }
 #topLogo{
     padding-left: 100px;
@@ -19,3 +25,38 @@
 .TopSpace{
     width:300px;
 }
+.mainContent{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.leftNav{
+    padding: 5px;
+}
+/*
+const headerStyle = {
+  textAlign: 'center',
+  color: '#fff',
+  height: 64,
+  paddingInline: 50,
+  lineHeight: '64px',
+  backgroundColor: '#7dbcea',
+};
+const contentStyle = {
+  textAlign: 'center',
+  minHeight: 120,
+  lineHeight: '120px',
+  color: '#fff',
+  backgroundColor: '#108ee9',
+};
+const siderStyle = {
+  textAlign: 'center',
+  lineHeight: '120px',
+  color: '#fff',
+  backgroundColor: '#3ba0e9',
+};
+const footerStyle = {
+  textAlign: 'center',
+  color: '#fff',
+  backgroundColor: '#7dbcea',
+};
+*/

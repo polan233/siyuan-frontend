@@ -1,13 +1,15 @@
 import React from 'react';
 import 'antd/dist/reset.css';
 import "./App.css"
-import { Layout, Space,Col, Divider, Row } from 'antd';
+import { Layout, Space,Col, Divider, Row,Typography } from 'antd';
 import { AudioOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
 import logoPic from './img/logo192.png';
+import { MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { Menu } from 'antd';
 const { Search } = Input;
 const { Header, Footer, Sider, Content } = Layout;
-
+const { Title, Paragraph, Text, Link } = Typography;
 const headerStyle = {
   textAlign: 'center',
   color: '#fff',
@@ -21,13 +23,19 @@ const contentStyle = {
   minHeight: 120,
   lineHeight: '120px',
   color: '#fff',
-  backgroundColor: '#108ee9',
+  backgroundColor: '#e6f4ff',
 };
+const leftNavStyle = {
+  textAlign: 'left',
+  lineHeight: '80px',
+  color: '#fff',
+  backgroundColor: '#e6f4ff',
+}
 const siderStyle = {
-  textAlign: 'center',
+  textAlign: 'left',
   lineHeight: '120px',
   color: '#fff',
-  backgroundColor: '#3ba0e9',
+  backgroundColor: '#e6f4ff',
 };
 const footerStyle = {
   textAlign: 'center',
@@ -59,7 +67,7 @@ class Top extends React.Component{
           </Col>
           <Col flex="auto" />
           <Col flex={"300px"}>
-              <Search id='topSearch' placeholder="input search text"  allowClear onSearch={onSearch} style={{ width: 300 }} />
+              <Search id='topSearch' size='large' placeholder="input search text"  allowClear onSearch={onSearch} style={{ width: 300 }} />
           </Col>
           <Col flex="auto" />
         </Row>
@@ -68,18 +76,97 @@ class Top extends React.Component{
   }
 }
 
-const App = () => (
-  <Space
-    direction="vertical"
-    style={{
-      width: '100%',
-    }}
-    size={[0, 48]}
-  >
+//导航栏
+function getItem(label, key, icon, children, type) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+  };
+}
+const items = [
+  getItem('Navigation One', 'sub1', <MailOutlined />, [
+    getItem('Item 1', 'g1', null, [getItem('Option 1', '1'), getItem('Option 2', '2')], 'group'),
+    getItem('Item 2', 'g2', null, [getItem('Option 3', '3'), getItem('Option 4', '4')], 'group'),
+  ]),
+  getItem('Navigation Two', 'sub2', <MailOutlined />, [
+    getItem('Option 5', '5'),
+    getItem('Option 6', '6'),
+    getItem('Submenu', 'sub3', null, [getItem('Option 7', '7'), getItem('Option 8', '8')]),
+  ]),
+  {
+    type: 'divider',
+  },
+  getItem('Navigation Three', 'sub4', <MailOutlined />, [
+    getItem('Option 9', '9'),
+    getItem('Option 10', '10'),
+    getItem('Option 11', '11'),
+    getItem('Option 12', '12'),
+  ]),
+  getItem('Group', 'grp', null, [getItem('Option 13', '13'), getItem('Option 14', '14')], 'group'),
+];
+
+class MainContent extends React.Component{
+  constructor(props){
+    super(props);
+  }
+  onNavClick = (e) => {
+    console.log('click ', e);
+  };
+  render(){
+    return(
+      <div className='mainContent'>
+        <Layout>
+          <Sider className='leftNav' style={leftNavStyle}>
+            <div className='leftNav'>
+              <Menu
+                  onClick={this.onNavClick.bind(this)}
+                  style={{
+                    width: 256,
+                  }}
+                  defaultSelectedKeys={['1']}
+                  defaultOpenKeys={['sub1']}
+                  mode="inline"
+                  items={items}
+              />
+            </div>
+          </Sider>
+          <Content style={contentStyle}>
+            <div className='map'>
+              
+            </div>
+          </Content>
+          <Sider  style={siderStyle}>
+            <div className='info'>
+              <Typography>
+                <Title level={2}>Introduction</Title>
+                <Paragraph>
+                  In the process of internal desktop applications development, many different design specs and
+                  implementations would be involved, which might cause designers and developers difficulties and
+                  duplication and reduce the efficiency of development.
+                </Paragraph>
+            </Typography>
+            </div>
+          </Sider>
+          </Layout>
+       
+      </div>
+    );
+  }
+}
+
+const Page = () => (
+  <div className='Page'>
     <Layout>
       <Top/>
+      <Content>
+        <MainContent></MainContent>
+      </Content>
     </Layout>
-  </Space>
+  </div>
+  
 );
-export default App;
+export default Page;
 
