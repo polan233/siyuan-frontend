@@ -1,18 +1,18 @@
 
 .App{
     padding: 20px;
-    background-color: #e6f4ff;
+    background-color: #fafafa;
 }
 .Page{
     
-    background-color: #e6f4ff;
+    background-color: #fafafa;
 }
 .Top{
     margin: 0;
     padding: 0px;
     width: 100%;
     height: 100%;
-    background-color: #bae0ff;
+    background-color: #e6f4ff;
 }
 #topLogo{
     padding-left: 100px;
@@ -31,6 +31,39 @@
 }
 .leftNav{
     padding: 5px;
+}
+.paragraph{
+  text-align: left;
+  text-indent: 2rem;
+}
+.question{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fafafa;
+}
+.exam{
+  padding-bottom: 20px;
+}
+.questionButtons{
+
+}
+.foot{
+  width: 100%;
+  height: 100%;
+  background-color: #91caff;
+  padding-top: 10px;
+}
+.slogan{
+  width:100%;
+  background-color: #91caff;
+  padding: 0px;
+  margin-top: 5px;
+}
+.links{
+  background-color: #91caff;
+  margin-bottom: 20px;
 }
 /*
 const headerStyle = {

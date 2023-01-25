@@ -1,12 +1,14 @@
 import React from 'react';
 import 'antd/dist/reset.css';
 import "./App.css"
-import { Layout, Space,Col, Divider, Row,Typography } from 'antd';
+import { Layout, Space,Col, Divider, Row,Typography ,Button,Card} from 'antd';
 import { AudioOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
 import logoPic from './img/logo192.png';
-import { MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { MailOutlined, SettingOutlined,BookOutlined,LeftOutlined,RightOutlined   } from '@ant-design/icons';
 import { Menu } from 'antd';
+import Exam from './Exam.js'
+import Foot from './Foot.js'
 const { Search } = Input;
 const { Header, Footer, Sider, Content } = Layout;
 const { Title, Paragraph, Text, Link } = Typography;
@@ -16,31 +18,40 @@ const headerStyle = {
   height: 64,
   paddingInline: 50,
   lineHeight: '64px',
-  backgroundColor: '#7dbcea',
+  backgroundColor: '#fafafa',
 };
 const contentStyle = {
   textAlign: 'center',
   minHeight: 120,
   lineHeight: '120px',
   color: '#fff',
-  backgroundColor: '#e6f4ff',
+  backgroundColor: '#fafafa',
 };
+const qusetionStyle ={
+  textAlign: 'center',
+  minHeight: 120,
+  lineHeight: '120px',
+}
 const leftNavStyle = {
   textAlign: 'left',
   lineHeight: '80px',
   color: '#fff',
-  backgroundColor: '#e6f4ff',
+  backgroundColor: '#fafafa',
 }
 const siderStyle = {
   textAlign: 'left',
   lineHeight: '120px',
   color: '#fff',
-  backgroundColor: '#e6f4ff',
+  backgroundColor: '#fafafa',
 };
 const footerStyle = {
   textAlign: 'center',
   color: '#fff',
-  backgroundColor: '#7dbcea',
+  backgroundColor: '#fafafa',
+};
+const questionFooterStyle = {
+  textAlign:"right",
+  backgroundColor: '#fafafa',
 };
 const suffix = (
   <AudioOutlined
@@ -87,11 +98,11 @@ function getItem(label, key, icon, children, type) {
   };
 }
 const items = [
-  getItem('Navigation One', 'sub1', <MailOutlined />, [
+  getItem('Navigation One', 'sub1', <BookOutlined />, [
     getItem('Item 1', 'g1', null, [getItem('Option 1', '1'), getItem('Option 2', '2')], 'group'),
     getItem('Item 2', 'g2', null, [getItem('Option 3', '3'), getItem('Option 4', '4')], 'group'),
   ]),
-  getItem('Navigation Two', 'sub2', <MailOutlined />, [
+  getItem('Navigation Two', 'sub2', <BookOutlined />, [
     getItem('Option 5', '5'),
     getItem('Option 6', '6'),
     getItem('Submenu', 'sub3', null, [getItem('Option 7', '7'), getItem('Option 8', '8')]),
@@ -99,7 +110,7 @@ const items = [
   {
     type: 'divider',
   },
-  getItem('Navigation Three', 'sub4', <MailOutlined />, [
+  getItem('Navigation Three', 'sub4', <BookOutlined />, [
     getItem('Option 9', '9'),
     getItem('Option 10', '10'),
     getItem('Option 11', '11'),
@@ -142,7 +153,7 @@ class MainContent extends React.Component{
             <div className='info'>
               <Typography>
                 <Title level={2}>Introduction</Title>
-                <Paragraph>
+                <Paragraph >
                   In the process of internal desktop applications development, many different design specs and
                   implementations would be involved, which might cause designers and developers difficulties and
                   duplication and reduce the efficiency of development.
@@ -157,13 +168,58 @@ class MainContent extends React.Component{
   }
 }
 
+class Question extends React.Component{
+  constructor(props){
+    super(props)
+  }
+  render(){
+    return(
+      <div className='question'>
+        <Divider></Divider>
+          <Typography>
+            <Title level={2} className='titile'>Introduction</Title>
+            <Paragraph className='paragraph'>
+              In the process of internal desktop applications development, many different design specs and
+              implementations would be involved, which might cause designers and developers difficulties and
+              duplication and reduce the efficiency of development.
+            </Paragraph>
+          </Typography>
+          <div className='questionButtons'>
+          <Space>
+            <Button icon={<LeftOutlined />} size={'small'} />
+            <Button icon={<RightOutlined />} size={'small'} />
+          </Space>
+          </div>
+          <Divider></Divider>
+      </div>
+    );
+  }
+}
+
+class SecondContent extends React.Component{
+  constructor(props){
+    super(props)
+  }
+  render(){
+    return(
+      <div className='secondContent'>
+        <Question/>
+        <Exam/>
+      </div>
+    );
+  }
+}
+
 const Page = () => (
   <div className='Page'>
     <Layout>
       <Top/>
       <Content>
         <MainContent></MainContent>
+        <SecondContent></SecondContent>
       </Content>
+      <Foot></Foot>
+      
     </Layout>
   </div>
   
