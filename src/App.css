@@ -46,8 +46,12 @@
 .exam{
   padding-bottom: 20px;
 }
-.questionButtons{
-
+#questionCard{
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 97%;
+  background-color: #fafafa;
 }
 .foot{
   width: 100%;
