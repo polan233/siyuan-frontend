@@ -6,6 +6,10 @@ import { Menu } from 'antd';
 
 import { Layout, Typography } from 'antd';
 import { AudioOutlined } from '@ant-design/icons';
+
+// import {Map, Marker, NavigationControl, InfoWindow} from 'react-bmapgl'
+
+import 'react-bmapgl'
 const {  Sider, Content } = Layout;
 const { Title } = Typography;
 
@@ -17,47 +21,55 @@ const headerStyle = {
     lineHeight: '64px',
     backgroundColor: '#fafafa',
   };
-  const contentStyle = {
-    textAlign: 'center',
-    minHeight: 120,
-    lineHeight: '120px',
-    color: '#fff',
-    backgroundColor: '#fafafa',
-  };
-  const qusetionStyle ={
-    textAlign: 'center',
-    minHeight: 120,
-    lineHeight: '120px',
-  }
-  const leftNavStyle = {
-    textAlign: 'left',
-    lineHeight: '80px',
-    color: '#fff',
-    backgroundColor: '#fafafa',
-  }
-  const siderStyle = {
-    textAlign: 'left',
-    lineHeight: '120px',
-    color: '#fff',
-    backgroundColor: '#fafafa',
-  };
-  const footerStyle = {
-    textAlign: 'center',
-    color: '#fff',
-    backgroundColor: '#fafafa',
-  };
-  const questionFooterStyle = {
-    textAlign:"right",
-    backgroundColor: '#fafafa',
-  };
-  const suffix = (
-    <AudioOutlined
-      style={{
-        fontSize: 16,
-        color: '#1890ff',
-      }}
-    />
-  );
+const mapStyle = {
+  width: "100%",
+  margin: "2px",
+  height: "70vh",
+  minHeight: "30vh",
+  resize: 'vertical',
+  overflow: 'auto'
+};
+const contentStyle = {
+  textAlign: 'center',
+  minHeight: 120,
+  lineHeight: '120px',
+  color: '#fff',
+  backgroundColor: '#fafafa',
+};
+const qusetionStyle ={
+  textAlign: 'center',
+  minHeight: 120,
+  lineHeight: '120px',
+}
+const leftNavStyle = {
+  textAlign: 'left',
+  lineHeight: '80px',
+  color: '#fff',
+  backgroundColor: '#fafafa',
+}
+const siderStyle = {
+  textAlign: 'left',
+  lineHeight: '120px',
+  color: '#fff',
+  backgroundColor: '#fafafa',
+};
+const footerStyle = {
+  textAlign: 'center',
+  color: '#fff',
+  backgroundColor: '#fafafa',
+};
+const questionFooterStyle = {
+  textAlign:"right",
+  backgroundColor: '#fafafa',
+};
+const suffix = (
+  <AudioOutlined
+    style={{
+      fontSize: 16,
+      color: '#1890ff',
+    }}
+  />
+);
 
 //导航栏
 function getItem(label, key, icon, children, type) {
@@ -147,17 +159,22 @@ const authorDict={
             )
         );
     }
+    componentDidMount(){
+      var map = new window.BMapGL.Map("mapContainer");
+      var point = new window.BMapGL.Point(115.0, 35.0);
+      map.centerAndZoom(point, 5);
+      map.enableScrollWheelZoom(true);
+      map.addControl(new window.BMapGL.ScaleControl());
+      map.addControl(new window.BMapGL.ZoomControl());
+    }
     render(){
       return(
         <div className='mainContent'>
           <Layout>
-            <Sider className='leftNav' style={leftNavStyle}>
+            <Sider className='leftNav' style={leftNavStyle} width={256}>
               <div className='leftNav'>
                 <Menu
                     onClick={this.onNavClick}
-                    style={{
-                      width: 256,
-                    }}
                     mode="inline"
                     items={items}
                 />
@@ -165,10 +182,11 @@ const authorDict={
             </Sider>
             <Content style={contentStyle}>
               <div className='map'>
-                {/*这里放地图*/ }
+                {}
+                  <div id="mapContainer" style={mapStyle}></div>
               </div>
             </Content>
-            <Sider  style={siderStyle}>
+            <Sider style={siderStyle}>
               <div className='info'>
                 <Typography>
                   <Title level={3}>{this.getRightTitle('title')}</Title>
