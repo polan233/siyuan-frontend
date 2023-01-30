@@ -4,8 +4,7 @@ import "./App.css"
 import { Layout,  Divider } from 'antd';
 import Top from './Top'
 import Foot from './Foot.js'
-import MainContent from './MainContent';
-import SecondContent from './SecondContent';
+import Body from './Body'
 const { Content } = Layout;
 
 const Page = () => (
@@ -13,9 +12,7 @@ const Page = () => (
     <Layout>
       <Top/>
       <Content>
-        <MainContent></MainContent>
-        <Divider/>
-        <SecondContent></SecondContent>
+        <Body/>
       </Content>
       <Divider/>
       <Foot></Foot>

@@ -12,7 +12,10 @@ class SecondContent extends React.Component{
     render(){
       return(
         <div className='secondContent'>
-          <Question/>
+          <Question
+            selectedTitle={this.props.selectedTitle}
+            selectedAuthor={this.props.selectedAuthor}
+          />
           <Divider/>
           <Exam/>
         </div>

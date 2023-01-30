@@ -3,9 +3,8 @@ import 'antd/dist/reset.css';
 import "./App.css"
 import {BookOutlined  } from '@ant-design/icons';
 import { Menu } from 'antd';
-
 import { Layout, Typography } from 'antd';
-import { AudioOutlined } from '@ant-design/icons';
+
 
 // import {Map, Marker, NavigationControl, InfoWindow} from 'react-bmapgl'
 
@@ -100,49 +99,28 @@ const items = [
         type: 'divider',
     },
 ];
-const authorDict={
-    "title":"author",
-    "1":"author1",
-    "2":"author2",
-    "3":"author3",
-    "4":"author4",
-    "5":"author5",
-}
+
   class MainContent extends React.Component{
     constructor(props){
       super(props);
-      this.state = {
-        selectedTitle: "",
-        selectedAuthor: ""
-      }
-      this.onNavClick=this.onNavClick.bind(this);
+      //当前选中课文和作者状态提升到Body中维护
       this.getRightTitle=this.getRightTitle.bind(this);
       this.getRightContent=this.getRightContent.bind(this);
-      this.getAuthorByTitle=this.getAuthorByTitle.bind(this);
     }
-    getAuthorByTitle(title){
-        return authorDict[title];
-    }
-    onNavClick = (e) => {
-      console.log(e.key);
-      this.setState({
-        selectedTitle: e.key,
-        selectedAuthor: this.getAuthorByTitle(e.key)
-      })
-    }
+    
     getRightTitle(){ //TODO:获得右侧栏标题
-        if(this.state.selectedTitle===""){
+        if(this.props.selectedTitle===""){
             return "实词翻译";
         }
-        return "实词翻译"+this.state.selectedTitle
+        return "实词翻译"+this.props.selectedTitle
     }
     
     getRightContent(){//TODO:获得右侧栏内容
-        if(this.state.selectedTitle===""){
+        if(this.props.selectedTitle===""){
             return ""
         }
         let list=[
-            this.state.selectedAuthor,
+            this.props.selectedAuthor,
             "师者，所以传道受业解惑也 \n 受：通“授”，传授，讲授",
             "或师焉，或不焉 \n 不：通“否”，表否定"
         ]
@@ -167,7 +145,7 @@ const authorDict={
             <Sider className='leftNav' style={leftNavStyle} width={256}>
               <div className='leftNav'>
                 <Menu
-                    onClick={this.onNavClick}
+                    onClick={this.props.onNavClick}
                     mode="inline"
                     items={items}
                 />
