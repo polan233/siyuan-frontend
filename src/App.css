@@ -3,6 +3,13 @@
     padding: 20px;
     background-color: #fafafa;
 }
+.map{
+  padding: 10px;
+  padding-right: 10px;
+}
+.info{
+  padding:10px;
+}
 .Page{
     
     background-color: #fafafa;

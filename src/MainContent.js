@@ -62,14 +62,7 @@ const questionFooterStyle = {
   textAlign:"right",
   backgroundColor: '#fafafa',
 };
-const suffix = (
-  <AudioOutlined
-    style={{
-      fontSize: 16,
-      color: '#1890ff',
-    }}
-  />
-);
+
 
 //导航栏
 function getItem(label, key, icon, children, type) {
