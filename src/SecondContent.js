@@ -17,7 +17,10 @@ class SecondContent extends React.Component{
             selectedAuthor={this.props.selectedAuthor}
           />
           <Divider/>
-          <Exam/>
+          <Exam
+            selectedTitle={this.props.selectedTitle}
+            selectedAuthor={this.props.selectedAuthor}
+          />
         </div>
       );
     }

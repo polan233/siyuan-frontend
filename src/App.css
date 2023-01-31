@@ -59,28 +59,28 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  flex-wrap: nowrap;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  height: 90%;
   align-items: center;
   background-color: #fafafa;
+  
 }
 .examContent{
-  display: -webkit-flex;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: nowrap;
-  align-items: center;
-  background-color: #fafafa;
+  margin: auto;
+  width: 90%;
+  min-height: 90%;
 }
-.examProblem{
-  order: 3;
+
+
+
+#myDivider{
+  width: 2px;
+  margin:0 auto;
+  height: 100%;
+  background-color: black;
 }
-.myDivider{
-  order: 2;
-}
-.examAnswer{
-  order: 1;
-}
+
 #questionCard{
   margin: 0 auto;
   margin-top: 20px;
