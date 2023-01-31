@@ -6,7 +6,10 @@ import {LeftOutlined,RightOutlined   } from '@ant-design/icons';
 
 const { Paragraph  } = Typography;
 
-const testQuestionList=["问题1","问题2","问题3","问题4"]
+const testQuestionList=["问题1问题1问题1问题1问题1问题1问题1问题1问题1?",
+"问题2问题2问题2问题2问题2问题2问题2问题2?",
+"问题3问题3问题3问题3问题3问题3问题3问题3问题3问题3问题3?",
+"问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4问题4?"]
 
 class QuestionList{
     constructor(list){

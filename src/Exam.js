@@ -1,4 +1,3 @@
-import { SettingOutlined } from '@ant-design/icons';
 import { Collapse, Select } from 'antd';
 import React, { useState } from 'react';
 import './App.css'
@@ -21,18 +20,49 @@ class Exam extends React.Component{
             <div className='exam'>
             <Collapse accordion expandIconPosition='end'  onChange={this.onChange}>
                 <Panel header="This is panel header 1" key="1">
-                    <div className='examContent'>{this.text}</div>
+                    <div className='examContent'>
+                        <ExamContent/>
+                    </div>
                 </Panel>
                 <Panel header="This is panel header 2" key="2">
-                    <div className='examContent'>{this.text}</div>
+                    <div className='examContent'>
+                        <ExamContent/>
+                    </div>
                 </Panel>
                 <Panel header="This is panel header 3" key="3">
-                    <div className='examContent'>{this.text}</div>
+                    <div className='examContent'>
+                        <ExamContent/>
+                    </div>
                 </Panel>
             </Collapse>
             </div>
         );
     }
 }
+
+class ExamContent extends React.Component{
+    constructor(props){
+        super(props);
+
+    }
+    render(){
+        return(
+            <div className='examContainer'>
+                <div className='examContent'>
+                    <div className='examProblem'>
+                        
+                    </div>
+                    <div className='myDivider'/>
+                    <div className='examAnswer'>
+
+                    </div>
+                </div>
+                <div className='buttonGroup'></div>
+            </div>
+        );
+    }
+}
+
+
 
 export default Exam;

@@ -40,18 +40,46 @@
     padding: 5px;
 }
 .paragraph{
-  text-align: left;
   text-indent: 2rem;
+  align-self: flex-start;
 }
 .question{
   display: -webkit-flex;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   background-color: #fafafa;
 }
 .exam{
   padding-bottom: 20px;
+}
+.examContainer{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  background-color: #fafafa;
+}
+.examContent{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  background-color: #fafafa;
+}
+.examProblem{
+  order: 3;
+}
+.myDivider{
+  order: 2;
+}
+.examAnswer{
+  order: 1;
 }
 #questionCard{
   margin: 0 auto;
