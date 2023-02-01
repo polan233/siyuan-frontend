@@ -60,10 +60,10 @@
   flex-direction: column;
   justify-content: center;
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
   height: 90%;
   align-items: center;
-  background-color: #fafafa;
+  background-color: white;
   
 }
 .examContent{

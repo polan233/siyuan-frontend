@@ -33,8 +33,13 @@ class Links extends React.Component{
     }
     render(){
         return(
-            <div className='links'>
-                <Row align={'middle'} justify={'space-around'}>
+                <Row align={'bottom'} justify={'space-around'}>
+                    <Col flex={"auto"}>
+                        {/*TO-DO 联系我们的链接*/ }
+                    </Col>
+                    <Col flex={"none"}>
+                        <p>备案号: 12313123123123</p>
+                    </Col>
                     <Col flex={"auto"}>
                         {/*TO-DO 联系我们的链接*/ }
                     </Col>
@@ -42,7 +47,6 @@ class Links extends React.Component{
                         <Button type='link' ghost>联系我们</Button>
                     </Col>
                 </Row>
-            </div>
         );
     }
 }
