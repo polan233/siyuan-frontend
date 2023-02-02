@@ -6,8 +6,8 @@ import { Menu } from 'antd';
 import { Layout, Typography } from 'antd';
 // import {Map, Marker, NavigationControl, InfoWindow} from 'react-bmapgl'
 import 'react-bmapgl'
-import baseURL from './axios/index.js'
-import axios from 'axios';
+
+import { getMenu,handleError } from './axios/api';
 const {  Sider, Content } = Layout;
 const { Title } = Typography;
 
@@ -114,6 +114,8 @@ class MainContent extends React.Component{
 
       this.getRightTitle=this.getRightTitle.bind(this);
       this.getRightContent=this.getRightContent.bind(this);
+      this.handleNavResponse=this.handleNavResponse.bind(this);
+      this.componentDidMount=this.componentDidMount.bind(this);
     }
     
     getRightTitle(){ //TODO:获得右侧栏标题
@@ -138,6 +140,25 @@ class MainContent extends React.Component{
             )
         );
     }
+    handleNavResponse(response) {
+      console.log("handleNavResponse called",response)
+      let items=[];
+      let data=response.data.data;
+      for(let i=0;i<data.length;i++){
+        let temp=[];
+        let book=data[i];
+        let children=book.children;
+        for(let j=0;j<children.length;j++){
+          let child=children[j];
+          temp.push(getItem(child.name,child.name));
+        }
+        items.push(getItem(book.name,book.name,<BookOutlined />,temp));
+      }
+      //console.log(items);
+      this.setState({
+        items:items,
+      })
+    }
     componentDidMount(){
       var map = new window.BMapGL.Map("mapContainer");
       var point = new window.BMapGL.Point(115.0, 35.0);
@@ -146,32 +167,8 @@ class MainContent extends React.Component{
       map.addControl(new window.BMapGL.ScaleControl());
       map.addControl(new window.BMapGL.ZoomControl());
 
-      axios.get(baseURL+'/text/list')
-        .then(function (response) {
-          // handle success
-          console.log(response);
-        })
-        .catch(function (error) {
-          // handle error
-          if (error.response) {
-            // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // 请求已经成功发起，但没有收到响应
-            // `error.request` 在浏览器中是 XMLHttpRequest 的实例，
-            // 而在node.js中是 http.ClientRequest 的实例
-            console.log(error.request);
-          } else {
-            // 发送请求时出了点问题
-            console.log('Error', error.message);
-          }
-          console.log(error.config);
-        })
-        .then(function () {
-          // always executed
-        });
+      getMenu(this.handleNavResponse);
+      
     }
     render(){
       return(

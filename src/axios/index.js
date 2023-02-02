@@ -9,4 +9,4 @@ const instance = axios.create(config)
 
 const baseURL='http://47.115.227.186:8080'
 
-export default {baseURL}
+export default baseURL
