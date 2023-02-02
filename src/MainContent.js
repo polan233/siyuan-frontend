@@ -4,13 +4,13 @@ import "./App.css"
 import {BookOutlined  } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Layout, Typography } from 'antd';
-
-
 // import {Map, Marker, NavigationControl, InfoWindow} from 'react-bmapgl'
-
 import 'react-bmapgl'
+import baseURL from './axios/index.js'
+import axios from 'axios';
 const {  Sider, Content } = Layout;
 const { Title } = Typography;
+
 
 const headerStyle = {
     textAlign: 'center',
@@ -73,7 +73,8 @@ function getItem(label, key, icon, children, type) {
       type,
     };
   }
-const items = [
+  
+var items = [
     getItem('Navigation One', 'sub1', <BookOutlined />, [
         getItem('Option 1', '1'), getItem('Option 2', '2'),
         getItem('Option 3', '3'), getItem('Option 4', '4')
@@ -100,10 +101,17 @@ const items = [
     },
 ];
 
-  class MainContent extends React.Component{
+
+
+
+class MainContent extends React.Component{
     constructor(props){
       super(props);
       //当前选中课文和作者状态提升到Body中维护
+      this.state={
+        items:items,
+      }
+
       this.getRightTitle=this.getRightTitle.bind(this);
       this.getRightContent=this.getRightContent.bind(this);
     }
@@ -137,6 +145,33 @@ const items = [
       map.enableScrollWheelZoom(true);
       map.addControl(new window.BMapGL.ScaleControl());
       map.addControl(new window.BMapGL.ZoomControl());
+
+      axios.get(baseURL+'/text/list')
+        .then(function (response) {
+          // handle success
+          console.log(response);
+        })
+        .catch(function (error) {
+          // handle error
+          if (error.response) {
+            // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // 请求已经成功发起，但没有收到响应
+            // `error.request` 在浏览器中是 XMLHttpRequest 的实例，
+            // 而在node.js中是 http.ClientRequest 的实例
+            console.log(error.request);
+          } else {
+            // 发送请求时出了点问题
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+        })
+        .then(function () {
+          // always executed
+        });
     }
     render(){
       return(
@@ -147,7 +182,7 @@ const items = [
                 <Menu
                     onClick={this.props.onNavClick}
                     mode="inline"
-                    items={items}
+                    items={this.state.items}
                 />
               </div>
             </Sider>
