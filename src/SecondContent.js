@@ -5,16 +5,20 @@ import {  Divider } from 'antd';
 import Exam from './Exam.js'
 import Question from './Question.js';
 
+
+
 class SecondContent extends React.Component{
     constructor(props){
       super(props)
     }
     render(){
+      console.log('secondContentProps',this.props)
       return(
         <div className='secondContent'>
           <Question
             selectedTitle={this.props.selectedTitle}
             selectedAuthor={this.props.selectedAuthor}
+            questions={this.props.groupProblems}
           />
           <Divider/>
           <Exam

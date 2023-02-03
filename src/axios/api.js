@@ -1,5 +1,8 @@
-import baseURL from './index.js'
+
 import axios from 'axios';
+
+const baseURL='http://127.0.0.1:4523/m1/1938326-0-default/v1'
+axios.defaults.baseURL=baseURL;
 
 export function handleError(error){
     // handle error
@@ -21,10 +24,10 @@ export function handleError(error){
 }
 
 export function getMenu(handleResponse){
-    axios.get('http://127.0.0.1:4523/m1/1938326-0-default/v1/getMenu')
+    axios.get('/getMenu')
         .then(response => {
           // handle success
-          console.log(response);
+          //console.log(response);
           handleResponse(response);
         })
         .catch(function (error) {
@@ -38,14 +41,36 @@ export function getMenu(handleResponse){
 }
 
 export function getTypeAndRightContent(title,handleResponse){
-  axios.get('http://127.0.0.1:4523/m1/1938326-0-default/v1/getTypeAndRightContent',
+  axios.get('/getTypeAndRightContent',
     {
       title:title,
     }
   )
         .then(response => {
           // handle success
-          console.log(response);
+          //console.log(response);
+          handleResponse(response);
+        })
+        .catch(function (error) {
+          // handle error
+          handleError(error);
+        })
+        .then(function () {
+          // always executed
+          
+        });
+}
+
+export function getGroupProblem(title,author,handleResponse){
+   axios.get('/getGroupProblem',
+    {
+      title:title,
+      author:author
+    }
+  )
+        .then(response => {
+          // handle success
+          //console.log(response);
           handleResponse(response);
         })
         .catch(function (error) {
