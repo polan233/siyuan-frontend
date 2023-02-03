@@ -18,13 +18,21 @@ class Body extends React.Component{
         super(props);
         this.state = {
             selectedTitle: "",
-            selectedAuthor: ""
+            selectedAuthor: "",
+            authorDict:{},
         }
         this.handleNavClick=this.handleNavClick.bind(this);
         this.getAuthorByTitle=this.getAuthorByTitle.bind(this);
+        this.setAuthorDict=this.setAuthorDict.bind(this);
     }
     getAuthorByTitle(title){
-        return authorDict[title];
+        return this.state.authorDict[title];
+    }
+    setAuthorDict(dict){
+        //console.log(dict);
+        this.setState({
+            authorDict:dict,
+        });
     }
     handleNavClick(e){
         console.log("handleNavClick Called",e.key);
@@ -41,6 +49,7 @@ class Body extends React.Component{
                 onNavClick={this.handleNavClick}
                 selectedTitle={this.state.selectedTitle}
                 selectedAuthor={this.state.selectedAuthor}
+                setAuthorDict={this.setAuthorDict}
                 />
             <Divider/>
             <SecondContent

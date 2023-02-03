@@ -36,3 +36,24 @@ export function getMenu(handleResponse){
           
         });
 }
+
+export function getTypeAndRightContent(title,handleResponse){
+  axios.get('http://127.0.0.1:4523/m1/1938326-0-default/v1/getTypeAndRightContent',
+    {
+      title:title,
+    }
+  )
+        .then(response => {
+          // handle success
+          console.log(response);
+          handleResponse(response);
+        })
+        .catch(function (error) {
+          // handle error
+          handleError(error);
+        })
+        .then(function () {
+          // always executed
+          
+        });
+}

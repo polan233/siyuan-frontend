@@ -7,7 +7,8 @@ import { Layout, Typography } from 'antd';
 // import {Map, Marker, NavigationControl, InfoWindow} from 'react-bmapgl'
 import 'react-bmapgl'
 
-import { getMenu,handleError } from './axios/api';
+import { getMenu,handleError,getTypeAndRightContent } from './axios/api';
+import { formToJSON } from 'axios';
 const {  Sider, Content } = Layout;
 const { Title } = Typography;
 
@@ -110,40 +111,29 @@ class MainContent extends React.Component{
       //当前选中课文和作者状态提升到Body中维护
       this.state={
         items:items,
+        rightTitle:"",
+        rightContent:null
       }
 
       this.getRightTitle=this.getRightTitle.bind(this);
-      this.getRightContent=this.getRightContent.bind(this);
       this.handleNavResponse=this.handleNavResponse.bind(this);
       this.componentDidMount=this.componentDidMount.bind(this);
+      this.onMenuClick=this.onMenuClick.bind(this);
+      this.handleGetRightContent=this.handleGetRightContent.bind(this);
     }
     
-    getRightTitle(){ //TODO:获得右侧栏标题
+    getRightTitle(){
         if(this.props.selectedTitle===""){
-            return "实词翻译";
+            return "";
         }
-        return "实词翻译"+this.props.selectedTitle
+        return ' -- '+this.props.selectedAuthor;
     }
     
-    getRightContent(){//TODO:获得右侧栏内容
-        if(this.props.selectedTitle===""){
-            return ""
-        }
-        let list=[
-            this.props.selectedAuthor,
-            "师者，所以传道受业解惑也 \n 受：通“授”，传授，讲授",
-            "或师焉，或不焉 \n 不：通“否”，表否定"
-        ]
-        return(
-            list.map( (content)=>
-                <li>{content}</li>
-            )
-        );
-    }
     handleNavResponse(response) {
       console.log("handleNavResponse called",response)
       let items=[];
       let data=response.data.data;
+      let authorTab={};
       for(let i=0;i<data.length;i++){
         let temp=[];
         let book=data[i];
@@ -151,6 +141,7 @@ class MainContent extends React.Component{
         for(let j=0;j<children.length;j++){
           let child=children[j];
           temp.push(getItem(child.name,child.name));
+          authorTab[child.name]=child.author;
         }
         items.push(getItem(book.name,book.name,<BookOutlined />,temp));
       }
@@ -158,6 +149,24 @@ class MainContent extends React.Component{
       this.setState({
         items:items,
       })
+      this.props.setAuthorDict(authorTab);
+    }
+    handleGetRightContent(response){
+      console.log("handleGetRightContent called",response)
+      const data=response.data.data.content;
+      let list=[];
+      
+      for(let i=0;i<data.length;i++){
+          list.push(<li key={i}>{data[i]}</li>)
+      }
+      this.setState({
+        rightContent:list,
+      })
+      console.log("rightContentSet!")
+    }
+    onMenuClick(e){
+      this.props.onNavClick(e);
+      getTypeAndRightContent(this.props.selectedTitle,this.handleGetRightContent);
     }
     componentDidMount(){
       var map = new window.BMapGL.Map("mapContainer");
@@ -168,7 +177,6 @@ class MainContent extends React.Component{
       map.addControl(new window.BMapGL.ZoomControl());
 
       getMenu(this.handleNavResponse);
-      
     }
     render(){
       return(
@@ -177,7 +185,7 @@ class MainContent extends React.Component{
             <Sider className='leftNav' style={leftNavStyle} width={256}>
               <div className='leftNav'>
                 <Menu
-                    onClick={this.props.onNavClick}
+                    onClick={this.onMenuClick}
                     mode="inline"
                     items={this.state.items}
                 />
@@ -192,9 +200,10 @@ class MainContent extends React.Component{
             <Sider style={siderStyle}>
               <div className='info'>
                 <Typography>
-                  <Title level={3}>{this.getRightTitle('title')}</Title>
+                  <Title level={4}>{this.props.selectedTitle}</Title>
+                  <Title level={5}>{this.getRightTitle()}</Title>
                   {/* 这个标题需要根据课文题目而定 */}
-                  <ul>{this.getRightContent('titile')}</ul>
+                  <ul>{this.state.rightContent}</ul>
                   {/*内容也需要根据课文题目而定*/}
               </Typography>
               </div>
