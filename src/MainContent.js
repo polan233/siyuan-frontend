@@ -134,16 +134,17 @@ class MainContent extends React.Component{
       let items=[];
       let data=response.data.data;
       let authorTab={};
-      for(let i=0;i<data.length;i++){
+      let keys=Object.keys(data);
+      for(let i=0;i<keys.length;i++){
+        const key=keys[i];
         let temp=[];
-        let book=data[i];
-        let children=book.children;
+        let children=data[key];
         for(let j=0;j<children.length;j++){
           let child=children[j];
-          temp.push(getItem(child.name,child.name));
-          authorTab[child.name]=child.author;
+          temp.push(getItem(child.text_name,child.text_name));
+          authorTab[child.text_name]=child.author_name;
         }
-        items.push(getItem(book.name,book.name,<BookOutlined />,temp));
+        items.push(getItem(key,key,<BookOutlined />,temp));
       }
       //console.log(items);
       this.setState({
@@ -153,16 +154,18 @@ class MainContent extends React.Component{
     }
     handleGetRightContent(response){
       console.log("handleGetRightContent called",response)
-      const data=response.data.data.content;
+      const data=response.data.data.additions;
       let list=[];
-      
       for(let i=0;i<data.length;i++){
           list.push(<li key={i}>{data[i]}</li>)
+      }
+      if(list.length==0){
+        list="";
       }
       this.setState({
         rightContent:list,
       })
-      console.log("rightContentSet!")
+      console.log("rightContentSet!",this.state)
     }
     onMenuClick(e){
       this.props.onNavClick(e);
