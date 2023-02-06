@@ -10,8 +10,9 @@
  */
 
 /**
- * @namespace BMapGL的所有library类均放在window.BMapGLLib命名空间下
+ * @namespace BMapGL的所有library类均放在BMapGLLib命名空间下
  */
+var BMapGLLib = window.BMapGLLib = BMapGLLib || {};
  (function () {
      var T;
      var baidu = T = baidu || { version: 'gl 1.0' };
@@ -164,7 +165,6 @@
      /**
       * @exports LuShu as window.BMapGLLib.LuShu
       */
-     
      var LuShu =
          /**
           * LuShu类的构造函数
@@ -185,7 +185,7 @@
               * @example <b>参考示例：</b><br />
               * var lushu = new window.BMapGLLib.LuShu(map,arrPois,{defaultContent:"从北京到天津",landmarkPois:[]});
           */
-         window.BMapGLLib.LuShu = function (map, path, opts) {
+         BMapGLLib.LuShu = function (map, path, opts) {
              if (!path || path.length < 1) {
                  return;
              }
