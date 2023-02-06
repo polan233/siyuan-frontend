@@ -4,8 +4,8 @@ import "./App.css"
 import {BookOutlined  } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Layout, Typography } from 'antd';
-
-import MyMap from './Mymap';
+import {initMap, MapComponent} from './Mymap'
+import {Map} from 'react-bmapgl'
 
 import { getMenu,handleError,getTypeAndRightContent } from './axios/api';
 import { formToJSON } from 'axios';
@@ -21,6 +21,14 @@ const headerStyle = {
     lineHeight: '64px',
     backgroundColor: '#fafafa',
   };
+const mapStyle = {
+  width: "100%",
+  margin: "2px",
+  height: "70vh",
+  minHeight: "30vh",
+  resize: 'vertical',
+  overflow: 'auto'
+};
 const contentStyle = {
   textAlign: 'center',
   minHeight: 120,
@@ -160,11 +168,12 @@ class MainContent extends React.Component{
     onMenuClick(e){
       this.props.onNavClick(e);
       getTypeAndRightContent(this.props.selectedTitle,this.handleGetRightContent);
-      this.map.addArcs(["北京","上海","南京","徐州","亳州","周口","东京","美国圣地亚哥","TrainFun"]);
-
-  }
+    }
     componentDidMount(){
       getMenu(this.handleNavResponse);
+
+      this.map = new window.BMapGL.Map("mapContainer");
+      initMap(this.map);
     }
     render(){
       return(
@@ -179,8 +188,8 @@ class MainContent extends React.Component{
                 />
               </div>
             </Sider>
-            <Content style={contentStyle}>
-              <MyMap ref={(ref) => {this.map = ref}}/>
+            <Content style={contentStyle}>,
+              <div id="mapContainer" style={mapStyle}>{<MapComponent value={this.props}/>}</div>
             </Content>
             <Sider style={siderStyle}>
               <div className='info'>
