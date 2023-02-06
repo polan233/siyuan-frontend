@@ -24,6 +24,10 @@ class SecondContent extends React.Component{
           <Exam
             selectedTitle={this.props.selectedTitle}
             selectedAuthor={this.props.selectedAuthor}
+            show={this.props.showExam}
+            moxie={this.props.moxieList}
+            shici={this.props.shiciList}
+            juzi={this.props.juziList}
           />
         </div>
       );

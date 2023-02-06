@@ -1,11 +1,12 @@
 
 import axios from 'axios';
-
-const baseURL='http://127.0.0.1:4523/m1/1938326-0-default/v1'
+const baseURL="http://127.0.0.1:4523/m1/1938326-0-default"
+//const baseURL='http://47.115.227.186:8080'
 axios.defaults.baseURL=baseURL;
 
 export function handleError(error){
     // handle error
+    console.log(error)
     if (error.response) {
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
         console.log(error.response.data);
@@ -24,26 +25,30 @@ export function handleError(error){
 }
 
 export function getMenu(handleResponse){
-    axios.get('/getMenu')
-        .then(response => {
-          // handle success
-          //console.log(response);
-          handleResponse(response);
-        })
-        .catch(function (error) {
-          // handle error
-          handleError(error);
-        })
-        .then(function () {
-          // always executed
-          
-        });
+    axios({
+      method:"get",
+      url:'/v1/text/slideBar',
+      params:{},
+      headers:{}
+    })
+    .then(response => {
+      // handle success
+      //console.log(response);
+      handleResponse(response);
+    })
+    .catch(function (error) {
+      // handle error
+      handleError(error);
+    })
+    .then(function () {
+      // always executed
+    });
 }
 
 export function getTypeAndRightContent(title,handleResponse){
-  axios.get('/getTypeAndRightContent',
+  axios.get('v1/text/contentByName/1',
     {
-      title:title,
+      name:title,
     }
   )
         .then(response => {
@@ -62,10 +67,51 @@ export function getTypeAndRightContent(title,handleResponse){
 }
 
 export function getGroupProblem(title,author,handleResponse){
-   axios.get('/getGroupProblem',
+   axios.get('v1/getGroupProblem',
     {
       title:title,
       author:author
+    }
+  )
+        .then(response => {
+          // handle success
+          //console.log(response);
+          handleResponse(response);
+        })
+        .catch(function (error) {
+          // handle error
+          handleError(error);
+        })
+        .then(function () {
+          // always executed
+          
+        });
+}
+
+export function getArticleTypeByName(title,handleResponse){
+  axios.get('/v1/typeByName/1',
+    {
+      name:title,
+    }
+  )
+        .then(response => {
+          // handle success
+          //console.log(response);
+          handleResponse(title,response);
+        })
+        .catch(function (error) {
+          // handle error
+          handleError(error);
+        })
+        .then(function () {
+          // always executed
+          
+        });
+}
+export function getExamContents(title,handleResponse){
+  axios.get('/v1/text/problemsByName/1',
+    {
+      name:title,
     }
   )
         .then(response => {

@@ -45,14 +45,8 @@ function getJuziFromTitle(title){
 class Exam extends React.Component{
     constructor(props){
         super(props);
-        let moxie=getMoxieFromTitle(props.selectedTitle);
-        let shici=getShiciFromTitle(props.selectedTitle);
-        let juzi=getJuziFromTitle(props.selectedTitle);
         this.state={
             select:null,
-            moxie:moxie,
-            shici:shici,
-            juzi:juzi,
             moxieShow:false,
             shiciShow:false,
             juziShow:false,
@@ -76,25 +70,16 @@ class Exam extends React.Component{
     onNext(e){
         const mode=this.state.select;
         if(mode==="Moxie"){
-            let list=this.state.moxie;
+            let list=this.props.moxie;
             list.goNext();
-            this.setState({
-                moxie:list
-            })
         }
         if(mode==="Shici"){
-            let list=this.state.shici;
+            let list=this.props.shici;
             list.goNext();
-            this.setState({
-                shici:list
-            })
         }
         if(mode==="Juzi"){
-            let list=this.state.juzi;
+            let list=this.props.juzi;
             list.goNext();
-            this.setState({
-                juzi:list
-            })
         }
         this.setState({
             moxieShow:false,
@@ -104,27 +89,21 @@ class Exam extends React.Component{
         console.log(e);
     }
     onPre(e){
-        const mode=this.state.select;
+        const mode=this.props.select;
         if(mode==="Moxie"){
             let list=this.state.moxie;
             list.goPre();
-            this.setState({
-                moxie:list
-            })
+           
         }
         if(mode==="Shici"){
-            let list=this.state.shici;
+            let list=this.props.shici;
             list.goPre();
-            this.setState({
-                shici:list
-            })
+            
         }
         if(mode==="Juzi"){
-            let list=this.state.juzi;
+            let list=this.props.juzi;
             list.goPre();
-            this.setState({
-                juzi:list
-            })
+            
         }
         this.setState({
             moxieShow:false,
@@ -155,13 +134,19 @@ class Exam extends React.Component{
     }
     
     render(){
+        console.log("exam props",this.props)
+        if(!this.props.show){
+            return(
+            <div className='exam'></div>
+            )
+        }
         return(
             <div className='exam'>
             <Collapse accordion expandIconPosition='end'  onChange={this.onChange}>
                 <Panel header="古文默写" key="Moxie">
                     <ExamContent
-                        problem={this.state.moxie.getProblem()}
-                        answer={this.state.moxie.getAnswer()}
+                        problem={this.props.moxie.getProblem()}
+                        answer={this.props.moxie.getAnswer()}
                         onPre={this.onPre}
                         onNext={this.onNext}
                         show={this.state.moxieShow}
@@ -171,8 +156,8 @@ class Exam extends React.Component{
                 </Panel>
                 <Panel header="注释翻译" key="Shici">
                     <ExamContent
-                        problem={this.state.shici.getProblem()}
-                        answer={this.state.shici.getAnswer()}
+                        problem={this.props.shici.getProblem()}
+                        answer={this.props.shici.getAnswer()}
                         onPre={this.onPre}
                         onNext={this.onNext}
                         show={this.state.shiciShow}
@@ -182,8 +167,8 @@ class Exam extends React.Component{
                 </Panel>
                 <Panel header="句子翻译" key="Juzi">
                     <ExamContent
-                        problem={this.state.juzi.getProblem()}
-                        answer={this.state.juzi.getAnswer()}
+                        problem={this.props.juzi.getProblem()}
+                        answer={this.props.juzi.getAnswer()}
                         onPre={this.onPre}
                         onNext={this.onNext}
                         show={this.state.juziShow}
@@ -222,15 +207,15 @@ class ExamContent extends React.Component{
     }
 }
 
-class ExamList{
+export class ExamList{
     constructor(problems,answers){
         this.problems=problems;
         this.answers=answers;
         this.index=0;
-        if(problems.length!=answers.length){
-            throw "问题列表与答案列表长度不一致";
-        }
-        this.length=this.problems.length;
+        // if(problems.length!=answers.length){
+        //     throw "问题列表与答案列表长度不一致";
+        // }
+        this.length= this.problems.length<this.answers.length?this.problems.length:this.answers.length;
     }
     getProblem(){
         return this.problems[this.index];
