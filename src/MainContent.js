@@ -163,7 +163,8 @@ class MainContent extends React.Component{
     onMenuClick(e){
       this.props.onNavClick(e);
       getTypeAndRightContent(this.props.selectedTitle,this.handleGetRightContent);
-      this.map.addArcs(["北京","上海","南京","徐州","亳州","周口","东京","美国圣地亚哥","TrainFun"]);
+      // this.map.addArcs(["北京","上海","南京","徐州","亳州","周口","东京","美国圣地亚哥","TrainFun"]);
+      this.map.addRoadBook(["北京","上海","南京","徐州","亳州","周口","东京","美国圣地亚哥"]);
     }
     componentDidMount(){
       getMenu(this.handleNavResponse);
