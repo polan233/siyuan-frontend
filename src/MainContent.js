@@ -171,6 +171,7 @@ class MainContent extends React.Component{
     onMenuClick(e){
       this.props.onNavClick(e);
       getTypeAndRightContent(this.props.selectedTitle,this.handleGetRightContent);
+
     }
     componentDidMount(){
       getMenu(this.handleNavResponse);
