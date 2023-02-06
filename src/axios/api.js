@@ -128,3 +128,4 @@ export function getExamContents(title,handleResponse){
           
         });
 }
+
