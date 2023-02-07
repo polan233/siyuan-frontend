@@ -152,7 +152,7 @@ class MainContent extends React.Component{
       for(let i=0;i<data.length;i++){
           list.push(<li key={i}>{data[i]}</li>)
       }
-      if(list.length==0){
+      if(list.length===0){
         list="";
       }
       this.setState({
@@ -163,9 +163,8 @@ class MainContent extends React.Component{
     onMenuClick(e){
       this.props.onNavClick(e);
       getTypeAndRightContent(this.props.selectedTitle,this.handleGetRightContent);
-
-      this.map.addArcs(["北京","上海","南京","徐州","亳州","周口","东京","美国圣地亚哥"]);
-
+      this.map.reset();
+      this.map.addRoadBook(["北京","上海","南京","徐州","亳州","周口"]);
     }
     componentDidMount(){
       getMenu(this.handleNavResponse);
