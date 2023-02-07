@@ -104,6 +104,21 @@
   background-color: #91caff;
   margin-bottom: 20px;
 }
+
+
+/*
+map components style
+*/
+ul li {list-style: none;}
+
+#roadBookController {
+  cursor: pointer;
+  padding: 7px 10px;
+  box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+  border-radius: 5px;
+  background-color: white;
+  color: #91caff;
+}
 /*
 const headerStyle = {
   textAlign: 'center',
