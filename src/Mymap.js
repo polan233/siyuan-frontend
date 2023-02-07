@@ -16,6 +16,8 @@ export default class MyMap extends React.Component {
     super(props);
     this.state = {
       components: [],
+      arcs:[],
+
     };
     this.created = false;
     this.addArc = this.addArc.bind(this);
@@ -51,8 +53,16 @@ export default class MyMap extends React.Component {
         this.searchCityPoint(element, (results) => {
           if(results.getNumPois() <= 0) reject("城市不存在"+element);
           path_point[index] = results.getPoi(0).point;
-          if (index == path_city.length - 1) resolve(path_point);
-        });
+          console.log("path_point building",path_point)
+          let flag=true;
+          for(let i=0;i<path_point.length;i++){
+            if(path_point[i]==null) {flag=false;break;}
+          }
+          if (flag) {
+            console.log("path_point done",path_point)
+            resolve(path_point);
+          }
+        },{});
       }
     });
   }
@@ -68,10 +78,13 @@ export default class MyMap extends React.Component {
       />
     );
     this.setState((state) => ({
-      components: state.components.slice().concat([newArc]),
+      arcs: state.arcs.slice().concat([newArc]),
     })); // state的更新是异步的
   }
   addArcs(path_city) {
+    this.setState({
+      arcs:[],
+    })
     this.getCityPointArray(path_city).then((path) => {
       if (path.length < 2) return;
       for (let i = 0; i < path.length - 1; i++) {
@@ -126,6 +139,7 @@ export default class MyMap extends React.Component {
         style={mapStyle}
       >
         {this.state.components}
+        {this.state.arcs}
       </Map>
     );
   }
