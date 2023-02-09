@@ -1,6 +1,9 @@
 import React from "react";
 import { Map, Arc, Polyline, Marker } from "react-bmapgl";
 import { getAuthorPath } from "./axios/api";
+import {BookOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+
 import "./LuShu"
 
 const mapStyle = {
@@ -82,7 +85,7 @@ export default class MyMap extends React.Component {
           if (flag) {
             // console.log("path_point done",path_point)
             resolve(path_point);
-          } // what the fuck so good
+          } // what the fuck so good 谢谢
         });
       }
     });
@@ -228,6 +231,7 @@ export default class MyMap extends React.Component {
         }}
         style={mapStyle}
       >
+        <Button className='bookButton' shape="circle" icon={<BookOutlined />} />
         {components}
       </Map>
     );
