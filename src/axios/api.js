@@ -46,7 +46,8 @@ export function getMenu(handleResponse){
 }
 
 export function getTypeAndRightContent(title,handleResponse){
-  axios.get('v1/text/contentByName/1',
+  //http://127.0.0.1:4523/m1/1938326-0-default/v1/addition/contentByName/1
+  axios.get('v1/addition/contentByName/1',
     {
       name:title,
     }
@@ -67,7 +68,7 @@ export function getTypeAndRightContent(title,handleResponse){
 }
 
 export function getGroupProblem(title,author,handleResponse){
-   axios.get('v1/getGroupProblem',
+   axios.get('/v1/discussion/textId',
     {
       title:title,
       author:author
@@ -89,7 +90,7 @@ export function getGroupProblem(title,author,handleResponse){
 }
 
 export function getArticleTypeByName(title,handleResponse){
-  axios.get('/v1/typeByName/1',
+  axios.get('/v1/text/typeByName/1',
     {
       name:title,
     }
@@ -109,7 +110,7 @@ export function getArticleTypeByName(title,handleResponse){
         });
 }
 export function getExamContents(title,handleResponse){
-  axios.get('/v1/text/problemsByName/1',
+  axios.get('/v1/problem/problemsByName/1',
     {
       name:title,
     }
