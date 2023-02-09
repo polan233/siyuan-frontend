@@ -206,8 +206,27 @@ export default class MyMap extends React.Component {
           return div;
         }
       }// TODO: 自定义组件有问题：高度  路书也有问题 组件如何清除
-      
+
+      class showTextButton extends window.BMapGL.Control{
+        constructor(map){
+          super();
+          this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
+          this.defaultOffset = new window.BMapGL.Size(80, 20)
+          this.map = map
+        }
+        initialize(map){
+          var div = document.createElement('div');
+          div.appendChild(document.createTextNode("展示文本"));
+          div.id = "showTextButton";
+          div.onclick = () => {
+            //TO-DO:添加展示文本功能
+          };
+          map.getContainer().appendChild(div);
+          return div;
+        }
+      }
       this.map.addControl(new roadBookController(this.map));
+      this.map.addControl(new showTextButton(this.map));
       // this.addComponent(TYPE.CONTROLLER, new window.BMapGL.ZoomControl(this.map))
     });
   }

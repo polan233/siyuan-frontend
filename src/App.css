@@ -127,6 +127,20 @@ ul li {list-style: none;}
   text-align: center;
   line-height: normal;
 }
+#showTextButton {
+  cursor: pointer;
+  padding: 10px;
+  box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+  border-radius: 5px;
+  background-color: white;
+  color: #91caff;
+  margin: auto;
+  height: fit-content;
+  width: fit-content;
+  align-items: center;
+  text-align: center;
+  line-height: normal;
+}
 /*
 const headerStyle = {
   textAlign: 'center',
