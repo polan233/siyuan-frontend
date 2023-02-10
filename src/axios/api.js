@@ -129,4 +129,25 @@ export function getExamContents(title,handleResponse){
           
         });
 }
+export function getContentByTitle(title,handleResponse){
+  //http://127.0.0.1:4523/m1/1938326-0-default/v1/text/contentByName
+  axios.get('/v1/text/contentByName',
+    {
+      name:title,
+    }
+  )
+        .then(response => {
+          // handle success
+          //console.log(response);
+          handleResponse(response);
+        })
+        .catch(function (error) {
+          // handle error
+          handleError(error);
+        })
+        .then(function () {
+          // always executed
+          
+        });
+}
 

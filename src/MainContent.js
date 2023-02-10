@@ -4,11 +4,11 @@ import "./App.css"
 import {BookOutlined, Space, Tooltip } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Layout, Typography,Button } from 'antd';
-
+import TextReader from './TextReader';
 import MyMap from './Mymap';
-
 import { getMenu,handleError,getTypeAndRightContent } from './axios/api';
 import { formToJSON } from 'axios';
+
 const {  Sider, Content } = Layout;
 const { Title } = Typography;
 
@@ -24,7 +24,6 @@ const headerStyle = {
 const contentStyle = {
   textAlign: 'center',
   minHeight: 120,
-  lineHeight: '120px',
   color: '#fff',
   backgroundColor: '#fafafa',
 };
@@ -104,7 +103,8 @@ class MainContent extends React.Component{
       this.state={
         items:items,
         rightTitle:"",
-        rightContent:null
+        rightContent:null,
+        showText:false
       }
 
       this.getRightTitle=this.getRightTitle.bind(this);
@@ -112,7 +112,8 @@ class MainContent extends React.Component{
       this.componentDidMount=this.componentDidMount.bind(this);
       this.onMenuClick=this.onMenuClick.bind(this);
       this.handleGetRightContent=this.handleGetRightContent.bind(this);
-
+      this.showText=this.showText.bind(this);
+      this.showMap=this.showMap.bind(this);
     }
     
     getRightTitle(){
@@ -121,7 +122,18 @@ class MainContent extends React.Component{
         }
         return ' -- '+this.props.selectedAuthor;
     }
-    
+    showText(){
+      this.setState({
+        showText:true,
+      })
+    }
+    showMap(){
+      //this.onMenuClick({key:this.state.selectedTitle})
+      //TO-DO: showAuthorPath(this.props.selectedAuthor)
+      this.setState({
+        showText:false,
+      })
+    }
     handleNavResponse(response) {
       console.log("handleNavResponse called",response)
       let items=[];
@@ -170,6 +182,16 @@ class MainContent extends React.Component{
       getMenu(this.handleNavResponse);
     }
     render(){
+      const content=this.state.showText?
+        <TextReader 
+          title={this.props.selectedTitle}
+          author={this.props.selectedAuthor}
+          onShowMap={this.showMap}
+        />:
+        <MyMap
+          className="map"
+          ref={(ref) => {this.map = ref}}
+          onShowText={this.showText}/>
       return(
         <div className='mainContent'>
           <Layout>
@@ -182,8 +204,8 @@ class MainContent extends React.Component{
                 />
               </div>
             </Sider>
-            <Content style={contentStyle}>
-              <MyMap className="map" ref={(ref) => {this.map = ref}}/>
+            <Content style={contentStyle} id="content">
+              {content}
             </Content>
             <Sider style={siderStyle}>
               <div className='info'>
