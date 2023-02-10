@@ -40,6 +40,7 @@ export default class MyMap extends React.Component {
     this.created = false;
     this.searchCityPoint = this.searchCityPoint.bind(this);
     this.getCityPointArray = this.getCityPointArray.bind(this);
+    this.centerAndZoom = this.centerAndZoom.bind(this);
     this.reset = this.reset.bind(this);
     this.switchNovel = this.switchNovel.bind(this);
     this.addComponent = this.addComponent.bind(this);
@@ -91,12 +92,26 @@ export default class MyMap extends React.Component {
     });
   }
 
-  centerAndZoom(points) {
-    // TODO: 聚焦，问题是如何确定缩放等级
+  centerAndZoom(path_point) {
+    var res = this.map.getViewport(path_point);
+    this.map.centerAndZoom(res.center, res.zoom);
   }
 
   reset() {
     // TODO: 地图重置
+    var c = this.map.getContainer();
+    // c.remove();
+    var c_children = [];
+    c.childNodes.forEach((element) => {
+      c_children.push(element);
+    })
+    for(const element of c_children){
+      console.log(element.classList)
+      if(element.classList.contains("delOnReset")){
+        c.removeChild(element)
+      }
+    }
+    this.map.clearOverlays();
     this.setState((state) => ({
       components: [],
     }))
@@ -201,11 +216,12 @@ export default class MyMap extends React.Component {
           var div = document.createElement('div');
           div.appendChild(document.createTextNode("开始"));
           div.id = "roadBookController";
+          div.classList.add("delOnReset");
           div.onclick = () => {startLushu(this.map)};
           map.getContainer().appendChild(div);
           return div;
         }
-      }// TODO: 自定义组件有问题：高度  路书也有问题 组件如何清除
+      }
 
       class showTextButton extends window.BMapGL.Control{
         constructor(map){
@@ -218,6 +234,7 @@ export default class MyMap extends React.Component {
           var div = document.createElement('div');
           div.appendChild(document.createTextNode("展示文本"));
           div.id = "showTextButton";
+          div.classList.add("delOnReset");
           div.onclick = () => {
             //TO-DO:添加展示文本功能
           };
@@ -227,6 +244,7 @@ export default class MyMap extends React.Component {
       }
       this.map.addControl(new roadBookController(this.map));
       this.map.addControl(new showTextButton(this.map));
+      this.centerAndZoom(path);
       // this.addComponent(TYPE.CONTROLLER, new window.BMapGL.ZoomControl(this.map))
     });
   }
