@@ -271,7 +271,7 @@ export default class MyMap extends React.Component {
         }}
         style={mapStyle}
       >
-        {/* <Button className='bookButton' shape="circle" icon={<BookOutlined />} /> */}
+        
         {components}
       </Map>
     );
