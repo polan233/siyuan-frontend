@@ -1,7 +1,6 @@
 import React from "react";
 import { Map, Arc, Polyline, Marker } from "react-bmapgl";
 import { getAuthorPath } from "./axios/api";
-import {BookOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
 import "./LuShu"
@@ -85,6 +84,7 @@ export default class MyMap extends React.Component {
     this.map.enableScrollWheelZoom(true);
     this.map.addControl(new window.BMapGL.ScaleControl());
     this.map.addControl(new window.BMapGL.ZoomControl());
+    this.map.addControl(new showTextButton(this.map));
   }
   searchCityPoint(city, completHandler) {
     var searcher;
@@ -202,6 +202,7 @@ export default class MyMap extends React.Component {
         window.alert(e);
       });
   }
+
   addRoadBook(path_city) {
     this.getCityPointArray(path_city).then((path) => {
       var polyline = new window.BMapGL.Polyline(path, {
@@ -245,9 +246,7 @@ export default class MyMap extends React.Component {
           return div;
         }
       }
-
       this.map.addControl(new roadBookController(this.map));
-      this.map.addControl(new showTextButton(this.map));
       this.centerAndZoom(path);
       // this.addComponent(TYPE.CONTROLLER, new window.BMapGL.ZoomControl(this.map))
     });
@@ -258,7 +257,6 @@ export default class MyMap extends React.Component {
       this._initMap();
       this.created = !this.created;
     }
-    this.map.addControl(new showTextButton(this.map));
   }
   render() {
     var components = this.state.components.map((value, index, array) => {
@@ -273,7 +271,7 @@ export default class MyMap extends React.Component {
         }}
         style={mapStyle}
       >
-        <Button className='bookButton' shape="circle" icon={<BookOutlined />} />
+        {/* <Button className='bookButton' shape="circle" icon={<BookOutlined />} /> */}
         {components}
       </Map>
     );
