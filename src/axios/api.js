@@ -151,3 +151,24 @@ export function getContentByTitle(title,handleResponse){
         });
 }
 
+export function getAuthorPath(author_name,handleResponse){
+  //http://127.0.0.1:4523/m1/1938326-0-default/v1/text/contentByName
+  axios.get('/v1/text/getAuthorPath',
+    {
+      authorName: author_name,
+    }
+  )
+        .then(response => {
+          // handle success
+          //console.log(response);
+          handleResponse(response);
+        })
+        .catch(function (error) {
+          // handle error
+          handleError(error);
+        })
+        .then(function () {
+          // always executed
+          
+        });
+}
