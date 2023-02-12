@@ -111,7 +111,25 @@
 /*
 map components style
 */
+@font-face {
+  font-family: 宋体;
+  src: url("./fonts/文鼎PL简报宋.ttf");
+}
+
 ul li {list-style: none;}
+
+#testController {
+  /* width: 30%; */
+  padding: 10px;
+  box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+  border-radius: 5px;
+  margin: auto;
+  height: fit-content;
+  width: fit-content;
+  align-items: center;
+  text-align: center;
+  line-height: normal;
+}
 
 #roadBookController {
   float: left;
@@ -119,8 +137,8 @@ ul li {list-style: none;}
   padding: 10px;
   box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
   border-radius: 5px;
-  background-color: white;
-  color: #91caff;
+  /* background-color: white; */
+  /* color: #91caff; */
   margin: auto;
   height: fit-content;
   width: fit-content;
@@ -134,8 +152,8 @@ ul li {list-style: none;}
   padding: 10px;
   box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
   border-radius: 5px;
-  background-color: white;
-  color: #91caff;
+  /* background-color: white;
+  color: #91caff; */
   margin: auto;
   height: fit-content;
   width: fit-content;
@@ -193,12 +211,12 @@ ul li {list-style: none;}
   float: left;
   margin-top: 30px;
   margin-left:10px;
-  cursor: pointer;
+  /* cursor: pointer; */
   padding: 10px;
   box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
   border-radius: 5px;
-  background-color: white;
-  color: #91caff;
+  /* background-color: white; */
+  /* color: #91caff; */
   margin-top: 10px;
   height: fit-content;
   width: fit-content;
