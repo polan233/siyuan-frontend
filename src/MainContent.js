@@ -6,7 +6,7 @@ import { Menu } from 'antd';
 import { Layout, Typography,Button } from 'antd';
 import TextReader from './TextReader';
 import MyMap from './Mymap';
-import { getMenu,handleError,getTypeAndRightContent } from './axios/api';
+import { getMenu,handleError,getTypeAndRightContent, getAuthorPath } from './axios/api';
 import { formToJSON } from 'axios';
 
 const {  Sider, Content } = Layout;
@@ -175,7 +175,8 @@ class MainContent extends React.Component{
     onMenuClick(e){
       this.props.onNavClick(e);
       getTypeAndRightContent(this.props.selectedTitle,this.handleGetRightContent);
-      this.map.reset();
+      getAuthorPath(this.props.selectedAuthor, this.handleGetAuthorPath);
+      this.map.switchNovel();
       this.map.addRoadBook(["北京","上海","南京","徐州","亳州","周口"]);
     }
     componentDidMount(){

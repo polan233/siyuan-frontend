@@ -1,7 +1,8 @@
 import React from "react";
+import {createRoot} from 'react-dom/client'
 import { Map, Arc, Polyline, Marker } from "react-bmapgl";
 import { getAuthorPath } from "./axios/api";
-import { Button } from 'antd';
+import { Button, Card } from 'antd';
 
 import "./LuShu"
 
@@ -40,6 +41,23 @@ class showTextButton extends window.BMapGL.Control{
     };
     map.getContainer().appendChild(div);
     return div;
+  }
+}
+
+class testController extends window.BMapGL.Control{
+  constructor(map){
+    super();
+    this.defaultAnchor = window.BMAP_ANCHOR_TOP_RIGHT;
+    this.defaultOffset = new window.BMapGL.Size(20, 20);
+    this.map = map
+  }
+  initialize(map){
+    var card = document.createElement('div')
+    map.getContainer().appendChild(card);
+    const root = createRoot(card);// todo: WTF
+    root.render(<Card>AntV 是蚂蚁金服全新一代数据可视化解决方案，致力于提供一套简单方便
+    我们正在基础图表，图分析，图编辑，地理空间可视化，智能可视化等各个可视化的领域耕耘，欢迎同路人一起前行。</Card>)
+    return card;
   }
 }
 
@@ -141,6 +159,7 @@ export default class MyMap extends React.Component {
   }
 
   switchNovel(){
+    this.reset();
     // TODO: 切换文章，暂时想法是用户自行选择保留哪些组件
   }
 
@@ -257,6 +276,7 @@ export default class MyMap extends React.Component {
       this._initMap();
       this.created = !this.created;
     }
+    this.map.addControl(new testController(this.map));
   }
   render() {
     var components = this.state.components.map((value, index, array) => {
