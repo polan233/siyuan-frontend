@@ -183,8 +183,9 @@ class MainContent extends React.Component{
       getMenu(this.handleNavResponse);
     }
     render(){
+
       const content=this.state.showText?
-        <TextReader 
+        <TextReader
           title={this.props.selectedTitle}
           author={this.props.selectedAuthor}
           onShowMap={this.showMap}

@@ -2,11 +2,13 @@ import React from "react";
 import {createRoot} from 'react-dom/client'
 import { Map, Arc, Polyline, Marker } from "react-bmapgl";
 import { getAuthorPath } from "./axios/api";
-import { Button, Card } from 'antd';
-
+import { Button, Card, Collapse, Drawer, theme} from 'antd';
 import "./LuShu"
 
+const {Panel} = Collapse
+
 const mapStyle = {
+  position: "relative",
   width: "100%",
   margin: "2px",
   height: "70vh",
@@ -33,13 +35,11 @@ class showTextButton extends window.BMapGL.Control{
   }
   initialize(map){
     var div = document.createElement('div');
-    div.appendChild(document.createTextNode("展示文本"));
-    div.id = "showTextButton";
-    div.onclick = () => {
-      //TO-DO:添加展示文本功能
-      onShowText();
-    };
     map.getContainer().appendChild(div);
+    const root = createRoot(div);
+    root.render(<Button type="primary" onClick={() => {onShowText()}} id="showTextButton">
+      展示文本
+    </Button>);
     return div;
   }
 }
@@ -55,8 +55,44 @@ class testController extends window.BMapGL.Control{
     var card = document.createElement('div')
     map.getContainer().appendChild(card);
     const root = createRoot(card);// todo: WTF
-    root.render(<Card>AntV 是蚂蚁金服全新一代数据可视化解决方案，致力于提供一套简单方便
-    我们正在基础图表，图分析，图编辑，地理空间可视化，智能可视化等各个可视化的领域耕耘，欢迎同路人一起前行。</Card>)
+
+    class TestDrawer extends React.Component {
+      constructor(props){
+        super(props)
+        this.state = {
+          open: false
+        }
+        this.container = props.container
+        this.setOpen = this.setOpen.bind(this)
+        this.setClose = this.setClose.bind(this)
+      }
+      setOpen() {
+        this.setState({
+          open: true
+        })
+      }
+      setClose() {
+        this.setState({
+          open: false
+        })
+      }
+      render(){
+        // position is fucking so important!
+        return (
+          <div>
+            <Button type="primary" id="testController" onClick={this.setOpen}>
+              地图选项
+            </Button>
+            <Drawer id="mapSelectionDrawer" width={200} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container} rootStyle={{
+              position: "absolute"
+            }}>
+              <p>"some thing"</p>
+            </Drawer>
+          </div>
+        )
+      }
+    }
+    root.render(<TestDrawer container={this.map.getContainer()}/>);
     return card;
   }
 }
@@ -100,6 +136,8 @@ export default class MyMap extends React.Component {
       this.map.centerAndZoom(point, 5);
     });
     this.map.enableScrollWheelZoom(true);
+    this.map.enablePinchToZoom();
+    this.map.setTrafficOff();
     this.map.addControl(new window.BMapGL.ScaleControl());
     this.map.addControl(new window.BMapGL.ZoomControl());
     this.map.addControl(new showTextButton(this.map));
@@ -257,11 +295,14 @@ export default class MyMap extends React.Component {
         }
         initialize(map){
           var div = document.createElement('div');
-          div.appendChild(document.createTextNode("开始"));
-          div.id = "roadBookController";
+          // div.id = "roadBookController";
           div.classList.add("delOnReset");
-          div.onclick = () => {startLushu(this.map)};
+
           map.getContainer().appendChild(div);
+          const root = createRoot(div);
+          root.render(<Button type="primary" onClick={() => {startLushu(this.map)}} id="roadBookController">
+            开始
+          </Button>);
           return div;
         }
       }
