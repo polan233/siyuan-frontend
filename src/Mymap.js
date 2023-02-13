@@ -2,7 +2,7 @@ import React from "react";
 import {createRoot} from 'react-dom/client'
 import { Map, Arc, Polyline, Marker } from "react-bmapgl";
 import { getAuthorPath } from "./axios/api";
-import { Button, Card, Collapse, Drawer, theme} from 'antd';
+import { Button, Card, Collapse, Drawer, Space, Switch, Slider} from 'antd';
 import "./LuShu"
 
 const {Panel} = Collapse
@@ -44,7 +44,7 @@ class showTextButton extends window.BMapGL.Control{
   }
 }
 
-class testController extends window.BMapGL.Control{
+class mapSelectionController extends window.BMapGL.Control{
   constructor(map){
     super();
     this.defaultAnchor = window.BMAP_ANCHOR_TOP_RIGHT;
@@ -56,11 +56,12 @@ class testController extends window.BMapGL.Control{
     map.getContainer().appendChild(card);
     const root = createRoot(card);// todo: WTF
 
-    class TestDrawer extends React.Component {
+    class MapSelectionDrawer extends React.Component {
       constructor(props){
         super(props)
         this.state = {
-          open: false
+          open: false,
+          showRoadBook: false
         }
         this.container = props.container
         this.setOpen = this.setOpen.bind(this)
@@ -77,22 +78,40 @@ class testController extends window.BMapGL.Control{
         })
       }
       render(){
+        
         // position is fucking so important!
         return (
           <div>
-            <Button type="primary" id="testController" onClick={this.setOpen}>
+            <Button type="primary" id="mapSelectionControllerButton" onClick={this.setOpen}>
               地图选项
             </Button>
-            <Drawer id="mapSelectionDrawer" width={200} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container} rootStyle={{
+            <Drawer className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container} destroyOnClose
+            extra={
+                  <Button onClick={this.setClose} type="primary" className="drawerContent">
+                    重置
+                  </Button>
+            } 
+            rootStyle={{
               position: "absolute"
+            }}
+            bodyStyle={{
+              color: "black"
             }}>
-              <p>"some thing"</p>
+                <Space>启用路书<Switch className="drawerSwitch" defaultChecked={false} onChange={(checked) => {
+                  this.setState({
+                    showRoadBook: checked
+                  })
+                }} /></Space>
+                {this.state.showRoadBook?<div>移动速度<Slider/></div>:null}<br/>
+                <Space>显示路径<Switch className="drawerSwitch" defaultChecked onChange={() => {}} /></Space>
+                <Space>显示标注<Switch className="drawerSwitch" defaultChecked onChange={() => {}} /></Space>
+                <Space>显示折线<Switch className="drawerSwitch" defaultChecked onChange={() => {}} /></Space>
             </Drawer>
           </div>
         )
       }
     }
-    root.render(<TestDrawer container={this.map.getContainer()}/>);
+    root.render(<MapSelectionDrawer container={this.map.getContainer()}/>);
     return card;
   }
 }
@@ -300,7 +319,9 @@ export default class MyMap extends React.Component {
 
           map.getContainer().appendChild(div);
           const root = createRoot(div);
-          root.render(<Button type="primary" onClick={() => {startLushu(this.map)}} id="roadBookController">
+          root.render(<Button type="primary" onClick={() => {
+            startLushu(this.map)
+          }} id="roadBookController">
             开始
           </Button>);
           return div;
@@ -317,7 +338,7 @@ export default class MyMap extends React.Component {
       this._initMap();
       this.created = !this.created;
     }
-    this.map.addControl(new testController(this.map));
+    this.map.addControl(new mapSelectionController(this.map));
   }
   render() {
     var components = this.state.components.map((value, index, array) => {
