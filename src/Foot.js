@@ -38,7 +38,8 @@ class Links extends React.Component{
                         {/*TO-DO 联系我们的链接*/ }
                     </Col>
                     <Col flex={"none"}>
-                        <p>备案号: 12313123123123</p>
+                        <img src='./beian.png' href="https://www.beian.gov.cn/portal/"></img>
+                        <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备2023004909号-1</a>
                     </Col>
                     <Col flex={"auto"}>
                         {/*TO-DO 联系我们的链接*/ }
