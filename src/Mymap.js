@@ -1,8 +1,8 @@
 import React from "react";
 import {createRoot} from 'react-dom/client'
-import { Map, Arc, Polyline, Marker } from "react-bmapgl";
+import { Map, Arc, Polyline, Marker,InfoWindow,CustomOverlay } from "react-bmapgl";
 import { getAuthorPath } from "./axios/api";
-import { Button, Card, Collapse, Drawer, Space, Switch, Slider} from 'antd';
+import { Button, Popover, Collapse, Drawer, Space, Switch, Slider} from 'antd';
 import "./LuShu"
 
 const {Panel} = Collapse
@@ -22,7 +22,7 @@ const TYPE = {
   ARC: 1 << 1,
   POLYLINE: 1 << 2,
   CONTROLLER: 1 << 3,
-
+  MARKPOINT: 1 << 4
 }
 var onShowText;
 
@@ -131,6 +131,7 @@ export default class MyMap extends React.Component {
     onShowText=this.props.onShowText;
     this.state = {
       components: [],
+      path_event:[]
     };
     this.created = false;
     this.searchCityPoint = this.searchCityPoint.bind(this);
@@ -142,9 +143,9 @@ export default class MyMap extends React.Component {
     this.addArc = this.addArc.bind(this);
     this.addMarkers = this.addMarkers.bind(this);
     this.addPolyline = this.addPolyline.bind(this);
-    this.addArcs = this.addArcs.bind(this);
+    this.addArcsAndInfoWindow = this.addArcsAndInfoWindow.bind(this);
     this.addRoadBook = this.addRoadBook.bind(this);
-    
+    this.addMarkPoint=this.addMarkPoint.bind(this);
   }
 
   _initMap() {
@@ -238,15 +239,34 @@ export default class MyMap extends React.Component {
     this.addComponent(TYPE.ARC, newArc);
   }
 
-  addArcs(path_city) {
+  addArcsAndInfoWindow(path_city,path_event) {
     this.getCityPointArray(path_city).then((path) => {
       if (path.length < 2) return;
       for (let i = 0; i < path.length - 1; i++) {
-        this.addArc({point: path[i], city: path_city[i]}, {point: path[i + 1], city: path_city[i+1]});
+        this.addArc({point: path[i], city: path_city[i]}, {point: path[i + 1], city: path_city[i+1]})
+      }
+      for(let i=0;i<path.length;i++){
+        this.addMarkPoint(path[i],path_event[i].event,path_event[i].time) //TO-DO addArcsAndInfoWindow
       }
     }).catch((e) => {
       window.alert(e);
     });
+  }
+
+  addMarkPoint(point,text,title){
+    var content = (
+        <div className="pathContent">
+          <p>{text}</p>
+        </div>
+    )
+    var newMarkPoint=(
+      <CustomOverlay position={point}>
+        <Popover content={content} title={title} trigger={"hover"}>
+          <div className="markPoint"></div>
+        </Popover>
+      </CustomOverlay>
+    )
+    this.addComponent(TYPE.MARKPOINT,newMarkPoint);
   }
   addPolyline(path_city) {
     this.getCityPointArray(path_city)
@@ -279,7 +299,10 @@ export default class MyMap extends React.Component {
       });
   }
 
-  addRoadBook(path_city) {
+  addRoadBook(path_city,path_event) {
+    this.setState({
+      path_event:path_event
+    })
     this.getCityPointArray(path_city).then((path) => {
       var polyline = new window.BMapGL.Polyline(path, {
         clip: false,
@@ -303,7 +326,8 @@ export default class MyMap extends React.Component {
         lushu.start();
       }
       // this.map.addOverlay(polyline);
-      this.addArcs(path_city);
+      this.addArcsAndInfoWindow(path_city,path_event);
+      
 
       class roadBookController extends window.BMapGL.Control {
         constructor(map){

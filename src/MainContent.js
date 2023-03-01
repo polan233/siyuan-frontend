@@ -114,6 +114,7 @@ class MainContent extends React.Component{
       this.handleGetRightContent=this.handleGetRightContent.bind(this);
       this.showText=this.showText.bind(this);
       this.showMap=this.showMap.bind(this);
+      this.handleLoadRoadBook=this.handleLoadRoadBook.bind(this);
     }
     
     getRightTitle(){
@@ -157,6 +158,40 @@ class MainContent extends React.Component{
       })
       this.props.setAuthorDict(authorTab);
     }
+    handleLoadRoadBook(response){
+      
+      let data=response.data.path;
+      let path_city=[];
+      let path_event=[];
+      for (let i=0;i<data.length;i++){
+        if(data[i].isBC)
+          data[i].time='-'+data[i].time
+      }
+      data.sort(function(a,b){
+        if(a.time[0]=='-'){
+          if(b.time[0]=='-')
+            return b.time.localeCompare(a.time)
+          else
+            return -1
+        }
+        else{
+          if(b.time[0]=='-')
+            return 1
+          else
+            return a.time.localeCompare(b.time)
+        }
+      })
+      console.log("handleLoadRoadBook called",response.data.path)
+      for (let i=0;i<data.length;i++){
+        path_city.push(data[i].city);
+        if(data[i].time[0]=='-'){
+          data[i].time='BC '+data[i].time.substr(1);
+        }
+        path_event.push({ time:data[i].time, event:data[i].event })
+      }
+      console.log("handleLoadRoadBook",path_city,path_event);
+      this.map.addRoadBook(path_city,path_event);
+    }
     handleGetRightContent(response){
       console.log("handleGetRightContent called",response)
       const data=response.data.data.additions;
@@ -177,7 +212,8 @@ class MainContent extends React.Component{
       getTypeAndRightContent(this.props.selectedTitle,this.handleGetRightContent);
       getAuthorPath(this.props.selectedAuthor, this.handleGetAuthorPath);
       this.map.switchNovel();
-      this.map.addRoadBook(["北京","上海","南京","徐州","亳州","周口"]);
+      //this.map.addRoadBook(["北京","上海","南京","徐州","亳州","周口"]);
+      getAuthorPath(this.props.selectedAuthor,this.handleLoadRoadBook);
     }
     componentDidMount(){
       getMenu(this.handleNavResponse);
