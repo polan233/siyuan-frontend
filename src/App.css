@@ -2,13 +2,16 @@
 .App{
     padding: 20px;
     background-color: #fafafa;
+    z-index: 1;
 }
 .map{
   padding: 10px;
   padding-right: 10px;
 }
 .info{
-  padding:10px;
+  margin:10px;
+  z-index: 2;
+  border: black;
 }
 .Page{
     
