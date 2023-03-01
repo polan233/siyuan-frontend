@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { Col, Row,Button } from 'antd';
+import beianlogo from "./img/beian.png"
 import './App.css'
 
 const footText="本网站与数据还处于测试阶段，有问题请通过下方链接联系我们"
@@ -38,7 +39,7 @@ class Links extends React.Component{
                         {/*TO-DO 联系我们的链接*/ }
                     </Col>
                     <Col flex={"none"}>
-                        <img src='./beian.png' href="https://www.beian.gov.cn/portal/"></img>
+                        <img src={beianlogo} href="https://www.beian.gov.cn/portal/"></img>
                         <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备2023004909号-1</a>
                     </Col>
                     <Col flex={"auto"}>

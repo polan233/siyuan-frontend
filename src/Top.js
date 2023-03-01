@@ -3,7 +3,7 @@ import 'antd/dist/reset.css';
 import "./App.css"
 import {  Col, Row } from 'antd';
 import { Input } from 'antd';
-import logoPic from './img/logo192.png';
+import logoPic from './img/siyuan.png';
 const { Search } = Input;
 
 
