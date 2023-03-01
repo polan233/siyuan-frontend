@@ -1,13 +1,13 @@
 import React from 'react';
 import 'antd/dist/reset.css';
 import "./App.css"
-import {BookOutlined, Space, Tooltip } from '@ant-design/icons';
+import {BookOutlined,  } from '@ant-design/icons';
 import { Menu } from 'antd';
-import { Layout, Typography,Button } from 'antd';
+import { Layout, Typography,Card  } from 'antd';
 import TextReader from './TextReader';
 import MyMap from './Mymap';
-import { getMenu,handleError,getTypeAndRightContent, getAuthorPath } from './axios/api';
-import { formToJSON } from 'axios';
+import { getMenu,getTypeAndRightContent, getAuthorPath } from './axios/api';
+
 
 const {  Sider, Content } = Layout;
 const { Title } = Typography;
@@ -197,9 +197,9 @@ class MainContent extends React.Component{
       return(
         <div className='mainContent'>
           <Layout>
-            <Sider className='leftNav' style={leftNavStyle} width={256}>
+            <Sider  style={leftNavStyle} width={256}>
               <div className='leftNav'>
-                <Menu
+                <Menu id='navMenu'
                     onClick={this.onMenuClick}
                     mode="inline"
                     items={this.state.items}
@@ -210,15 +210,15 @@ class MainContent extends React.Component{
               {content}
             </Content>
             <Sider style={siderStyle}>
-              <div className='info'>
+              <Card className='info' bordered={true}>
                 <Typography>
                   <Title level={4}>{this.props.selectedTitle}</Title>
                   <Title level={5}>{this.getRightTitle()}</Title>
                   {/* 这个标题需要根据课文题目而定 */}
                   <ol>{this.state.rightContent}</ol>
                   {/*内容也需要根据课文题目而定*/}
-              </Typography>
-              </div>
+                </Typography>
+              </Card>
             </Sider>
             </Layout>
         </div>

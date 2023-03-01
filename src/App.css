@@ -7,11 +7,23 @@
 .map{
   padding: 10px;
   padding-right: 10px;
+  margin-top: 10px;
 }
 .info{
   margin:10px;
+  height: 98%;
   z-index: 2;
-  border: black;
+  box-shadow: 0 2px 6px 0 rgba(148, 147, 147, 0.5);
+}
+.leftNav{
+  margin: 10px;
+  height: 98%;
+  z-index: 2;
+  box-shadow: 0 2px 6px 0 rgba(148, 147, 147, 0.5);
+  border-radius: 10px;
+}
+#navMenu{
+  border-radius: 10px;
 }
 .Page{
     
@@ -26,6 +38,7 @@
 }
 #topLogo{
     padding-left: 100px;
+    margin: 10px;
     float: left;
 }
 #topSearch{
@@ -39,9 +52,7 @@
     padding-top: 0px;
     padding-bottom: 0px;
 }
-.leftNav{
-    padding: 5px;
-}
+
 .paragraph{
   text-indent: 2rem;
   align-self: flex-start;
@@ -54,11 +65,7 @@
   align-items: center;
   background-color: #fafafa;
 }
-.exam{
-  padding-bottom: 20px;
-  padding-left: 25px;
-  padding-right: 25px;
-}
+
 .examContainer{
   display: -webkit-flex;
   display: flex;
@@ -92,12 +99,21 @@
   margin-bottom: 20px;
   width: 97%;
   background-color: #fafafa;
+  box-shadow: 0 1px 3px 0 rgba(90, 90, 90, 0.5);
+}
+.exam{
+  margin-bottom: 20px;
+  margin-left: 25px;
+  margin-right: 25px;
+  box-shadow: 0 1px 3px 0 rgba(90, 90, 90, 0.5);
+  border-radius: 5px;
 }
 .foot{
   width: 100%;
   height: 100%;
   background-color: #91caff;
   padding-top: 10px;
+  padding-bottom: 15px;
 }
 .slogan{
   width:100%;
@@ -184,7 +200,7 @@ ul li {list-style: none;}
 #content{
   width: 100%;
   height:100%;
-  
+  padding-top:10px
 }
 .textReader{
   display: -webkit-flex; /* Safari */
