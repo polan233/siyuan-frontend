@@ -1,7 +1,7 @@
 import React from "react";
 import {createRoot} from 'react-dom/client'
 import { Map, Arc, Polyline, Marker,CustomOverlay } from "react-bmapgl";
-import { Button, Popover, Collapse, Drawer, Space, Switch, Slider} from 'antd';
+import { Button, Popover,  Drawer, Space, Switch, Slider} from 'antd';
 import "./LuShu"
 import TextReader from "./TextReader";
 
@@ -440,7 +440,6 @@ export default class MyMap extends React.Component {
         }}
         style={mapStyle}
       >
-        
         {components}
       </Map>
     );
