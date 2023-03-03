@@ -224,9 +224,7 @@ ul li {list-style: none;}
   flex-direction: row;
   flex-wrap: nowrap;
   background-color:#fafad6 ;
-  overflow-y:scroll;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  
 }
 #textReader-main {
   z-index: 1;
@@ -235,7 +233,7 @@ ul li {list-style: none;}
   text-align: left;
   text-indent: 2em;
   align-self: flex-start;
-  overflow-y:auto
+  
 }
 
 #textReader-title{
@@ -245,8 +243,8 @@ ul li {list-style: none;}
   align-self: stretch;
 }
 .textReader-p{
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 10px;
+  
 }
 #textReader-author{
   text-align: center;
@@ -254,23 +252,16 @@ ul li {list-style: none;}
   align-self: center;
 }
 #textReader-btn {
-  position: absolute;
-  z-index: 2;
-  float: left;
-  margin-top: 30px;
-  margin-left:10px;
-  /* cursor: pointer; */
-  padding: 10px;
-  box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
-  border-radius: 5px;
-  /* background-color: white; */
-  /* color: #91caff; */
-  margin-top: 10px;
-  height: fit-content;
-  width: fit-content;
-  align-items: center;
-  text-align: center;
-  line-height: normal;
+    
+    padding: 10px;
+    box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+    border-radius: 5px;
+    margin: auto;
+    height: fit-content;
+    width: fit-content;
+    align-items: center;
+    text-align: center;
+    line-height: normal;
 }
 /*
 const headerStyle = {

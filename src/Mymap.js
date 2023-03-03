@@ -1,11 +1,14 @@
 import React from "react";
 import {createRoot} from 'react-dom/client'
-import { Map, Arc, Polyline, Marker,InfoWindow,CustomOverlay } from "react-bmapgl";
-import { getAuthorPath } from "./axios/api";
+import { Map, Arc, Polyline, Marker,CustomOverlay } from "react-bmapgl";
 import { Button, Popover, Collapse, Drawer, Space, Switch, Slider} from 'antd';
 import "./LuShu"
+import TextReader from "./TextReader";
 
-const {Panel} = Collapse
+var selectedTitle=""
+var selectedAuthor=""
+var textReaderDrawerContent=<></>
+
 
 const mapStyle = {
   position: "relative",
@@ -24,29 +27,81 @@ const TYPE = {
   CONTROLLER: 1 << 3,
   MARKPOINT: 1 << 4
 }
-var onShowText;
 
-class showTextButton extends window.BMapGL.Control{
+
+class textReaderController extends window.BMapGL.Control{
   constructor(map){
     super();
     this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
-    this.defaultOffset = new window.BMapGL.Size(20, 20)
+    this.defaultOffset = new window.BMapGL.Size(20, 20);
     this.map = map
   }
   initialize(map){
-    var div = document.createElement('div');
-    map.getContainer().appendChild(div);
-    const root = createRoot(div);
-    root.render(<Button type="primary" onClick={() => {onShowText()}} id="showTextButton">
-      展示文本
-    </Button>);
-    return div;
+    var card = document.createElement('div')
+    map.getContainer().appendChild(card);
+    const root = createRoot(card);
+
+    class TextReaderDrawer extends React.Component {
+      constructor(props){
+        super(props)
+        this.state = {
+          showRoadBook: false,
+          showText:false
+        }
+        this.container = props.container
+        this.textClose=this.textClose.bind(this)
+        this.textOpen=this.textOpen.bind(this)
+        
+      }
+      textOpen(){
+        this.setState({
+          showText: true
+        })
+      }
+      textClose(){
+        this.setState({
+          showText: false
+        })
+      }
+      
+      render(){
+        console.log("TextReaderDrawer render",Date.parse(new Date()),selectedAuthor,selectedTitle)
+        return (
+          <div>
+            <Button type="primary" id="textReader-btn" onClick={this.textOpen}>
+              展示文本
+            </Button>
+            <Drawer className = "drawer" id="textReaderDrawer" width={"30%"} title={"文本展示"} placement="left" closable={true} onClose={this.textClose} open={this.state.showText} getContainer={this.container} mask={false} maskClosable={false} destroyOnClose
+            extra={
+              <Space>
+                
+                <Button onClick={this.textClose} type="primary" className="drawerContent">
+                    关闭文本
+                </Button>
+              </Space>
+            }
+            rootStyle={{
+              position: "absolute"
+            }}
+            bodyStyle={{
+              color: "black"
+            }}>
+                {textReaderDrawerContent}
+            </Drawer>
+          </div>
+        )
+      }
+    }
+    //TO-DO: 给上面这些按钮加onClick
+    root.render(<TextReaderDrawer container={this.map.getContainer()}/>);
+    return card;
   }
 }
 
 class mapSelectionController extends window.BMapGL.Control{
   constructor(map){
     super();
+    
     this.defaultAnchor = window.BMAP_ANCHOR_TOP_RIGHT;
     this.defaultOffset = new window.BMapGL.Size(20, 20);
     this.map = map
@@ -61,7 +116,7 @@ class mapSelectionController extends window.BMapGL.Control{
         super(props)
         this.state = {
           open: false,
-          showRoadBook: false
+          showRoadBook: false,
         }
         this.container = props.container
         this.setOpen = this.setOpen.bind(this)
@@ -78,19 +133,20 @@ class mapSelectionController extends window.BMapGL.Control{
         })
       }
       render(){
-        
         // position is fucking so important!
         return (
           <div>
+
             <Button type="primary" id="mapSelectionControllerButton" onClick={this.setOpen}>
               地图选项
             </Button>
+
             <Drawer className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container} destroyOnClose
             extra={
                   <Button onClick={this.setClose} type="primary" className="drawerContent">
                     重置
                   </Button>
-            } 
+            }
             rootStyle={{
               position: "absolute"
             }}
@@ -103,14 +159,15 @@ class mapSelectionController extends window.BMapGL.Control{
                   })
                 }} /></Space>
                 {this.state.showRoadBook?<div>移动速度<Slider/></div>:null}<br/>
-                <Space>显示路径<Switch className="drawerSwitch" defaultChecked onChange={() => {}} /></Space>
-                <Space>显示标注<Switch className="drawerSwitch" defaultChecked onChange={() => {}} /></Space>
-                <Space>显示折线<Switch className="drawerSwitch" defaultChecked onChange={() => {}} /></Space>
+                <Space>显示路径<Switch className="drawerSwitch" defaultChecked onChange={(checked) => {}} /></Space>
+                <Space>显示标注<Switch className="drawerSwitch" defaultChecked onChange={(checked) => {}} /></Space>
+                <Space>显示折线<Switch className="drawerSwitch" defaultChecked onChange={(checked) => {}} /></Space>
             </Drawer>
           </div>
         )
       }
     }
+    //TO-DO: 给上面这些按钮加onClick
     root.render(<MapSelectionDrawer container={this.map.getContainer()}/>);
     return card;
   }
@@ -128,7 +185,9 @@ class MapComponent{
 export default class MyMap extends React.Component {
   constructor(props) {
     super(props);
-    onShowText=this.props.onShowText;
+    selectedTitle=props.selectedTitle;
+    selectedAuthor=props.selectedAuthor;
+    console.log("mymap constructor",Date.parse(new Date()),selectedAuthor,selectedTitle)
     this.state = {
       components: [],
       path_event:[]
@@ -160,7 +219,7 @@ export default class MyMap extends React.Component {
     this.map.setTrafficOff();
     this.map.addControl(new window.BMapGL.ScaleControl());
     this.map.addControl(new window.BMapGL.ZoomControl());
-    this.map.addControl(new showTextButton(this.map));
+    // this.map.addControl(new showTextButton(this.map));
   }
   searchCityPoint(city, completHandler) {
     var searcher;
@@ -246,7 +305,7 @@ export default class MyMap extends React.Component {
         this.addArc({point: path[i], city: path_city[i]}, {point: path[i + 1], city: path_city[i+1]})
       }
       for(let i=0;i<path.length;i++){
-        this.addMarkPoint(path[i],path_event[i].event,path_event[i].time) //TO-DO addArcsAndInfoWindow
+        this.addMarkPoint(path[i],path_event[i].event,path_event[i].time) 
       }
     }).catch((e) => {
       window.alert(e);
@@ -363,8 +422,12 @@ export default class MyMap extends React.Component {
       this.created = !this.created;
     }
     this.map.addControl(new mapSelectionController(this.map));
+    this.map.addControl(new textReaderController(this.map,this.props.selectedTitle,this.props.selectedAuthor));
   }
   render() {
+    selectedTitle=this.props.selectedTitle;
+    selectedAuthor=this.props.selectedAuthor;
+    textReaderDrawerContent=<TextReader title={selectedTitle} author={selectedAuthor}/>
     var components = this.state.components.map((value, index, array) => {
       if(value.show) return value.value;
       else return null;

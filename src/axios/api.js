@@ -131,6 +131,7 @@ export function getExamContents(title,handleResponse){
 }
 export function getContentByTitle(title,handleResponse){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/text/contentByName
+  console.log("getContentByTitle called",title)
   axios.get('/v1/text/contentByName',
     {
       name:title,
