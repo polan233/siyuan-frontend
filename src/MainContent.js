@@ -65,7 +65,7 @@ class MainContent extends React.Component{
       this.componentDidMount=this.componentDidMount.bind(this);
       this.onMenuClick=this.onMenuClick.bind(this);
       this.handleGetRightContent=this.handleGetRightContent.bind(this);
-      
+      //this.refreshControllers=this.refreshControllers.bind(this)
     
       this.handleLoadRoadBook=this.handleLoadRoadBook.bind(this);
     }
@@ -79,7 +79,6 @@ class MainContent extends React.Component{
     
     
     handleNavResponse(response) {
-      console.log("handleNavResponse called",response)
       let items=[];
       let data=response.data.data;
       let authorTab={};
@@ -95,7 +94,6 @@ class MainContent extends React.Component{
         }
         items.push(getItem(key,key,<BookOutlined />,temp));
       }
-      //console.log(items);
       this.setState({
         items:items,
       })
@@ -124,7 +122,6 @@ class MainContent extends React.Component{
             return a.time.localeCompare(b.time)
         }
       })
-      console.log("handleLoadRoadBook called",response.data.path)
       for (let i=0;i<data.length;i++){
         path_city.push(data[i].city);
         if(data[i].time[0]=='-'){
@@ -132,11 +129,9 @@ class MainContent extends React.Component{
         }
         path_event.push({ time:data[i].time, event:data[i].event })
       }
-      console.log("handleLoadRoadBook",path_city,path_event);
       this.map.addRoadBook(path_city,path_event);
     }
     handleGetRightContent(response){
-      console.log("handleGetRightContent called",response)
       const data=response.data.data.additions;
       let list=[];
       for(let i=0;i<data.length;i++){
@@ -148,28 +143,28 @@ class MainContent extends React.Component{
       this.setState({
         rightContent:list,
       })
-      console.log("rightContentSet!",this.state)
     }
     onMenuClick(e){
-      this.props.onNavClick(e);
-      getTypeAndRightContent(this.props.selectedTitle,this.handleGetRightContent);
-      getAuthorPath(this.props.selectedAuthor, this.handleGetAuthorPath);
-      this.map.switchNovel();
-      //this.map.addRoadBook(["北京","上海","南京","徐州","亳州","周口"]);
-      getAuthorPath(this.props.selectedAuthor,this.handleLoadRoadBook);
+      this.props.onNavClick(e).then((res)=>{
+        getTypeAndRightContent(res.title,this.handleGetRightContent);
+        getAuthorPath(res.author, this.handleGetAuthorPath);
+        this.map.switchNovel();
+        //this.map.addRoadBook(["北京","上海","南京","徐州","亳州","周口"]);
+        getAuthorPath(res.author,this.handleLoadRoadBook);
+        this.map.refreshControllers({selectedTitle:res.title,selectedAuthor:res.author})
+      });
     }
     componentDidMount(){
       getMenu(this.handleNavResponse);
     }
     render(){
-      console.log("rerendered")
+
       const content=
         <MyMap
           className="map"
-          selectedTitle={this.props.selectedTitle}
-          selectedAuthor={this.props.selectedAuthor}
           ref={(ref) => {this.map = ref}}
           />
+      
       return(
         <div className='mainContent'>
           <Layout>

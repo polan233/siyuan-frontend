@@ -29,8 +29,8 @@
 }
 .markPoint{
   margin-bottom: -5px;
-  width:11px;
-  height:11px;
+  width:13px;
+  height:13px;
   background:#3051e6;
   border-radius: 50%;
 }
@@ -241,15 +241,18 @@ ul li {list-style: none;}
   text-align: center;
   text-indent: 0em;
   align-self: stretch;
+  user-select: all;
 }
 .textReader-p{
   margin: 10px;
+  user-select: all;
   
 }
 #textReader-author{
   text-align: center;
   text-indent: 0em;
   align-self: center;
+  user-select: all;
 }
 #textReader-btn {
     

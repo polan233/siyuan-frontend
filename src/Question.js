@@ -51,7 +51,6 @@ class Question extends React.Component{
         this.setState({
             question:questions.get()
         })
-        console.log("Next",this.props.questions);
     }
     onPreClick(e){
         let questions= this.props.questions;
@@ -59,7 +58,6 @@ class Question extends React.Component{
         this.setState({
             question:questions.get()
         })
-        console.log("Pre",this.props.questions);
     }
     componentDidMount(){
         this.setState({
@@ -67,7 +65,6 @@ class Question extends React.Component{
         })
     }
     render(){
-        console.log('questionProps',this.props)
         let questions= this.props.questions;
         const question=questions.get();
         return(

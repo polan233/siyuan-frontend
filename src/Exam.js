@@ -65,7 +65,6 @@ class Exam extends React.Component{
             shiciShow:false,
             juziShow:false,
         });
-        console.log(key);
     };
     onNext(e){
         const mode=this.state.select;
@@ -86,7 +85,6 @@ class Exam extends React.Component{
             shiciShow:false,
             juziShow:false,
         })
-        console.log(e);
     }
     onPre(e){
         const mode=this.props.select;
@@ -110,7 +108,6 @@ class Exam extends React.Component{
             shiciShow:false,
             juziShow:false,
         })
-        console.log(e);
     }
 
     onShow(e){
@@ -130,11 +127,9 @@ class Exam extends React.Component{
                 juziShow:!this.state.juziShow,
             })
         }
-        console.log(e);
     }
     
     render(){
-        console.log("exam props",this.props)
         if(!this.props.show){
             return(
             <div className='exam'></div>
