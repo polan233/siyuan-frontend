@@ -1,15 +1,14 @@
 import React from "react";
 import {createRoot} from 'react-dom/client'
 import { Map, Arc, Polyline, Marker,CustomOverlay } from "react-bmapgl";
-import { Button, Popover,  Drawer, Space, Switch, Slider} from 'antd';
+import { Button, Popover, Typography, Drawer, Space, Switch, Slider} from 'antd';
+
 import "./LuShu"
-import TextReader from "./TextReader";
+import TextReader, { TextReaderUtils } from "./TextReader";
+import { formToJSON } from "axios";
+import { getContentByTitle } from "./axios/api";
 
-var selectedTitle=""
-var selectedAuthor=""
-var textReaderDrawerContent=<></>
-
-
+const { Title, Paragraph, Text, Link } = Typography;
 const mapStyle = {
   position: "relative",
   width: "100%",
@@ -35,6 +34,36 @@ class textReaderController extends window.BMapGL.Control{
     this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
     this.defaultOffset = new window.BMapGL.Size(20, 20);
     this.map = map
+    this.textReader = null
+  }
+  buildParagraph(textStr_p){
+    let textStr=textStr_p.replace("\r\n\r\n","\r\n");
+    let res=[]
+    let temp=""
+    for(let i=0;i<textStr.length;i++){
+        const char=textStr[i];
+        if((textStr[i]==='\r'&&i==(textStr.length-2))||(textStr[i]==='\r'&&textStr[i+1]=='\n')){
+            res.push(<Paragraph className="textReader-p">{temp}</Paragraph>)
+            temp=""
+        }else{
+            temp=temp.concat(new String(char))
+        }
+    }
+    res.push(<Paragraph className="textReader-p">{temp}</Paragraph>)
+    return res;
+}
+  refresh(contentProps){
+    getContentByTitle(contentProps.selectedTitle).then((response)=>{
+      let text=this.buildParagraph(response.data.data.content)
+      //111111
+      this.textReader.setState((state) => ({
+        title: contentProps.selectedTitle,
+        author: contentProps.selectedAuthor,
+        content:text,
+      })); // state的更新是异步的
+    }).catch((e)=>{
+      console.log(e)
+    })
   }
   initialize(map){
     var card = document.createElement('div')
@@ -45,8 +74,11 @@ class textReaderController extends window.BMapGL.Control{
       constructor(props){
         super(props)
         this.state = {
-          showRoadBook: false,
-          showText:false
+          // showRoadBook: false,
+          showText:false,
+          title: '',
+          author: '',
+          content:'',
         }
         this.container = props.container
         this.textClose=this.textClose.bind(this)
@@ -65,7 +97,6 @@ class textReaderController extends window.BMapGL.Control{
       }
       
       render(){
-        console.log("TextReaderDrawer render",Date.parse(new Date()),selectedAuthor,selectedTitle)
         return (
           <div>
             <Button type="primary" id="textReader-btn" onClick={this.textOpen}>
@@ -86,14 +117,14 @@ class textReaderController extends window.BMapGL.Control{
             bodyStyle={{
               color: "black"
             }}>
-                {textReaderDrawerContent}
+                <TextReader title={this.state.title} author={this.state.author} content={this.state.content}/>
             </Drawer>
           </div>
         )
       }
     }
     //TO-DO: 给上面这些按钮加onClick
-    root.render(<TextReaderDrawer container={this.map.getContainer()}/>);
+    root.render(<TextReaderDrawer container={this.map.getContainer() } ref={(ref) => {this.textReader = ref}}/>);
     return card;
   }
 }
@@ -105,6 +136,9 @@ class mapSelectionController extends window.BMapGL.Control{
     this.defaultAnchor = window.BMAP_ANCHOR_TOP_RIGHT;
     this.defaultOffset = new window.BMapGL.Size(20, 20);
     this.map = map
+  }
+  refresh(contentProps){
+    
   }
   initialize(map){
     var card = document.createElement('div')
@@ -185,14 +219,17 @@ class MapComponent{
 export default class MyMap extends React.Component {
   constructor(props) {
     super(props);
-    selectedTitle=props.selectedTitle;
-    selectedAuthor=props.selectedAuthor;
-    console.log("mymap constructor",Date.parse(new Date()),selectedAuthor,selectedTitle)
+    
     this.state = {
       components: [],
-      path_event:[]
+      path_event:[],
+      controllers: [],
     };
+
     this.created = false;
+
+    this._addController = this._addController.bind(this);
+    this.refreshControllers = this.refreshControllers.bind(this);
     this.searchCityPoint = this.searchCityPoint.bind(this);
     this.getCityPointArray = this.getCityPointArray.bind(this);
     this.centerAndZoom = this.centerAndZoom.bind(this);
@@ -221,6 +258,13 @@ export default class MyMap extends React.Component {
     this.map.addControl(new window.BMapGL.ZoomControl());
     // this.map.addControl(new showTextButton(this.map));
   }
+  _addController(newController) {
+    this.setState((state) => ({
+      // components: state.components.slice().concat([new MapComponent(type, value)])
+      controllers: state.controllers.slice().concat([newController])
+    })); // state的更新是异步的
+    this.map.addControl(newController);
+  }
   searchCityPoint(city, completHandler) {
     var searcher;
     searcher = new window.BMapGL.LocalSearch(this.map, {
@@ -236,13 +280,11 @@ export default class MyMap extends React.Component {
         this.searchCityPoint(element, (results) => {
           if (results.getNumPois() <= 0) reject("城市不存在" + element);
           path_point[index] = results.getPoi(0).point;
-          // console.log("path_point building",path_point)
           let flag=true;
           for(let i=0;i<path_point.length;i++){
             if(path_point[i]==null) {flag=false;break;}
           }
           if (flag) {
-            // console.log("path_point done",path_point)
             resolve(path_point);
           } // what the fuck so good 谢谢
         });
@@ -264,7 +306,6 @@ export default class MyMap extends React.Component {
       c_children.push(element);
     })
     for(const element of c_children){
-      console.log(element.classList)
       if(element.classList.contains("delOnReset")){
         c.removeChild(element)
       }
@@ -278,6 +319,12 @@ export default class MyMap extends React.Component {
   switchNovel(){
     this.reset();
     // TODO: 切换文章，暂时想法是用户自行选择保留哪些组件
+  }
+
+  refreshControllers(contentProps) {
+    this.state.controllers.forEach(element => {
+      element.refresh(contentProps)
+    });
   }
 
   addComponent(type, value) {
@@ -421,13 +468,11 @@ export default class MyMap extends React.Component {
       this._initMap();
       this.created = !this.created;
     }
-    this.map.addControl(new mapSelectionController(this.map));
-    this.map.addControl(new textReaderController(this.map,this.props.selectedTitle,this.props.selectedAuthor));
+    this._addController(new mapSelectionController(this.map));
+    this._addController(new textReaderController(this.map,this.props.selectedTitle,this.props.selectedAuthor));
   }
   render() {
-    selectedTitle=this.props.selectedTitle;
-    selectedAuthor=this.props.selectedAuthor;
-    textReaderDrawerContent=<TextReader title={selectedTitle} author={selectedAuthor}/>
+    // textReaderDrawerContent=<TextReader title={selectedTitle} author={selectedAuthor}/>
     var components = this.state.components.map((value, index, array) => {
       if(value.show) return value.value;
       else return null;
@@ -440,6 +485,7 @@ export default class MyMap extends React.Component {
         }}
         style={mapStyle}
       >
+        
         {components}
       </Map>
     );

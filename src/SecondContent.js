@@ -12,7 +12,6 @@ class SecondContent extends React.Component{
       super(props)
     }
     render(){
-      console.log('secondContentProps',this.props)
       return(
         <div className='secondContent'>
           <Question
