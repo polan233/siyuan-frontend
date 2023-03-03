@@ -37,37 +37,33 @@ class Body extends React.Component{
         this.handleExamContent=this.handleExamContent.bind(this);
     }
     getAuthorByTitle(title){
-        console.log("author dict:",this.state.authorDict)
-        console.log("title:",title)
         return this.state.authorDict[title];
     }
     setAuthorDict(dict){
-        //console.log(dict);
         this.setState({
             authorDict:dict,
         });
     }
     handleGroupProblemResponse(response){
-        console.log("handleProblemResponse called",response);
         let data=response.data.data;
         this.setState({
             groupQuestions:new QuestionList(data.problems)
         })
     }
     handleNavClick(e){
-        console.log("handleNavClick Called",e.key);
-        const title=e.key;
-        const author=this.getAuthorByTitle(e.key)
-        this.setState({
-            selectedTitle:title,
-            selectedAuthor: author
+        return new Promise((resolve,reject)=>{
+            const title=e.key;
+            const author=this.getAuthorByTitle(e.key)
+            this.setState({
+                selectedTitle:title,
+                selectedAuthor: author
+            })
+            getGroupProblem(title,author,this.handleGroupProblemResponse)
+            getArticleTypeByName(title,this.handleLoadExam);//判断文章类型并渲染exam
+            resolve({title:title,author:author});
         })
-        getGroupProblem(title,author,this.handleGroupProblemResponse)
-        getArticleTypeByName(title,this.handleLoadExam);//判断文章类型并渲染exam
-        console.log("Body state set!");
     }
     handleLoadExam(title,response){
-        console.log("handleLoadExam Called",response);
         const data=response.data.data.isModern;
         if(data){
             this.setState({
@@ -79,7 +75,6 @@ class Body extends React.Component{
         }
     }
     handleExamContent(response){
-        console.log("setExamContent called",response)
         const data=response.data.data;
         let moxie=data.moxie;
         let shici=data.zhushi;
@@ -92,7 +87,6 @@ class Body extends React.Component{
         this.setState({
             hasExam:true
         })
-        console.log("handleExamContent end")
     }
     render(){
         return(
