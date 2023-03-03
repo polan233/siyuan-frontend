@@ -33,7 +33,6 @@ export function getMenu(handleResponse){
     })
     .then(response => {
       // handle success
-      //console.log(response);
       handleResponse(response);
     })
     .catch(function (error) {
@@ -54,7 +53,6 @@ export function getTypeAndRightContent(title,handleResponse){
   )
         .then(response => {
           // handle success
-          //console.log(response);
           handleResponse(response);
         })
         .catch(function (error) {
@@ -76,7 +74,6 @@ export function getGroupProblem(title,author,handleResponse){
   )
         .then(response => {
           // handle success
-          //console.log(response);
           handleResponse(response);
         })
         .catch(function (error) {
@@ -97,7 +94,6 @@ export function getArticleTypeByName(title,handleResponse){
   )
         .then(response => {
           // handle success
-          //console.log(response);
           handleResponse(title,response);
         })
         .catch(function (error) {
@@ -117,7 +113,7 @@ export function getExamContents(title,handleResponse){
   )
         .then(response => {
           // handle success
-          //console.log(response);
+
           handleResponse(response);
         })
         .catch(function (error) {
@@ -129,27 +125,13 @@ export function getExamContents(title,handleResponse){
           
         });
 }
-export function getContentByTitle(title,handleResponse){
+export function getContentByTitle(title){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/text/contentByName
-  console.log("getContentByTitle called",title)
-  axios.get('/v1/text/contentByName',
+    return axios.get('/v1/text/contentByName',
     {
       name:title,
     }
   )
-        .then(response => {
-          // handle success
-          //console.log(response);
-          handleResponse(response);
-        })
-        .catch(function (error) {
-          // handle error
-          handleError(error);
-        })
-        .then(function () {
-          // always executed
-          
-        });
 }
 
 export function getAuthorPath(author_name,handleResponse){
@@ -161,7 +143,6 @@ export function getAuthorPath(author_name,handleResponse){
   )
         .then(response => {
           // handle success
-          //console.log(response);
           handleResponse(response);
         })
         .catch(function (error) {
