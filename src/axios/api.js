@@ -1,7 +1,7 @@
 
 import axios from 'axios';
- const baseURL="http://127.0.0.1:4523/m1/1938326-0-default"
-//const baseURL='http://47.115.227.186:8080'
+ //const baseURL="http://127.0.0.1:4523/m1/1938326-0-default"
+const baseURL='http://47.115.227.186:8080'
 axios.defaults.baseURL=baseURL;
 
 export function handleError(error){
@@ -46,7 +46,7 @@ export function getMenu(handleResponse){
 
 export function getTypeAndRightContent(title,handleResponse){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/addition/contentByName/1
-  axios.get('v1/addition/contentByName/1',
+  axios.get('v1/addition/contentByName',
     {
       name:title,
     }
@@ -87,7 +87,7 @@ export function getGroupProblem(title,author,handleResponse){
 }
 
 export function getArticleTypeByName(title,handleResponse){
-  axios.get('/v1/text/typeByName/1',
+  axios.get('/v1/text/typeByName',
     {
       name:title,
     }
@@ -106,7 +106,7 @@ export function getArticleTypeByName(title,handleResponse){
         });
 }
 export function getExamContents(title,handleResponse){
-  axios.get('/v1/problem/problemsByName/1',
+  axios.get('/v1/problem/problemsByName',
     {
       name:title,
     }
@@ -136,7 +136,7 @@ export function getContentByTitle(title){
 
 export function getAuthorPath(author_name,handleResponse){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/author/getPath/1
-  axios.get('/v1/author/getPath/1',
+  axios.get('/v1/author/getPath',
     {
       authorName: author_name,
     }
