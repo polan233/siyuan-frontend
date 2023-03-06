@@ -1,7 +1,7 @@
 
 import axios from 'axios';
- const baseURL="http://127.0.0.1:4523/m1/1938326-0-default"
-//const baseURL='http://siyuan.feipa.top'
+ //const baseURL="http://127.0.0.1:4523/m1/1938326-0-default"
+const baseURL='http://siyuan.feipa.top'
 axios.defaults.baseURL=baseURL;
 
 export function handleError(error){
@@ -48,8 +48,10 @@ export function getTypeAndRightContent(title,handleResponse){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/addition/contentByName/1
   axios({
     method:'get',
-    url:`/v1/addition/contentByName/${title}`,
-    
+    url:'v1/addition/contentByName',
+    params:{
+      name:title
+    }
   })
         .then(response => {
           // handle success
@@ -91,7 +93,10 @@ export function getGroupProblem(title,author,handleResponse){
 export function getArticleTypeByName(title,handleResponse){
   axios({
     method:'get',
-    url:`/v1/text/typeByName/${title}`,
+    url:'/v1/text/typeByName',
+    params:{
+      name:title
+    }
   })
         .then(response => {
           // handle success
@@ -110,8 +115,10 @@ export function getExamContents(title,handleResponse){
   ///v1/problem/problemsByName/{name}
   axios({
     method:'get',
-    url:`/v1/problem/problemsByName/${title}`,
-   
+    url:'/v1/problem/problemsByName',
+    params:{
+      name:title
+    }
   })
         .then(response => {
           // handle success
@@ -142,7 +149,10 @@ export function getAuthorPath(author_name,handleResponse){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/author/getPath/1
   axios({
     method:'get',
-    url:`/v1/author/getPath/${author_name}`,
+    url:'/v1/author/getPath',
+    params:{
+      authorName:author_name
+    }
   })
         .then(response => {
           // handle success
