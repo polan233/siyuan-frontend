@@ -145,13 +145,13 @@ export function getContentByTitle(title){
     })
 }
 
-export function getAuthorPath(author_name,handleResponse){
+export function getAuthorPath(authorName,handleResponse){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/author/getPath/1
   axios({
     method:'get',
     url:'/v1/author/getPath',
     params:{
-      authorName:author_name
+      authorName:authorName
     }
   })
         .then(response => {
