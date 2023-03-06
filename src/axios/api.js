@@ -46,11 +46,13 @@ export function getMenu(handleResponse){
 
 export function getTypeAndRightContent(title,handleResponse){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/addition/contentByName/1
-  axios.get('v1/addition/contentByName',
-    {
-      name:title,
+  axios({
+    method:'get',
+    url:'v1/addition/contentByName',
+    params:{
+      name:title
     }
-  )
+  })
         .then(response => {
           // handle success
           handleResponse(response);
@@ -66,12 +68,14 @@ export function getTypeAndRightContent(title,handleResponse){
 }
 
 export function getGroupProblem(title,author,handleResponse){
-   axios.get('/v1/discussion/textId',
-    {
+  axios({
+    method:'get',
+    url:'/v1/discussion/textId', //TO-DO 该接口还需要修改现在用不了
+    params:{
       title:title,
       author:author
     }
-  )
+  })
         .then(response => {
           // handle success
           handleResponse(response);
@@ -87,11 +91,13 @@ export function getGroupProblem(title,author,handleResponse){
 }
 
 export function getArticleTypeByName(title,handleResponse){
-  axios.get('/v1/text/typeByName',
-    {
-      name:title,
+  axios({
+    method:'get',
+    url:'/v1/text/typeByName/{name}',
+    params:{
+      name:title
     }
-  )
+  })
         .then(response => {
           // handle success
           handleResponse(title,response);
@@ -106,11 +112,14 @@ export function getArticleTypeByName(title,handleResponse){
         });
 }
 export function getExamContents(title,handleResponse){
-  axios.get('/v1/problem/problemsByName',
-    {
-      name:title,
+  ///v1/problem/problemsByName/{name}
+  axios({
+    method:'get',
+    url:'/v1/problem/problemsByName/{name}',
+    params:{
+      name:title
     }
-  )
+  })
         .then(response => {
           // handle success
 
@@ -127,20 +136,24 @@ export function getExamContents(title,handleResponse){
 }
 export function getContentByTitle(title){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/text/contentByName
-    return axios.get('/v1/text/contentByName',
-    {
-      name:title,
-    }
-  )
+    return axios({
+      method:'get',
+      url:'/v1/text/contentByName',
+      params:{
+        name:title
+      }
+    })
 }
 
 export function getAuthorPath(author_name,handleResponse){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/author/getPath/1
-  axios.get('/v1/author/getPath',
-    {
-      authorName: author_name,
+  axios({
+    method:'get',
+    url:'/v1/author/getPath/{authorName}',
+    params:{
+      authorName:author_name
     }
-  )
+  })
         .then(response => {
           // handle success
           handleResponse(response);
