@@ -1,12 +1,11 @@
-import React from 'react';
+import React,{ Suspense, lazy } from 'react';
 import 'antd/dist/reset.css';
 import "./App.css"
 import { Divider } from 'antd';
-import MainContent from './MainContent';
-import SecondContent from './SecondContent';
 import { getGroupProblem,getArticleTypeByName,getExamContents } from './axios/api';
 import { QuestionList } from './Question';
 import { ExamList } from './Exam';
+
 const authorDict={
     "title":"author",
     "1":"author1",
@@ -15,6 +14,9 @@ const authorDict={
     "4":"author4",
     "5":"author5",
 }
+
+const MainContent= lazy(()=>import('./MainContent'))
+const SecondContent=lazy(()=>import('./SecondContent'))
 
 class Body extends React.Component{
     constructor(props){
@@ -91,6 +93,7 @@ class Body extends React.Component{
     render(){
         return(
         <div className='body'>
+        <Suspense fallback={<div>Loading</div>}>
             <MainContent
                 onNavClick={this.handleNavClick}
                 selectedTitle={this.state.selectedTitle}
@@ -107,6 +110,7 @@ class Body extends React.Component{
                 shiciList={this.state.shiciList}
                 juziList={this.state.juziList}
             />
+        </Suspense>
         </div>
         )
     }
