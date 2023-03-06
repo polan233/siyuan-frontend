@@ -89,8 +89,8 @@ class MainContent extends React.Component{
         let children=data[key];
         for(let j=0;j<children.length;j++){
           let child=children[j];
-          temp.push(getItem(child.text_name,child.text_name));
-          authorTab[child.text_name]=child.author_name;
+          temp.push(getItem(child.textName,child.textName));
+          authorTab[child.textName]=child.authorName;
         }
         items.push(getItem(key,key,<BookOutlined />,temp));
       }
