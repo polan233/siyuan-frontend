@@ -48,10 +48,8 @@ export function getTypeAndRightContent(title,handleResponse){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/addition/contentByName/1
   axios({
     method:'get',
-    url:'/v1/addition/contentByName/{name}',
-    params:{
-      name:title
-    }
+    url:`/v1/addition/contentByName/${title}`,
+    
   })
         .then(response => {
           // handle success
@@ -93,10 +91,7 @@ export function getGroupProblem(title,author,handleResponse){
 export function getArticleTypeByName(title,handleResponse){
   axios({
     method:'get',
-    url:'/v1/text/typeByName/{name}',
-    params:{
-      name:title
-    }
+    url:`/v1/text/typeByName/${title}`,
   })
         .then(response => {
           // handle success
@@ -115,10 +110,8 @@ export function getExamContents(title,handleResponse){
   ///v1/problem/problemsByName/{name}
   axios({
     method:'get',
-    url:'/v1/problem/problemsByName/{name}',
-    params:{
-      name:title
-    }
+    url:`/v1/problem/problemsByName/${title}`,
+   
   })
         .then(response => {
           // handle success
@@ -149,10 +142,7 @@ export function getAuthorPath(author_name,handleResponse){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/author/getPath/1
   axios({
     method:'get',
-    url:'/v1/author/getPath/{authorName}',
-    params:{
-      authorName:author_name
-    }
+    url:`/v1/author/getPath/${author_name}`,
   })
         .then(response => {
           // handle success
