@@ -132,6 +132,7 @@ class MainContent extends React.Component{
       this.map.addRoadBook(path_city,path_event);
     }
     handleGetRightContent(response){
+      console.log(response)
       const data=response.data.data.additions;
       let list=[];
       for(let i=0;i<data.length;i++){

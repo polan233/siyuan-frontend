@@ -1,7 +1,7 @@
 
 import axios from 'axios';
- //const baseURL="http://127.0.0.1:4523/m1/1938326-0-default"
-const baseURL='http://siyuan.feipa.top'
+ const baseURL="http://127.0.0.1:4523/m1/1938326-0-default"
+//const baseURL='http://siyuan.feipa.top'
 axios.defaults.baseURL=baseURL;
 
 export function handleError(error){
@@ -48,7 +48,7 @@ export function getTypeAndRightContent(title,handleResponse){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/addition/contentByName/1
   axios({
     method:'get',
-    url:'v1/addition/contentByName',
+    url:'/v1/addition/contentByName/{name}',
     params:{
       name:title
     }
