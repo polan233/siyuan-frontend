@@ -15,8 +15,8 @@ class TextReader extends React.Component{
                 
                 <div id="textReader-main">
                     <Typography >
-                        <Title id="textReader-title" level={2}>{this.props.title}</Title>
-                        <Title id="textReader-author" level={3}>{this.props.author}</Title>
+                        <Title id="textReader-title" level={3}>{this.props.title}</Title>
+                        <Title id="textReader-author" level={4}>{this.props.author}</Title>
                         {this.props.content}
                     </Typography>
                 </div>
