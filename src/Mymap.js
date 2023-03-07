@@ -2,11 +2,9 @@ import React from "react";
 import {createRoot} from 'react-dom/client'
 import { Map, Arc, Polyline, Marker,CustomOverlay } from "react-bmapgl";
 import { Button, Popover, Typography, Drawer, Space, Switch, Slider} from 'antd';
-
 import "./LuShu"
-import TextReader, { TextReaderUtils } from "./TextReader";
-import { formToJSON } from "axios";
-import { getContentByTitle } from "./axios/api";
+import TextReader from "./TextReader";
+import { getContentByTitle} from "./axios/api";
 
 const { Title, Paragraph, Text, Link } = Typography;
 const mapStyle = {
@@ -54,7 +52,8 @@ class textReaderController extends window.BMapGL.Control{
 }
   refresh(contentProps){
     getContentByTitle(contentProps.selectedTitle).then((response)=>{
-      let text=this.buildParagraph(response.data.data.content)
+      console.log("contentBytitle",response)
+      let text=this.buildParagraph(response.data.data)
       //111111
       this.textReader.setState((state) => ({
         title: contentProps.selectedTitle,
@@ -224,6 +223,7 @@ export default class MyMap extends React.Component {
       components: [],
       path_event:[],
       controllers: [],
+      
     };
 
     this.created = false;
@@ -272,7 +272,7 @@ export default class MyMap extends React.Component {
     });
     searcher.search(city);
   }
-  getCityPointArray(path_city) {
+  getCityPointArray(path_city) { //输入 城市名 列表
     return new Promise((resolve, reject) => {
       var path_point = Array(path_city.length);
       for (let index = 0; index < path_city.length; index++) {
@@ -470,6 +470,7 @@ export default class MyMap extends React.Component {
     }
     this._addController(new mapSelectionController(this.map));
     this._addController(new textReaderController(this.map,this.props.selectedTitle,this.props.selectedAuthor));
+    //axios请求获取城市id,城市名称对应列表
   }
   render() {
     // textReaderDrawerContent=<TextReader title={selectedTitle} author={selectedAuthor}/>

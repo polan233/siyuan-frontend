@@ -48,7 +48,7 @@ export function getTypeAndRightContent(title,handleResponse){
   //http://127.0.0.1:4523/m1/1938326-0-default/v1/addition/contentByName/1
   axios({
     method:'get',
-    url:'v1/addition/contentByName',
+    url:'/v1/addition/contentByName',
     params:{
       name:title
     }
@@ -67,13 +67,12 @@ export function getTypeAndRightContent(title,handleResponse){
         });
 }
 
-export function getGroupProblem(title,author,handleResponse){
+export function getGroupProblem(title,handleResponse){
   axios({
     method:'get',
-    url:'/v1/discussion/textId', //TO-DO 该接口还需要修改现在用不了
+    url:'/v1/discussion/textName',
     params:{
-      title:title,
-      author:author
+      textName:title
     }
   })
         .then(response => {
@@ -166,4 +165,11 @@ export function getAuthorPath(authorName,handleResponse){
           // always executed
           
         });
+}
+
+export function getCityIdTab(){
+  return axios({
+    method:'get',
+    url:'/v1/city/getIdList',
+  })
 }

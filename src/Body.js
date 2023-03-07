@@ -47,9 +47,10 @@ class Body extends React.Component{
         });
     }
     handleGroupProblemResponse(response){
+        console.log("groupproblem",response)
         let data=response.data.data;
         this.setState({
-            groupQuestions:new QuestionList(data.problems)
+            groupQuestions:new QuestionList(data)
         })
     }
     handleNavClick(e){
@@ -60,13 +61,15 @@ class Body extends React.Component{
                 selectedTitle:title,
                 selectedAuthor: author
             })
-            getGroupProblem(title,author,this.handleGroupProblemResponse)
+            getGroupProblem(title,this.handleGroupProblemResponse)
             getArticleTypeByName(title,this.handleLoadExam);//判断文章类型并渲染exam
             resolve({title:title,author:author});
         })
     }
     handleLoadExam(title,response){
-        const data=response.data.data.isModern;
+        console.log("handleLoadExam",response)
+        const data=response.data.data;
+        console.log("handleLoadExam",data)
         if(data){
             this.setState({
                 hasExam:false

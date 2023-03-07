@@ -5,7 +5,7 @@ import {BookOutlined  } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Layout, Typography,Card  } from 'antd';
 import MyMap from './Mymap';
-import { getMenu,getTypeAndRightContent, getAuthorPath } from './axios/api';
+import { getMenu,getTypeAndRightContent, getAuthorPath,getCityIdTab } from './axios/api';
 
 
 const {  Sider, Content } = Layout;
@@ -57,7 +57,9 @@ class MainContent extends React.Component{
         items:[],
         rightTitle:"",
         rightContent:null,
-        
+        cityIdTab:{},
+        subMenuKeys:[],
+        openKeys:[]
       }
 
       this.getRightTitle=this.getRightTitle.bind(this);
@@ -66,8 +68,8 @@ class MainContent extends React.Component{
       this.onMenuClick=this.onMenuClick.bind(this);
       this.handleGetRightContent=this.handleGetRightContent.bind(this);
       //this.refreshControllers=this.refreshControllers.bind(this)
-    
       this.handleLoadRoadBook=this.handleLoadRoadBook.bind(this);
+      this.onOpenChange=this.onOpenChange.bind(this);
     }
     
     getRightTitle(){
@@ -83,6 +85,11 @@ class MainContent extends React.Component{
       let data=response.data.data;
       let authorTab={};
       let keys=Object.keys(data);
+      console.log("keys",keys)
+      this.setState({
+        subMenuKeys:keys,
+        openKeys:["必修一"]
+      })
       for(let i=0;i<keys.length;i++){
         const key=keys[i];
         let temp=[];
@@ -92,6 +99,7 @@ class MainContent extends React.Component{
           temp.push(getItem(child.textName,child.textName));
           authorTab[child.textName]=child.authorName;
         }
+        
         items.push(getItem(key,key,<BookOutlined />,temp));
       }
       this.setState({
@@ -100,10 +108,11 @@ class MainContent extends React.Component{
       this.props.setAuthorDict(authorTab);
     }
     handleLoadRoadBook(response){
-      
-      let data=response.data.path;
+      const cityIdTab=this.state.cityIdTab;
+      let data=response.data.data;
       let path_city=[];
       let path_event=[];
+      console.log("handleLoadRoadBook",data)
       for (let i=0;i<data.length;i++){
         if(data[i].isBC)
           data[i].time='-'+data[i].time
@@ -123,7 +132,8 @@ class MainContent extends React.Component{
         }
       })
       for (let i=0;i<data.length;i++){
-        path_city.push(data[i].city);
+        const cityId=data[i].city;
+        path_city.push(cityIdTab[cityId]);
         if(data[i].time[0]=='-'){
           data[i].time='BC '+data[i].time.substr(1);
         }
@@ -148,7 +158,7 @@ class MainContent extends React.Component{
     onMenuClick(e){
       this.props.onNavClick(e).then((res)=>{
         getTypeAndRightContent(res.title,this.handleGetRightContent);
-        getAuthorPath(res.author, this.handleGetAuthorPath);
+        //getAuthorPath(res.author, this.handleGetAuthorPath);
         this.map.switchNovel();
         //this.map.addRoadBook(["北京","上海","南京","徐州","亳州","周口"]);
         getAuthorPath(res.author,this.handleLoadRoadBook);
@@ -157,6 +167,34 @@ class MainContent extends React.Component{
     }
     componentDidMount(){
       getMenu(this.handleNavResponse);
+      getCityIdTab().then((response)=>{
+        const data=response.data.data
+        //console.log('getCityIdTab',data)
+        let res={}
+        for(let i=0;i<data.length;i++){
+          const temp=data[i];
+          const key=temp.cityId;
+          const value=temp.name;
+          res[key]=value;
+        }
+        //console.log('cityIdTab',res)
+        this.setState({
+          cityIdTab:res
+        })
+      }).catch((e)=>{
+        console.log('getCityIdTab',e)
+      })
+    }
+    onOpenChange(keys){
+      console.log("keys",keys)
+      let openKeys=this.state.openKeys;
+      const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
+      if (this.state.subMenuKeys.indexOf(latestOpenKey) === -1) {
+        this.setState({openKeys:keys});
+      } else {
+        const temp= (latestOpenKey ? [latestOpenKey] : []);
+        this.setState({openKeys:temp});
+      }
     }
     render(){
 
@@ -164,7 +202,7 @@ class MainContent extends React.Component{
         <MyMap
           className="map"
           ref={(ref) => {this.map = ref}}
-          />
+        />
       
       return(
         <div className='mainContent'>
@@ -174,6 +212,8 @@ class MainContent extends React.Component{
                 <Menu id='navMenu'
                     onClick={this.onMenuClick}
                     mode="inline"
+                    openKeys={this.state.openKeys}
+                    onOpenChange={this.onOpenChange}
                     items={this.state.items}
                 />
               </div>
