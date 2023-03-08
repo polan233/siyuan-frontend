@@ -87,9 +87,11 @@ class Exam extends React.Component{
         })
     }
     onPre(e){
-        const mode=this.props.select;
+        
+        const mode=this.state.select;
+      
         if(mode==="Moxie"){
-            let list=this.state.moxie;
+            let list=this.props.moxie;
             list.goPre();
            
         }
@@ -222,6 +224,7 @@ export class ExamList{
         this.index=(this.index+1)%this.length;
     }
     goPre(){
+        
         this.index=(this.index-1);
         if(this.index<0){
             this.index=this.length-1;
