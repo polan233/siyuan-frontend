@@ -352,7 +352,7 @@ export default class MyMap extends React.Component {
         this.addArc({point: path[i], city: path_city[i]}, {point: path[i + 1], city: path_city[i+1]})
       }
       for(let i=0;i<path.length;i++){
-        this.addMarkPoint(path[i],path_event[i].event,path_event[i].time) 
+        this.addMarkPoint(path[i],path_event[i].event,path_event[i].time)
       }
     }).catch((e) => {
       window.alert(e);
@@ -374,6 +374,21 @@ export default class MyMap extends React.Component {
     )
     this.addComponent(TYPE.MARKPOINT,newMarkPoint);
   }
+  //To-DO:重写addMarkPoint(待定)
+  // /*
+  // eventList:[
+  //   {
+  //     event:
+  //     time:
+  //   }
+  //   {
+  //     event:time
+  //   }
+  // ]
+  // */
+  // addMarkPoint(point,eventList){
+
+  // }
   addPolyline(path_city) {
     this.getCityPointArray(path_city)
       .then((path_point) => {

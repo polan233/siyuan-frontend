@@ -134,8 +134,17 @@ class MainContent extends React.Component{
       for (let i=0;i<data.length;i++){
         const cityId=data[i].city;
         path_city.push(cityIdTab[cityId]);
+        let isBC=false;
         if(data[i].time[0]=='-'){
-          data[i].time='BC '+data[i].time.substr(1);
+          isBC=true;
+          data[i].time=data[i].time.substr(1);
+        }
+        //yyyy-dd-mm
+        if(data[i].time[0].indexOf("-00")==-1){ //日月不详
+          data[i].time=data[i].time.substr(0,4)+" 日期不详";
+        }
+        if(isBC){
+          data[i].time="BC "+data[i].time;
         }
         path_event.push({ time:data[i].time, event:data[i].event })
       }
