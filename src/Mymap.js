@@ -9,7 +9,7 @@ import { getContentByTitle} from "./axios/api";
 const { Title, Paragraph, Text, Link } = Typography;
 const mapStyle = {
   position: "relative",
-  width: "100%",
+  width: "98%",
   margin: "2px",
   height: "70vh",
   minHeight: "30vh",
@@ -349,7 +349,7 @@ export default class MyMap extends React.Component {
     this.getCityPointArray(path_city).then((path) => {
       if (path.length < 2) return;
       for (let i = 0; i < path.length - 1; i++) {
-        this.addArc({point: path[i], city: path_city[i]}, {point: path[i + 1], city: path_city[i+1]})
+        // this.addArc({point: path[i], city: path_city[i]}, {point: path[i + 1], city: path_city[i+1]})
       }
       for(let i=0;i<path.length;i++){
         this.addMarkPoint(path[i],path_event[i].event,path_event[i].time)
@@ -441,12 +441,14 @@ export default class MyMap extends React.Component {
       }),
       speed: 1000000,
       enableRotation: true,
+      defaultContent:"出发",
+      landmarkPois:path
     });
       function startLushu(map) {
         lushu.stop();
         lushu.start();
       }
-      // this.map.addOverlay(polyline);
+      this.map.addOverlay(polyline);
       this.addArcsAndInfoWindow(path_city,path_event);
       
 

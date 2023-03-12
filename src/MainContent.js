@@ -5,7 +5,7 @@ import {BookOutlined  } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Layout, Typography,Card  } from 'antd';
 import MyMap from './Mymap';
-import { getMenu,getTypeAndRightContent, getAuthorPath,getCityIdTab } from './axios/api';
+import { getMenu, getAuthorPath,getCityIdTab } from './axios/api';
 
 
 const {  Sider, Content } = Layout;
@@ -66,7 +66,7 @@ class MainContent extends React.Component{
       this.handleNavResponse=this.handleNavResponse.bind(this);
       this.componentDidMount=this.componentDidMount.bind(this);
       this.onMenuClick=this.onMenuClick.bind(this);
-      this.handleGetRightContent=this.handleGetRightContent.bind(this);
+      
       //this.refreshControllers=this.refreshControllers.bind(this)
       this.handleLoadRoadBook=this.handleLoadRoadBook.bind(this);
       this.onOpenChange=this.onOpenChange.bind(this);
@@ -150,23 +150,10 @@ class MainContent extends React.Component{
       }
       this.map.addRoadBook(path_city,path_event);
     }
-    handleGetRightContent(response){
-      console.log(response)
-      const data=response.data.data.additions;
-      let list=[];
-      for(let i=0;i<data.length;i++){
-          list.push(<li key={i}>{data[i]}</li>)
-      }
-      if(list.length===0){
-        list="";
-      }
-      this.setState({
-        rightContent:list,
-      })
-    }
+    
     onMenuClick(e){
       this.props.onNavClick(e).then((res)=>{
-        getTypeAndRightContent(res.title,this.handleGetRightContent);
+        
         //getAuthorPath(res.author, this.handleGetAuthorPath);
         this.map.switchNovel();
         //this.map.addRoadBook(["北京","上海","南京","徐州","亳州","周口"]);
@@ -230,17 +217,6 @@ class MainContent extends React.Component{
             <Content style={contentStyle} id="content">
               {content}
             </Content>
-            <Sider style={siderStyle}>
-              <Card className='info' bordered={true}>
-                <Typography>
-                  <Title level={4}>{this.props.selectedTitle}</Title>
-                  <Title level={5}>{this.getRightTitle()}</Title>
-                  {/* 这个标题需要根据课文题目而定 */}
-                  <ol>{this.state.rightContent}</ol>
-                  {/*内容也需要根据课文题目而定*/}
-                </Typography>
-              </Card>
-            </Sider>
             </Layout>
         </div>
       );

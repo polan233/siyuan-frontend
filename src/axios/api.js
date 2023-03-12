@@ -44,28 +44,6 @@ export function getMenu(handleResponse){
     });
 }
 
-export function getTypeAndRightContent(title,handleResponse){
-  //http://127.0.0.1:4523/m1/1938326-0-default/v1/addition/contentByName/1
-  axios({
-    method:'get',
-    url:'/v1/addition/contentByName',
-    params:{
-      name:title
-    }
-  })
-        .then(response => {
-          // handle success
-          handleResponse(response);
-        })
-        .catch(function (error) {
-          // handle error
-          handleError(error);
-        })
-        .then(function () {
-          // always executed
-          
-        });
-}
 
 export function getGroupProblem(title,handleResponse){
   axios({
