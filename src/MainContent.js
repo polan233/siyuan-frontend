@@ -141,7 +141,8 @@ class MainContent extends React.Component{
           const time=dataCell.time;
           let res=time;
           if(res.indexOf("-00")!==-1){ //日月不详
-            res=time.substr(0,4)+"年日期不详";
+            let index=res.indexOf('-');
+            res=time.substr(0,index)+"年日期不详";
           }
           else{
             let temp=res.split("-");
