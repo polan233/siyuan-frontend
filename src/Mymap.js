@@ -281,6 +281,9 @@ export default class MyMap extends React.Component {
     });
     searcher.search(city);
   }
+
+
+  //已弃用
   getCityPointArray(path_city) { //输入 城市名 列表
     return new Promise((resolve, reject) => {
       let path_point = Array(path_city.length);
@@ -393,21 +396,6 @@ export default class MyMap extends React.Component {
     )
     this.addComponent(TYPE.MARKPOINT,newMarkPoint);
   }
-  //To-DO:重写addMarkPoint(待定)
-  // /*
-  // eventList:[
-  //   {
-  //     event:
-  //     time:
-  //   }
-  //   {
-  //     event:time
-  //   }
-  // ]
-  // */
-  // addMarkPoint(point,eventList){
-
-  // }
   addPolyline(path_city) {
     this.getCityPointArray(path_city)
       .then((path_point) => {
