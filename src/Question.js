@@ -65,6 +65,9 @@ class Question extends React.Component{
         })
     }
     render(){
+        if(!this.props.show){
+            return
+        }
         let questions= this.props.questions;
         const question=questions.get();
         return(

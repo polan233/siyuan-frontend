@@ -137,20 +137,24 @@ class Exam extends React.Component{
             <div className='exam'></div>
             )
         }
-        return(
-            <div className='exam'>
-            <Collapse accordion expandIconPosition='end'  onChange={this.onChange}>
-                <Panel header="古文默写" key="Moxie">
-                    <ExamContent
-                        problem={this.props.moxie.getProblem()}
-                        answer={this.props.moxie.getAnswer()}
-                        onPre={this.onPre}
-                        onNext={this.onNext}
-                        show={this.state.moxieShow}
-                        onShow={this.onShow}
-                        >
-                    </ExamContent>
-                </Panel>
+        let panels=[];
+        if(this.props.moxie.length>0){
+            panels.push(
+            <Panel header="古文默写" key="Moxie">
+                <ExamContent
+                problem={this.props.moxie.getProblem()}
+                answer={this.props.moxie.getAnswer()}
+                onPre={this.onPre}
+                onNext={this.onNext}
+                show={this.state.moxieShow}
+                onShow={this.onShow}
+                >
+                </ExamContent>
+            </Panel>
+            )
+        }
+        if(this.props.shici.length>0){
+            panels.push(
                 <Panel header="注释翻译" key="Shici">
                     <ExamContent
                         problem={this.props.shici.getProblem()}
@@ -162,6 +166,10 @@ class Exam extends React.Component{
                         >
                     </ExamContent>
                 </Panel>
+            )
+        }
+        if(this.props.juzi.length>0){
+            panels.push(
                 <Panel header="句子翻译" key="Juzi">
                     <ExamContent
                         problem={this.props.juzi.getProblem()}
@@ -173,6 +181,12 @@ class Exam extends React.Component{
                     >
                     </ExamContent>
                 </Panel>
+            )
+        }
+        return(
+            <div className='exam'>
+            <Collapse accordion expandIconPosition='end'  onChange={this.onChange}>
+                {panels}
             </Collapse>
             </div>
         );
@@ -230,6 +244,7 @@ export class ExamList{
             this.index=this.length-1;
         }
     }
+    
 }
 
 //需要上级提供一个问题列表

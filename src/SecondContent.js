@@ -18,6 +18,7 @@ class SecondContent extends React.Component{
             selectedTitle={this.props.selectedTitle}
             selectedAuthor={this.props.selectedAuthor}
             questions={this.props.groupProblems}
+            show={this.props.showQuestion}
           />
           <Divider/>
           <Exam

@@ -27,6 +27,7 @@ class Body extends React.Component{
             authorDict:{},
             groupQuestions:new QuestionList([]),
             hasExam:false,
+            hasQuestion:false,
             moxieList:null,
             shiciList:null,
             juziList:null,
@@ -35,7 +36,6 @@ class Body extends React.Component{
         this.getAuthorByTitle=this.getAuthorByTitle.bind(this);
         this.setAuthorDict=this.setAuthorDict.bind(this);
         this.handleGroupProblemResponse=this.handleGroupProblemResponse.bind(this);
-        this.handleLoadExam=this.handleLoadExam.bind(this);
         this.handleExamContent=this.handleExamContent.bind(this);
     }
     getAuthorByTitle(title){
@@ -49,9 +49,15 @@ class Body extends React.Component{
     handleGroupProblemResponse(response){
         console.log("groupproblem",response)
         let data=response.data.data;
-        this.setState({
-            groupQuestions:new QuestionList(data)
-        })
+        if(data.length>0){
+            this.setState({
+                hasQuestion:true,
+                groupQuestions:new QuestionList(data)
+            })
+        }
+        else{
+            this.setState({hasQuestion:false})
+        }
     }
     handleNavClick(e){
         return new Promise((resolve,reject)=>{
@@ -62,36 +68,45 @@ class Body extends React.Component{
                 selectedAuthor: author
             })
             getGroupProblem(title,this.handleGroupProblemResponse)
-            getArticleTypeByName(title,this.handleLoadExam);//判断文章类型并渲染exam
+            //getArticleTypeByName(title,this.handleLoadExam);//判断文章类型并渲染exam
+            getExamContents(title,this.handleExamContent);
             resolve({title:title,author:author});
         })
     }
-    handleLoadExam(title,response){
-        console.log("handleLoadExam",response)
-        const data=response.data.data;
-        console.log("handleLoadExam",data)
-        if(data){
-            this.setState({
-                hasExam:false
-            })
-        }
-        else{
-            getExamContents(title,this.handleExamContent)
-        }
-    }
+    // handleLoadExam(title,response){
+    //     console.log("handleLoadExam",response)
+    //     const data=response.data.data;
+    //     console.log("handleLoadExam",data)
+    //     if(data){
+    //         this.setState({
+    //             hasExam:false
+    //         })
+    //     }
+    //     else{
+    //         getExamContents(title,this.handleExamContent)
+    //     }
+    // }
     handleExamContent(response){
         const data=response.data.data;
         let moxie=data.moxie;
         let shici=data.zhushi;
         let juzi=data.juzi;
-        this.setState({
-            moxieList:new ExamList(moxie.problems,moxie.answers),
-            shiciList: new ExamList(shici.problems,shici.answers),
-            juziList:new ExamList(juzi.problems,juzi.answers),
-        })
-        this.setState({
-            hasExam:true
-        })
+        if(moxie.problems.length===0&&shici.problems.length===0
+            &&juzi.problems.length===0){
+            this.setState({
+                hasExam:false,
+            })
+        }
+        else{
+            this.setState({
+                moxieList:new ExamList(moxie.problems,moxie.answers),
+                shiciList: new ExamList(shici.problems,shici.answers),
+                juziList:new ExamList(juzi.problems,juzi.answers),
+            })
+            this.setState({
+                hasExam:true
+            })
+        }
     }
     render(){
         return(
@@ -109,6 +124,7 @@ class Body extends React.Component{
                 selectedAuthor={this.state.selectedAuthor}
                 groupProblems={this.state.groupQuestions}
                 showExam={this.state.hasExam}
+                showQuestion={this.state.hasQuestion}
                 moxieList={this.state.moxieList}
                 shiciList={this.state.shiciList}
                 juziList={this.state.juziList}
