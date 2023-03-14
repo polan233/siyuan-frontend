@@ -248,7 +248,9 @@ export default class MyMap extends React.Component {
     this.addArc = this.addArc.bind(this);
     this.addMarkers = this.addMarkers.bind(this);
     this.addPolyline = this.addPolyline.bind(this);
-    this.addArcsAndInfoWindow = this.addArcsAndInfoWindow.bind(this);
+    //this.addArcsAndInfoWindow = this.addArcsAndInfoWindow.bind(this);
+    this.addArcs=this.addArcs.bind(this);
+    this.addMarkPoints=this.addMarkPoints.bind(this);
     this.addRoadBook = this.addRoadBook.bind(this);
     this.addMarkPoint=this.addMarkPoint.bind(this);
   }
@@ -357,18 +359,32 @@ export default class MyMap extends React.Component {
     this.addComponent(TYPE.ARC, newArc);
   }
 
-  addArcsAndInfoWindow(path_arr) {
-    let path=path_arr.map((e)=>{
-      return e.point
-    })
+  // addArcsAndInfoWindow(path_arr) {
+  //   let path=path_arr.map((e)=>{
+  //     return e.point
+  //   })
+  //   if (path.length >= 2) {
+  //     for (let i = 0; i < path.length - 1; i++) {
+  //       this.addArc({point: path[i], city: path_arr[i].cityName},
+  //         {point: path[i + 1], city: path_arr[i+1].cityName})
+  //     }
+  //   }
+  //   for(let i=0;i<path.length;i++){
+  //     this.addMarkPoint(path[i],path_arr[i].events,path_arr[i].times,path_arr[i].cityName)
+  //   }
+  // }
+  addArcs(points){
+    const path=points;
     if (path.length >= 2) {
       for (let i = 0; i < path.length - 1; i++) {
-        this.addArc({point: path[i], city: path_arr[i].cityName},
-          {point: path[i + 1], city: path_arr[i+1].cityName})
+        this.addArc({point: path[i]},
+          {point: path[i + 1]})
       }
     }
-    for(let i=0;i<path.length;i++){
-      this.addMarkPoint(path[i],path_arr[i].events,path_arr[i].times,path_arr[i].cityName)
+  }
+  addMarkPoints(path_arr){
+    for(let i=0;i<path_arr.length;i++){
+      this.addMarkPoint(path_arr[i].point,path_arr[i].events,path_arr[i].times,path_arr[i].cityName)
     }
   }
   
@@ -459,7 +475,9 @@ export default class MyMap extends React.Component {
       lushu.start();
     }
     //this.map.addOverlay(polyline);
-    this.addArcsAndInfoWindow(path_arr);
+    //this.addArcsAndInfoWindow(path_arr);
+    this.addArcs(path_arr.map((e)=>{return e.point}))
+    this.addMarkPoints(path_arr)
 
     class roadBookController extends window.BMapGL.Control {
       constructor(map){
