@@ -5,7 +5,7 @@ import {BookOutlined  } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Layout, Typography,Card  } from 'antd';
 import MyMap from './Mymap';
-import { getMenu, getAuthorPath,getCityIdTab } from './axios/api';
+import { getMenu, getAuthorPath } from './axios/api';
 
 
 const {  Sider, Content } = Layout;
@@ -57,7 +57,6 @@ class MainContent extends React.Component{
         items:[],
         rightTitle:"",
         rightContent:null,
-        cityIdTab:{},
         subMenuKeys:[],
         openKeys:[]
       }
@@ -108,47 +107,107 @@ class MainContent extends React.Component{
       this.props.setAuthorDict(authorTab);
     }
     handleLoadRoadBook(response){
-      const cityIdTab=this.state.cityIdTab;
+      //TO-DO:
+      /*
+      1.按地点合并点
+      2.排序点
+      3.生成Arcs
+      */
       let data=response.data.data;
+
       let path_city=[];
-      let path_event=[];
+      let path_point=[];
+      let path_event=[]; //里面存一个字符串数组,表示本地点的各种事件
+      let path_time=[]; //里面存一个字符串数组,表示本地点的各种事件对应的时间
       console.log("handleLoadRoadBook",data)
-      for (let i=0;i<data.length;i++){
-        if(data[i].isBC)
-          data[i].time='-'+data[i].time
+      // 按地点合并事件点
+
+      var len = 0;
+
+      for (let i=0;i<data.length;){
+        let temp=data[i];
+        let cur_city=temp.cityName;
+        let loop_city=cur_city;
+
+        path_event[len]=[]
+        path_time[len]=[]
+
+        path_city[len]=cur_city;
+        path_point[len]={
+          lng:temp.lng,
+          lat:temp.lat
+        }
+        function buildTime(dataCell){
+          const time=dataCell.time;
+          let res=time;
+          if(res.indexOf("-00")!==-1){ //日月不详
+            res=time.substr(0,4)+"年日期不详";
+          }
+          else{
+            let temp=res.split("-");
+            res=temp[0]+"年"+temp[1]+"月"+temp[2]+"日";
+          }
+          if(dataCell.isBC){
+            res="公元前 "+res
+          }
+          return res;
+        }
+
+        //当城市不变化,在这里循环并把同一城市的信息放入 length 对应位置
+        while(loop_city===cur_city){
+          path_event[len].push(temp.event);
+          path_time[len].push(buildTime(temp));
+
+          i++;
+          if(i>=data.length) break;
+          temp=data[i];
+          loop_city=temp.cityName;
+        }
+        len++;
       }
-      data.sort(function(a,b){
-        if(a.time[0]=='-'){
-          if(b.time[0]=='-')
-            return b.time.localeCompare(a.time)
+      //至此合并事件点操作完成
+      let res=[];
+      for(let i=0;i<len;i++){
+        res.push({})
+        res[i].cityName=path_city[i];
+        res[i].point=path_point[i];
+        res[i].events=path_event[i];
+        res[i].times=path_time[i];
+      }
+      console.log("handleLoadRoadBook data building",res);
+
+      res.sort(function(A,B){
+        let atime=A.times[0];
+        let btime=B.times[0];
+        let aBC=false;
+        let bBC=false;
+        let a=atime;
+        let b=btime;
+
+        if(a.indexOf("公元前")!==-1)
+          {a=a.substr(4);aBC=true}
+        if(b.indexOf("公元前")!==-1)
+          {b=b.substr(4);bBC=true}
+
+        if(aBC){
+          if(bBC)
+            return b.localeCompare(a)
           else
             return -1
         }
         else{
-          if(b.time[0]=='-')
+          if(bBC)
             return 1
           else
-            return a.time.localeCompare(b.time)
+            return a.localeCompare(b)
         }
       })
-      for (let i=0;i<data.length;i++){
-        const cityId=data[i].city;
-        path_city.push(cityIdTab[cityId]);
-        let isBC=false;
-        if(data[i].time[0]=='-'){
-          isBC=true;
-          data[i].time=data[i].time.substr(1);
-        }
-        //yyyy-dd-mm
-        if(data[i].time[0].indexOf("-00")==-1){ //日月不详
-          data[i].time=data[i].time.substr(0,4)+" 日期不详";
-        }
-        if(isBC){
-          data[i].time="BC "+data[i].time;
-        }
-        path_event.push({ time:data[i].time, event:data[i].event })
-      }
-      this.map.addRoadBook(path_city,path_event);
+      console.log("handleLoadRoadBook data building sorted",res);
+      //至此排序完成
+      //TO-DO: 生成事件点的弹出窗口内容
+      
+      //TO-DO:改 addRoadBook
+      this.map.addRoadBook(res);
     }
     
     onMenuClick(e){
@@ -163,23 +222,7 @@ class MainContent extends React.Component{
     }
     componentDidMount(){
       getMenu(this.handleNavResponse);
-      getCityIdTab().then((response)=>{
-        const data=response.data.data
-        //console.log('getCityIdTab',data)
-        let res={}
-        for(let i=0;i<data.length;i++){
-          const temp=data[i];
-          const key=temp.cityId;
-          const value=temp.name;
-          res[key]=value;
-        }
-        //console.log('cityIdTab',res)
-        this.setState({
-          cityIdTab:res
-        })
-      }).catch((e)=>{
-        console.log('getCityIdTab',e)
-      })
+      
     }
     onOpenChange(keys){
       console.log("keys",keys)

@@ -26,7 +26,25 @@
 .pathContent{
   max-width: 250px;
   min-width: 150px;
+  max-height: 400px;
+  overflow-y: auto;
   text-indent: 2rem;
+}
+.pathContent-block{
+  box-shadow: -2.3px 0px 0.1px #49484865;
+  background-color: #4b494909;
+  margin: 3px;
+  margin-bottom: 15px;
+}
+.pathContent-time{
+  text-align: left;
+  text-indent: 0;
+  font-weight: bold;
+  margin: 2px;
+}
+.pathContent-event{
+  text-indent: 1rem;
+  margin: 4px;
 }
 .markPoint{
   margin-bottom: -5px;
@@ -260,7 +278,7 @@ ul li {list-style: none;}
   text-indent: 0em;
   align-self: center;
   font-size: 1rem;
-  margin-top:25px;
+  margin-top:20px;
   user-select: all;
   background-color:#fafad6;
 }

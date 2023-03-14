@@ -6,6 +6,7 @@ import "./LuShu"
 import TextReader from "./TextReader";
 import { getContentByTitle} from "./axios/api";
 
+
 const { Title, Paragraph, Text, Link } = Typography;
 const mapStyle = {
   position: "relative",
@@ -40,8 +41,10 @@ class textReaderController extends window.BMapGL.Control{
     let temp=""
     for(let i=0;i<textStr.length;i++){
         const char=textStr[i];
-        if((textStr[i]==='\r'&&i==(textStr.length-2))||(textStr[i]==='\r'&&textStr[i+1]=='\n')){
-            res.push(<Paragraph className="textReader-p">{temp}</Paragraph>)
+        if((textStr[i]==='\r'&&i==(textStr.length-2))||
+        (textStr[i]==='\r'&&textStr[i+1]=='\n')){
+            res.push(<Paragraph className="textReader-p">
+              {temp}</Paragraph>)
             temp=""
         }else{
             temp=temp.concat(new String(char))
@@ -54,7 +57,7 @@ class textReaderController extends window.BMapGL.Control{
     getContentByTitle(contentProps.selectedTitle).then((response)=>{
       console.log("contentBytitle",response)
       let text=this.buildParagraph(response.data.data)
-      //111111
+      
       this.textReader.setState((state) => ({
         title: contentProps.selectedTitle,
         author: contentProps.selectedAuthor,
@@ -98,24 +101,30 @@ class textReaderController extends window.BMapGL.Control{
       render(){
         return (
           <div>
-            <Button type="primary" id="textReader-btn" onClick={this.textOpen}>
+            <Button type="primary" id="textReader-btn" 
+              onClick={this.textOpen}>
               展示文本
             </Button>
-            <Drawer className = "drawer" id="textReaderDrawer" width={"30%"} title={"文本展示"} placement="left" closable={true} onClose={this.textClose} open={this.state.showText} getContainer={this.container} mask={false} maskClosable={false} destroyOnClose
-            extra={
+            <Drawer className = "drawer" id="textReaderDrawer" 
+              width={"30%"} title={"文本展示"} 
+              placement="left" closable={true} 
+              onClose={this.textClose} open={this.state.showText} 
+              getContainer={this.container} 
+              mask={false} maskClosable={false} 
+              destroyOnClose
+              extra={
               <Space>
-                
                 <Button onClick={this.textClose} type="primary" className="drawerContent">
                     关闭文本
                 </Button>
               </Space>
-            }
-            rootStyle={{
-              position: "absolute"
-            }}
-            bodyStyle={{
-              color: "black"
-            }}>
+              }
+              rootStyle={{
+                  position: "absolute"
+              }}
+              bodyStyle={{
+                  color: "black"
+              }}>
                 <TextReader title={this.state.title} author={this.state.author} content={this.state.content}/>
             </Drawer>
           </div>
@@ -221,7 +230,7 @@ export default class MyMap extends React.Component {
     
     this.state = {
       components: [],
-      path_event:[],
+      path_arr:[],
       controllers: [],
       
     };
@@ -274,7 +283,7 @@ export default class MyMap extends React.Component {
   }
   getCityPointArray(path_city) { //输入 城市名 列表
     return new Promise((resolve, reject) => {
-      var path_point = Array(path_city.length);
+      let path_point = Array(path_city.length);
       for (let index = 0; index < path_city.length; index++) {
         const element = path_city[index];
         this.searchCityPoint(element, (results) => {
@@ -345,29 +354,39 @@ export default class MyMap extends React.Component {
     this.addComponent(TYPE.ARC, newArc);
   }
 
-  addArcsAndInfoWindow(path_city,path_event) {
-    this.getCityPointArray(path_city).then((path) => {
-      if (path.length < 2) return;
+  addArcsAndInfoWindow(path_arr) {
+    let path=path_arr.map((e)=>{
+      return e.point
+    })
+    if (path.length >= 2) {
       for (let i = 0; i < path.length - 1; i++) {
-        // this.addArc({point: path[i], city: path_city[i]}, {point: path[i + 1], city: path_city[i+1]})
+        this.addArc({point: path[i], city: path_arr[i].cityName},
+          {point: path[i + 1], city: path_arr[i+1].cityName})
       }
-      for(let i=0;i<path.length;i++){
-        this.addMarkPoint(path[i],path_event[i].event,path_event[i].time)
-      }
-    }).catch((e) => {
-      window.alert(e);
-    });
+    }
+    for(let i=0;i<path.length;i++){
+      this.addMarkPoint(path[i],path_arr[i].events,path_arr[i].times,path_arr[i].cityName)
+    }
   }
-
-  addMarkPoint(point,text,title){
-    var content = (
+  
+  addMarkPoint(point,events,times,city){
+    let innerContent=[]
+    
+    for(let i=0;i<times.length;i++){
+      innerContent.push(
+        <div className="pathContent-block">
+          <p className="pathContent-time">{times[i]}</p>
+          <p className="pathContent-event">{events[i]}</p>
+        </div>)
+    }
+    let content = (
         <div className="pathContent">
-          <p>{text}</p>
+          {innerContent}
         </div>
     )
-    var newMarkPoint=(
+    let newMarkPoint=(
       <CustomOverlay position={point}>
-        <Popover content={content} title={title} trigger={"hover"}>
+        <Popover content={content} title={city} trigger={"hover"}>
           <div className="markPoint"></div>
         </Popover>
       </CustomOverlay>
@@ -420,18 +439,21 @@ export default class MyMap extends React.Component {
       });
   }
 
-  addRoadBook(path_city,path_event) {
+  addRoadBook(path_arr) {
     this.setState({
-      path_event:path_event
+      path_arr:path_arr
     })
-    this.getCityPointArray(path_city).then((path) => {
-      var polyline = new window.BMapGL.Polyline(path, {
-        clip: false,
-        geodesic: true,
-        strokeWeight: 3,
-      });
-      var fly =
-      "data:image/png;base64,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";
+    let path=path_arr.map((e)=>{
+      return e.point;
+    })
+      
+    var polyline = new window.BMapGL.Polyline(path, {
+      clip: false,
+      geodesic: true,
+      strokeWeight: 3,
+    });
+    var fly =
+    "data:image/png;base64,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";
     var lushu = new window.BMapGLLib.LuShu(
       this.map, polyline.getPath(), {
       geodesic: true,
@@ -444,40 +466,38 @@ export default class MyMap extends React.Component {
       defaultContent:"出发",
       landmarkPois:path
     });
-      function startLushu(map) {
-        lushu.stop();
-        lushu.start();
-      }
-      this.map.addOverlay(polyline);
-      this.addArcsAndInfoWindow(path_city,path_event);
-      
+    function startLushu(map) {
+      lushu.stop();
+      lushu.start();
+    }
+    //this.map.addOverlay(polyline);
+    this.addArcsAndInfoWindow(path_arr);
 
-      class roadBookController extends window.BMapGL.Control {
-        constructor(map){
-          super();
-          this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
-          this.defaultOffset = new window.BMapGL.Size(110, 20)
-          this.map = map
-        }
-        initialize(map){
-          var div = document.createElement('div');
-          // div.id = "roadBookController";
-          div.classList.add("delOnReset");
-
-          map.getContainer().appendChild(div);
-          const root = createRoot(div);
-          root.render(<Button type="primary" onClick={() => {
-            startLushu(this.map)
-          }} id="roadBookController">
-            开始
-          </Button>);
-          return div;
-        }
+    class roadBookController extends window.BMapGL.Control {
+      constructor(map){
+        super();
+        this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
+        this.defaultOffset = new window.BMapGL.Size(110, 20)
+        this.map = map
       }
-      this.map.addControl(new roadBookController(this.map));
-      this.centerAndZoom(path);
-      // this.addComponent(TYPE.CONTROLLER, new window.BMapGL.ZoomControl(this.map))
-    });
+      initialize(map){
+        var div = document.createElement('div');
+        // div.id = "roadBookController";
+        div.classList.add("delOnReset");
+
+        map.getContainer().appendChild(div);
+        const root = createRoot(div);
+        root.render(<Button type="primary" onClick={() => {
+          startLushu(this.map)
+        }} id="roadBookController">
+          开始
+        </Button>);
+        return div;
+      }
+    }
+    this.map.addControl(new roadBookController(this.map));
+    this.centerAndZoom(path);
+    // this.addComponent(TYPE.CONTROLLER, new window.BMapGL.ZoomControl(this.map))
   }
   
   componentDidMount() {
