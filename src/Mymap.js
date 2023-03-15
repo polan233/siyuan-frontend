@@ -384,11 +384,11 @@ export default class MyMap extends React.Component {
   }
   addMarkPoints(path_arr){
     for(let i=0;i<path_arr.length;i++){
-      this.addMarkPoint(path_arr[i].point,path_arr[i].events,path_arr[i].times,path_arr[i].cityName)
+      this.addMarkPoint(path_arr[i].point,path_arr[i].events,path_arr[i].times,path_arr[i].cityName,path_arr[i].author)
     }
   }
   
-  addMarkPoint(point,events,times,city){
+  addMarkPoint(point,events,times,city,author){
     let innerContent=[]
     
     for(let i=0;i<times.length;i++){
@@ -405,7 +405,7 @@ export default class MyMap extends React.Component {
     )
     let newMarkPoint=(
       <CustomOverlay position={point}>
-        <Popover content={content} title={city} trigger={"hover"}>
+        <Popover content={content} title={author+'-'+city} trigger={"hover"}>
           <div className="markPoint"></div>
         </Popover>
       </CustomOverlay>

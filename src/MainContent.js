@@ -174,6 +174,7 @@ class MainContent extends React.Component{
         res[i].point=path_point[i];
         res[i].events=path_event[i];
         res[i].times=path_time[i];
+        res[i].author=this.props.selectedAuthor;
       }
       console.log("handleLoadRoadBook data building",res);
 
