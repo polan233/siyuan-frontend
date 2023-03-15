@@ -144,7 +144,7 @@
   height: 100%;
   background-color: #91caff;
   padding-top: 10px;
-  padding-bottom: 15px;
+  padding-bottom: 22px;
 }
 .slogan{
   width:100%;
@@ -293,6 +293,10 @@ ul li {list-style: none;}
     align-items: center;
     text-align: center;
     line-height: normal;
+}
+.contact{
+  font-size: 0.3rem;
+  padding-top: 10px;
 }
 /*
 const headerStyle = {
