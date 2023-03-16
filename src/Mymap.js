@@ -19,11 +19,11 @@ const mapStyle = {
 };
 
 const TYPE = {
-  MARKER: 1,
-  ARC: 1 << 1,
-  POLYLINE: 1 << 2,
-  CONTROLLER: 1 << 3,
-  MARKPOINT: 1 << 4
+  MARKER: 1, //1
+  ARC: 1 << 1, //2
+  POLYLINE: 1 << 2, //4
+  CONTROLLER: 1 << 3, //8
+  MARKPOINT: 1 << 4 //16
 }
 
 
@@ -230,7 +230,8 @@ export default class MyMap extends React.Component {
     
     this.state = {
       components: [],
-      path_arr:[],
+      path_ark:[],
+      path_lushu:[],
       controllers: [],
       
     };
@@ -342,9 +343,12 @@ export default class MyMap extends React.Component {
   }
 
   addComponent(type, value) {
-    this.setState((state) => ({
-      components: state.components.slice().concat([new MapComponent(type, value)])
-    })); // state的更新是异步的
+    const setTimeOutCallBack=()=>{
+      this.setState((state) => ({
+        components: state.components.slice().concat([new MapComponent(type, value)])
+      })); // state的更新是异步的
+    }
+    setTimeout(setTimeOutCallBack);
   }
   addArc(from, to) {
     var newArc = (
@@ -359,32 +363,22 @@ export default class MyMap extends React.Component {
     this.addComponent(TYPE.ARC, newArc);
   }
 
-  // addArcsAndInfoWindow(path_arr) {
-  //   let path=path_arr.map((e)=>{
-  //     return e.point
-  //   })
-  //   if (path.length >= 2) {
-  //     for (let i = 0; i < path.length - 1; i++) {
-  //       this.addArc({point: path[i], city: path_arr[i].cityName},
-  //         {point: path[i + 1], city: path_arr[i+1].cityName})
-  //     }
-  //   }
-  //   for(let i=0;i<path.length;i++){
-  //     this.addMarkPoint(path[i],path_arr[i].events,path_arr[i].times,path_arr[i].cityName)
-  //   }
-  // }
+  
   addArcs(points){
-    const path=points;
-    if (path.length >= 2) {
-      for (let i = 0; i < path.length - 1; i++) {
-        this.addArc({point: path[i]},
-          {point: path[i + 1]})
+    const setTimeOutCallBack=()=>{
+      const path=points;
+      if (path.length >= 2) {
+        for (let i = 0; i < path.length - 1; i++) {
+          this.addArc({point: path[i]},
+            {point: path[i + 1]})
+        }
       }
     }
+    setTimeOutCallBack(setTimeOutCallBack);
   }
-  addMarkPoints(path_arr){
-    for(let i=0;i<path_arr.length;i++){
-      this.addMarkPoint(path_arr[i].point,path_arr[i].events,path_arr[i].times,path_arr[i].cityName,path_arr[i].author)
+  addMarkPoints(path_ark){
+    for(let i=0;i<path_ark.length;i++){
+      this.addMarkPoint(path_ark[i].point,path_ark[i].events,path_ark[i].times,path_ark[i].cityName,path_ark[i].author)
     }
   }
   
@@ -443,13 +437,12 @@ export default class MyMap extends React.Component {
       });
   }
 
-  addRoadBook(path_arr) {
+  addRoadBook(path_ark,path_lushu) {
     this.setState({
-      path_arr:path_arr
+      path_ark:path_ark,
+      path_lushu:path_lushu,
     })
-    let path=path_arr.map((e)=>{
-      return e.point;
-    })
+    let path=path_lushu.path;
       
     var polyline = new window.BMapGL.Polyline(path, {
       clip: false,
@@ -476,8 +469,8 @@ export default class MyMap extends React.Component {
     }
     //this.map.addOverlay(polyline);
     //this.addArcsAndInfoWindow(path_arr);
-    this.addArcs(path_arr.map((e)=>{return e.point}))
-    this.addMarkPoints(path_arr)
+    this.addArcs(path_ark.map((e)=>{return e.point}))
+    this.addMarkPoints(path_ark)
 
     class roadBookController extends window.BMapGL.Control {
       constructor(map){
@@ -501,6 +494,7 @@ export default class MyMap extends React.Component {
         return div;
       }
     }
+
     this.map.addControl(new roadBookController(this.map));
     this.centerAndZoom(path);
     // this.addComponent(TYPE.CONTROLLER, new window.BMapGL.ZoomControl(this.map))
