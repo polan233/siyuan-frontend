@@ -109,7 +109,7 @@ class textReaderController extends window.BMapGL.Control{
               width={"30%"} title={"文本展示"} 
               placement="left" closable={true} 
               onClose={this.textClose} open={this.state.showText} 
-              getContainer={this.container} 
+              getContainer={this.container.parentNode} 
               mask={false} maskClosable={false} 
               destroyOnClose
               extra={
@@ -183,7 +183,7 @@ class mapSelectionController extends window.BMapGL.Control{
               地图选项
             </Button>
 
-            <Drawer className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container} destroyOnClose
+            <Drawer className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container.parentNode} destroyOnClose
             extra={
                   <Button onClick={this.setClose} type="primary" className="drawerContent">
                     重置

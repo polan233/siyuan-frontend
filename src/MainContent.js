@@ -279,11 +279,13 @@ class MainContent extends React.Component{
     render(){
 
       const content=
+      
         <MyMap
           className="map"
           ref={(ref) => {this.map = ref}}
         />
       
+
       return(
         <div className='mainContent'>
           <Layout>
