@@ -1,38 +1,328 @@
-.App {
-  text-align: center;
+
+.App{
+    padding: 20px;
+    background-color: #fafafa;
+    z-index: 1;
+}
+.map{
+  padding: 10px;
+  padding-right: 10px;
+  margin-right: 40px;
+  margin-top: 10px;
+}
+.info{
+  margin:10px;
+  height: 98%;
+  z-index: 2;
+  box-shadow: 0 2px 6px 0 rgba(148, 147, 147, 0.5);
+}
+.leftNav{
+  margin: 10px;
+  height: 98%;
+  z-index: 2;
+  box-shadow: 0 2px 6px 0 rgba(148, 147, 147, 0.5);
+  border-radius: 10px;
+}
+.pathContent{
+  max-width: 250px;
+  min-width: 150px;
+  max-height: 400px;
+  overflow-y: auto;
+  text-indent: 2rem;
+}
+.pathContent-block{
+  box-shadow: -2.3px 0px 0.1px #49484865;
+  background-color: #4b494909;
+  margin: 3px;
+  margin-bottom: 15px;
+}
+.pathContent-time{
+  text-align: left;
+  text-indent: 0;
+  font-weight: bold;
+  margin: 2px;
+}
+.pathContent-event{
+  text-indent: 1rem;
+  margin: 4px;
+}
+.markPoint{
+  margin-bottom: -5px;
+  width:13px;
+  height:13px;
+  background:#3051e6;
+  border-radius: 50%;
+}
+#navMenu{
+  border-radius: 10px;
+}
+.Page{
+    
+    background-color: #fafafa;
+}
+.Top{
+    margin: 0;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #e6f4ff;
+}
+#topLogo{
+    padding-left: 100px;
+    margin: 10px;
+    float: left;
+}
+#topSearch{
+    padding-left: 20px;
+    padding-right: 50px;
+}
+.TopSpace{
+    width:300px;
+}
+.mainContent{
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.paragraph{
+  text-indent: 2rem;
+  align-self: flex-start;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.question{
+  display: -webkit-flex;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  background-color: #fafafa;
 }
 
-.App-link {
-  color: #61dafb;
+.examContainer{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 0px;
+  height: 90%;
+  align-items: center;
+  background-color: white;
+  
+}
+.examContent{
+  margin: auto;
+  width: 90%;
+  min-height: 90%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+
+#myDivider{
+  width: 2px;
+  margin:0 auto;
+  height: 100%;
+  background-color: black;
 }
+
+#questionCard{
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 97%;
+  background-color: #fafafa;
+  box-shadow: 0 1px 3px 0 rgba(90, 90, 90, 0.5);
+}
+.exam{
+  margin-bottom: 20px;
+  margin-left: 25px;
+  margin-right: 25px;
+  box-shadow: 0 1px 3px 0 rgba(90, 90, 90, 0.5);
+  border-radius: 5px;
+}
+.foot{
+  width: 100%;
+  height: 100%;
+  background-color: #91caff;
+  padding-top: 10px;
+  padding-bottom: 22px;
+}
+.slogan{
+  width:100%;
+  background-color: #91caff;
+  padding: 0px;
+  margin-top: 5px;
+}
+.links{
+  background-color: #91caff;
+  margin-bottom: 20px;
+}
+
+
+/*
+map components style
+*/
+@font-face {
+  font-family: 宋体;
+  src: url("./fonts/文鼎PL简报宋.ttf");
+}
+
+ul li {list-style: none;}
+
+.ant-drawer-extra button {
+  box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+  border-radius: 10px;
+}
+
+.ant-drawer-body .drawerSwitch {
+  box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+  border-radius: 100px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.ant-drawer-body .drawerSlider {
+  width: 100%;
+}
+
+#mapSelectionControllerButton {
+  padding: 10px;
+  box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+  border-radius: 5px;
+  margin: auto;
+  height: fit-content;
+  width: fit-content;
+  align-items: center;
+  text-align: center;
+  line-height: normal;
+}
+
+#roadBookController {
+  float: left;
+  cursor: pointer;
+  padding: 10px;
+  box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+  border-radius: 5px;
+  /* background-color: white; */
+  /* color: #91caff; */
+  margin: auto;
+  height: fit-content;
+  width: fit-content;
+  align-items: center;
+  text-align: center;
+  line-height: normal;
+}
+#showTextButton {
+  float: left;
+  cursor: pointer;
+  padding: 10px;
+  box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+  border-radius: 5px;
+  /* background-color: white;
+  color: #91caff; */
+  margin: auto;
+  height: fit-content;
+  width: fit-content;
+  align-items: center;
+  text-align: center;
+  line-height: normal;
+}
+#content{
+  width: 100%;
+  height:100%;
+  padding-top:10px
+}
+.textReader{
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  max-height: 680px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  background-color:#fafad6 ;
+  
+}
+#textReader-main {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  text-align: left;
+  text-indent: 2em;
+  align-self: flex-start;
+  background-color:#fafad6;
+  
+}
+
+#textReader-title{
+  margin-bottom: -15px;
+  text-align: center;
+  text-indent: 0em;
+  align-self: stretch;
+  user-select: all;
+  background-color:#fafad6;
+}
+.textReader-p{
+  margin: 10px;
+  user-select: all;
+  background-color:#fafad6;
+  font-family: KaiTi,FangSong,DFKai-SB,SimSun;
+  font-size: 1.12rem;
+  font-weight: bold;
+  /*font-family: SimSun,SimHei,Microsoft YaHei,NSimSun,DFKai-SB,FangSong,KaiTi;*/
+}
+#textReader-author{
+  text-align: center;
+  text-indent: 0em;
+  align-self: center;
+  font-size: 1rem;
+  margin-top:20px;
+  user-select: all;
+  background-color:#fafad6;
+}
+#textReader-btn {
+    
+    padding: 10px;
+    box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+    border-radius: 5px;
+    margin: auto;
+    height: fit-content;
+    width: fit-content;
+    align-items: center;
+    text-align: center;
+    line-height: normal;
+}
+.contact{
+  font-size: 0.3rem;
+  padding-top: 10px;
+}
+/*
+const headerStyle = {
+  textAlign: 'center',
+  color: '#fff',
+  height: 64,
+  paddingInline: 50,
+  lineHeight: '64px',
+  backgroundColor: '#7dbcea',
+};
+const contentStyle = {
+  textAlign: 'center',
+  minHeight: 120,
+  lineHeight: '120px',
+  color: '#fff',
+  backgroundColor: '#108ee9',
+};
+const siderStyle = {
+  textAlign: 'center',
+  lineHeight: '120px',
+  color: '#fff',
+  backgroundColor: '#3ba0e9',
+};
+const footerStyle = {
+  textAlign: 'center',
+  color: '#fff',
+  backgroundColor: '#7dbcea',
+};
+*/
