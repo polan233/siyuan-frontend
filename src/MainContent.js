@@ -1,6 +1,6 @@
 import React from 'react';
-import 'antd/dist/reset.css';
-import "./App.css"
+// import 'antd/dist/reset.css';
+// import "./App.css"
 import {BookOutlined  } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Layout, Typography,Card  } from 'antd';
