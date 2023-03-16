@@ -259,15 +259,17 @@ export default class MyMap extends React.Component {
   _initMap() {
     var localcity = new window.BMapGL.LocalCity();
     this.map = this.mapRef.map;
-    localcity.get((e) => {
-      var point = new window.BMapGL.Point(e.center.lng, e.center.lat);
-      this.map.centerAndZoom(point, 5);
-    });
+    // localcity.get((e) => {
+    //   var point = new window.BMapGL.Point(e.center.lng, e.center.lat);
+    //   this.map.centerAndZoom(point, 5);
+    // });
+    this.map.setMapType("B_EARTH_MAP");
     this.map.enableScrollWheelZoom(true);
     this.map.enablePinchToZoom();
     this.map.setTrafficOff();
     this.map.addControl(new window.BMapGL.ScaleControl());
     this.map.addControl(new window.BMapGL.ZoomControl());
+    // this.map.addControl(new window.BMapGL.MapTypeControl());
     // this.map.addControl(new showTextButton(this.map));
   }
   _addController(newController) {
@@ -467,9 +469,9 @@ export default class MyMap extends React.Component {
       lushu.stop();
       lushu.start();
     }
-    //this.map.addOverlay(polyline);
+    this.map.addOverlay(polyline);
     //this.addArcsAndInfoWindow(path_arr);
-    this.addArcs(path_ark.map((e)=>{return e.point}))
+    // this.addArcs(path_ark.map((e)=>{return e.point}))
     this.addMarkPoints(path_ark)
 
     class roadBookController extends window.BMapGL.Control {
