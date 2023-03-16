@@ -1,5 +1,5 @@
 import React from 'react';
-import 'antd/dist/reset.css';
+// import 'antd/dist/reset.css';
 import "./App.css"
 import {  Col, Row } from 'antd';
 import { Input } from 'antd';

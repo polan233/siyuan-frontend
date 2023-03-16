@@ -1,5 +1,5 @@
 import React,{ Suspense, lazy } from 'react';
-import 'antd/dist/reset.css';
+// import 'antd/dist/reset.css';
 import "./App.css"
 import { Divider } from 'antd';
 import { getGroupProblem,getArticleTypeByName,getExamContents } from './axios/api';

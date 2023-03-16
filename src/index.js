@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import Page from './App';
 import { App } from 'antd';
 import reportWebVitals from './reportWebVitals';
-import 'antd/dist/reset.css';
+// import 'antd/dist/reset.css';
 import "./App.css"
 
 

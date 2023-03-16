@@ -1,5 +1,5 @@
 import React from 'react';
-import 'antd/dist/reset.css';
+// import 'antd/dist/reset.css';
 import "./App.css"
 import {  Space,Typography,Card,Button } from 'antd';
 import {LeftOutlined,RightOutlined   } from '@ant-design/icons';
