@@ -394,6 +394,8 @@ export default class MyMap extends React.Component {
   }
 
   addMarkPoints(path_ark){
+    let points=path_ark.map((e)=>{return e.point})
+    //this.addMarkers(points)
     for(let i=0;i<path_ark.length;i++){
       this.addMarkPoint(path_ark[i].point,path_ark[i].events,path_ark[i].times,path_ark[i].cityName,path_ark[i].author)
     }
@@ -414,10 +416,13 @@ export default class MyMap extends React.Component {
           {innerContent}
         </div>
     )
+    //
     let newMarkPoint=(
       <CustomOverlay position={point}>
         <Popover content={content} title={author+'-'+city} trigger={"hover"}>
-          <div className="markPoint"></div>
+          <div className="markPoint">
+            <svg t="1678983893429" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2688" width="27" height="27"><path d="M277.942857 945.980952a234.057143 68.266667 0 1 0 468.114286 0 234.057143 68.266667 0 1 0-468.114286 0Z" fill="#061633" p-id="2689"></path><path d="M277.942857 945.980952a234.057143 68.266667 0 1 0 468.114286 0 234.057143 68.266667 0 1 0-468.114286 0Z" fill="#FF2102" opacity=".3" p-id="2690"></path><path d="M277.942857 945.980952a234.057143 68.266667 0 1 0 468.114286 0 234.057143 68.266667 0 1 0-468.114286 0Z" p-id="2691" data-spm-anchor-id="a313x.7781069.0.i4" class="selected"></path><path d="M512 1014.247619c-112.152381 0-234.057143-21.942857-234.057143-68.266667s121.904762-68.266667 234.057143-68.266666 234.057143 21.942857 234.057143 68.266666-121.904762 68.266667-234.057143 68.266667z m0-112.152381c-136.533333 0-209.67619 29.257143-209.67619 43.885714s73.142857 43.885714 209.67619 43.885715 209.67619-29.257143 209.67619-43.885715-73.142857-43.885714-209.67619-43.885714z" fill="#FF2102" p-id="2692"></path><path d="M726.552381 607.085714c73.142857-73.142857 102.4-177.980952 75.580952-277.942857s-104.838095-175.542857-207.238095-202.361905-209.67619 2.438095-282.819048 73.142858c-114.590476 112.152381-114.590476 292.571429 0 404.723809s299.885714 114.590476 414.476191 2.438095z" fill="#061633" p-id="2693" data-spm-anchor-id="a313x.7781069.0.i2" class="selected"></path><path d="M516.87619 399.847619m-219.428571 0a219.428571 219.428571 0 1 0 438.857143 0 219.428571 219.428571 0 1 0-438.857143 0Z" fill="#401C17" p-id="2694" data-spm-anchor-id="a313x.7781069.0.i1" class="selected"></path><path d="M243.809524 134.095238c151.161905-148.72381 399.847619-148.72381 551.009524 0 151.161905 148.72381 151.161905 392.533333 0 541.257143l-275.504762 268.190476L243.809524 675.352381C92.647619 524.190476 92.647619 282.819048 243.809524 134.095238z m482.742857 472.990476c73.142857-73.142857 102.4-177.980952 75.580952-277.942857s-104.838095-175.542857-207.238095-202.361905-209.67619 2.438095-282.819048 73.142858c-114.590476 112.152381-114.590476 292.571429 0 404.723809s299.885714 114.590476 414.476191 2.438095z" fill="#FF2102" p-id="2695" data-spm-anchor-id="a313x.7781069.0.i3" class="selected"></path></svg>
+          </div>
         </Popover>
       </CustomOverlay>
     )
@@ -442,16 +447,13 @@ export default class MyMap extends React.Component {
       });
   }
   addMarkers(positions) {
-    this.getCityPointArray(positions)
-      .then((path_point) => {
-        path_point.forEach((element) => {
-          var newMarker = <Marker key={Date.now()} position={element} />;
-          this.addComponent(TYPE.MARKER, newMarker);
-        });
+    positions.forEach((element) => {
+      var marker = new window.BMapGL.Marker(element);        // 创建标注
+      marker.addEventListener("hover",function(e){
+        
       })
-      .catch((e) => {
-        window.alert(e);
-      });
+      this.map.addOverlay(marker);                     // 将标注添加到地图中
+    });
   }
 
   addRoadBook(path_ark,path_lushu) {
