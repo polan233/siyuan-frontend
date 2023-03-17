@@ -1,13 +1,11 @@
 import React from "react";
 import {createRoot} from 'react-dom/client'
-import { Map, Arc, Polyline, Marker,CustomOverlay } from "react-bmapgl";
-import { Button, Popover, Typography, Drawer, Space, Switch, Slider} from 'antd';
+import { Map, Arc, Polyline, CustomOverlay } from "react-bmapgl";
+import { Button, Popover} from 'antd';
 import "./Lushu.min"
-import TextReader from "./TextReader";
-import { getContentByTitle} from "./axios/api";
+import { textReaderController } from "./textReaderController";
+import {mapVisualizeController} from "./mapVisualizeController"
 
-
-const { Title, Paragraph, Text, Link } = Typography;
 const mapStyle = {
   position: "relative",
   width: "98%",
@@ -25,196 +23,6 @@ const TYPE = {
   CONTROLLER: 1 << 3, //8
   MARKPOINT: 1 << 4 //16
 }
-
-
-class textReaderController extends window.BMapGL.Control{
-  constructor(map){
-    super();
-    this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
-    this.defaultOffset = new window.BMapGL.Size(20, 20);
-    this.map = map
-    this.textReader = null
-  }
-  buildParagraph(textStr_p){
-    let textStr=textStr_p.replace("\r\n\r\n","\r\n");
-    let res=[]
-    let temp=""
-    for(let i=0;i<textStr.length;i++){
-        const char=textStr[i];
-        if((textStr[i]==='\r'&&i==(textStr.length-2))||
-        (textStr[i]==='\r'&&textStr[i+1]=='\n')){
-            res.push(<Paragraph className="textReader-p">
-              {temp}</Paragraph>)
-            temp=""
-        }else{
-            temp=temp.concat(new String(char))
-        }
-    }
-    res.push(<Paragraph className="textReader-p">{temp}</Paragraph>)
-    return res;
-}
-  refresh(contentProps){
-    getContentByTitle(contentProps.selectedTitle).then((response)=>{
-      console.log("contentBytitle",response)
-      let text=this.buildParagraph(response.data.data)
-      
-      this.textReader.setState((state) => ({
-        title: contentProps.selectedTitle,
-        author: contentProps.selectedAuthor,
-        content:text,
-      })); // state的更新是异步的
-    }).catch((e)=>{
-      console.log(e)
-    })
-  }
-  initialize(map){
-    var card = document.createElement('div')
-    map.getContainer().appendChild(card);
-    const root = createRoot(card);
-
-    class TextReaderDrawer extends React.Component {
-      constructor(props){
-        super(props)
-        this.state = {
-          // showRoadBook: false,
-          showText:false,
-          title: '',
-          author: '',
-          content:'',
-        }
-        this.container = props.container
-        this.textClose=this.textClose.bind(this)
-        this.textOpen=this.textOpen.bind(this)
-        
-      }
-      textOpen(){
-        this.setState({
-          showText: true
-        })
-      }
-      textClose(){
-        this.setState({
-          showText: false
-        })
-      }
-      
-      render(){
-        return (
-          <div>
-            <Button type="primary" id="textReader-btn" 
-              onClick={this.textOpen}>
-              展示文本
-            </Button>
-            <Drawer className = "drawer" id="textReaderDrawer" 
-              width={"30%"} title={"文本展示"} 
-              placement="left" closable={true} 
-              onClose={this.textClose} open={this.state.showText} 
-              getContainer={this.container.parentNode} 
-              mask={false} maskClosable={false} 
-              destroyOnClose
-              extra={
-              <Space>
-                <Button onClick={this.textClose} type="primary" className="drawerContent">
-                    关闭文本
-                </Button>
-              </Space>
-              }
-              rootStyle={{
-                  position: "absolute"
-              }}
-              bodyStyle={{
-                  color: "black"
-              }}>
-                <TextReader title={this.state.title} author={this.state.author} content={this.state.content}/>
-            </Drawer>
-          </div>
-        )
-      }
-    }
-    //TO-DO: 给上面这些按钮加onClick
-    root.render(<TextReaderDrawer container={this.map.getContainer() } ref={(ref) => {this.textReader = ref}}/>);
-    return card;
-  }
-}
-
-class mapSelectionController extends window.BMapGL.Control{
-  constructor(map){
-    super();
-    
-    this.defaultAnchor = window.BMAP_ANCHOR_TOP_RIGHT;
-    this.defaultOffset = new window.BMapGL.Size(20, 20);
-    this.map = map
-  }
-  refresh(contentProps){
-    
-  }
-  initialize(map){
-    var card = document.createElement('div')
-    map.getContainer().appendChild(card);
-    const root = createRoot(card);// todo: WTF
-
-    class MapSelectionDrawer extends React.Component {
-      constructor(props){
-        super(props)
-        this.state = {
-          open: false,
-          showRoadBook: false,
-        }
-        this.container = props.container
-        this.setOpen = this.setOpen.bind(this)
-        this.setClose = this.setClose.bind(this)
-      }
-      setOpen() {
-        this.setState({
-          open: true
-        })
-      }
-      setClose() {
-        this.setState({
-          open: false
-        })
-      }
-      render(){
-        // position is fucking so important!
-        return (
-          <div>
-
-            <Button type="primary" id="mapSelectionControllerButton" onClick={this.setOpen}>
-              地图选项
-            </Button>
-
-            <Drawer className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container.parentNode} destroyOnClose
-            extra={
-                  <Button onClick={this.setClose} type="primary" className="drawerContent">
-                    重置
-                  </Button>
-            }
-            rootStyle={{
-              position: "absolute"
-            }}
-            bodyStyle={{
-              color: "black"
-            }}>
-                <Space>启用路书<Switch className="drawerSwitch" defaultChecked={false} onChange={(checked) => {
-                  this.setState({
-                    showRoadBook: checked
-                  })
-                }} /></Space>
-                {this.state.showRoadBook?<div>移动速度<Slider/></div>:null}<br/>
-                <Space>显示路径<Switch className="drawerSwitch" defaultChecked onChange={(checked) => {}} /></Space>
-                <Space>显示标注<Switch className="drawerSwitch" defaultChecked onChange={(checked) => {}} /></Space>
-                <Space>显示折线<Switch className="drawerSwitch" defaultChecked onChange={(checked) => {}} /></Space>
-            </Drawer>
-          </div>
-        )
-      }
-    }
-    //TO-DO: 给上面这些按钮加onClick
-    root.render(<MapSelectionDrawer container={this.map.getContainer()}/>);
-    return card;
-  }
-}
-
 
 class MapComponent{
   constructor(type, value){
@@ -394,6 +202,8 @@ export default class MyMap extends React.Component {
   }
 
   addMarkPoints(path_ark){
+    let points=path_ark.map((e)=>{return e.point})
+    //this.addMarkers(points)
     for(let i=0;i<path_ark.length;i++){
       this.addMarkPoint(path_ark[i].point,path_ark[i].events,path_ark[i].times,path_ark[i].cityName,path_ark[i].author)
     }
@@ -414,10 +224,13 @@ export default class MyMap extends React.Component {
           {innerContent}
         </div>
     )
+    //
     let newMarkPoint=(
       <CustomOverlay position={point}>
         <Popover content={content} title={author+'-'+city} trigger={"hover"}>
-          <div className="markPoint"></div>
+          <div className="markPoint">
+            <svg t="1678983893429" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2688" width="27" height="27"><path d="M277.942857 945.980952a234.057143 68.266667 0 1 0 468.114286 0 234.057143 68.266667 0 1 0-468.114286 0Z" fill="#061633" p-id="2689"></path><path d="M277.942857 945.980952a234.057143 68.266667 0 1 0 468.114286 0 234.057143 68.266667 0 1 0-468.114286 0Z" fill="#FF2102" opacity=".3" p-id="2690"></path><path d="M277.942857 945.980952a234.057143 68.266667 0 1 0 468.114286 0 234.057143 68.266667 0 1 0-468.114286 0Z" p-id="2691" data-spm-anchor-id="a313x.7781069.0.i4" class="selected"></path><path d="M512 1014.247619c-112.152381 0-234.057143-21.942857-234.057143-68.266667s121.904762-68.266667 234.057143-68.266666 234.057143 21.942857 234.057143 68.266666-121.904762 68.266667-234.057143 68.266667z m0-112.152381c-136.533333 0-209.67619 29.257143-209.67619 43.885714s73.142857 43.885714 209.67619 43.885715 209.67619-29.257143 209.67619-43.885715-73.142857-43.885714-209.67619-43.885714z" fill="#FF2102" p-id="2692"></path><path d="M726.552381 607.085714c73.142857-73.142857 102.4-177.980952 75.580952-277.942857s-104.838095-175.542857-207.238095-202.361905-209.67619 2.438095-282.819048 73.142858c-114.590476 112.152381-114.590476 292.571429 0 404.723809s299.885714 114.590476 414.476191 2.438095z" fill="#061633" p-id="2693" data-spm-anchor-id="a313x.7781069.0.i2" class="selected"></path><path d="M516.87619 399.847619m-219.428571 0a219.428571 219.428571 0 1 0 438.857143 0 219.428571 219.428571 0 1 0-438.857143 0Z" fill="#401C17" p-id="2694" data-spm-anchor-id="a313x.7781069.0.i1" class="selected"></path><path d="M243.809524 134.095238c151.161905-148.72381 399.847619-148.72381 551.009524 0 151.161905 148.72381 151.161905 392.533333 0 541.257143l-275.504762 268.190476L243.809524 675.352381C92.647619 524.190476 92.647619 282.819048 243.809524 134.095238z m482.742857 472.990476c73.142857-73.142857 102.4-177.980952 75.580952-277.942857s-104.838095-175.542857-207.238095-202.361905-209.67619 2.438095-282.819048 73.142858c-114.590476 112.152381-114.590476 292.571429 0 404.723809s299.885714 114.590476 414.476191 2.438095z" fill="#FF2102" p-id="2695" data-spm-anchor-id="a313x.7781069.0.i3" class="selected"></path></svg>
+          </div>
         </Popover>
       </CustomOverlay>
     )
@@ -442,16 +255,13 @@ export default class MyMap extends React.Component {
       });
   }
   addMarkers(positions) {
-    this.getCityPointArray(positions)
-      .then((path_point) => {
-        path_point.forEach((element) => {
-          var newMarker = <Marker key={Date.now()} position={element} />;
-          this.addComponent(TYPE.MARKER, newMarker);
-        });
+    positions.forEach((element) => {
+      var marker = new window.BMapGL.Marker(element);        // 创建标注
+      marker.addEventListener("hover",function(e){
+        
       })
-      .catch((e) => {
-        window.alert(e);
-      });
+      this.map.addOverlay(marker);                     // 将标注添加到地图中
+    });
   }
 
   addRoadBook(path_ark,path_lushu) {
@@ -517,7 +327,7 @@ export default class MyMap extends React.Component {
       this._initMap();
       this.created = !this.created;
     }
-    this._addController(new mapSelectionController(this.map));
+    this._addController(new mapVisualizeController(this.map));
     this._addController(new textReaderController(this.map,this.props.selectedTitle,this.props.selectedAuthor));
     //axios请求获取城市id,城市名称对应列表
   }

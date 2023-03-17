@@ -47,11 +47,8 @@
   margin: 4px;
 }
 .markPoint{
-  margin-bottom: -5px;
-  width:13px;
-  height:13px;
-  background:#3051e6;
-  border-radius: 50%;
+  width: fit-content;
+  height: fit-content;
 }
 #navMenu{
   border-radius: 10px;
