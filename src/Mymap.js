@@ -1,13 +1,11 @@
 import React from "react";
 import {createRoot} from 'react-dom/client'
-import { Map, Arc, Polyline, Marker,CustomOverlay } from "react-bmapgl";
-import { Button, Popover, Typography, Drawer, Space, Switch, Slider} from 'antd';
+import { Map, Arc, Polyline, CustomOverlay } from "react-bmapgl";
+import { Button, Popover} from 'antd';
 import "./Lushu.min"
-import TextReader from "./TextReader";
-import { getContentByTitle} from "./axios/api";
+import { textReaderController } from "./textReaderController";
+import {mapVisualizeController} from "./mapVisualizeController"
 
-
-const { Title, Paragraph, Text, Link } = Typography;
 const mapStyle = {
   position: "relative",
   width: "98%",
@@ -25,196 +23,6 @@ const TYPE = {
   CONTROLLER: 1 << 3, //8
   MARKPOINT: 1 << 4 //16
 }
-
-
-class textReaderController extends window.BMapGL.Control{
-  constructor(map){
-    super();
-    this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
-    this.defaultOffset = new window.BMapGL.Size(20, 20);
-    this.map = map
-    this.textReader = null
-  }
-  buildParagraph(textStr_p){
-    let textStr=textStr_p.replace("\r\n\r\n","\r\n");
-    let res=[]
-    let temp=""
-    for(let i=0;i<textStr.length;i++){
-        const char=textStr[i];
-        if((textStr[i]==='\r'&&i==(textStr.length-2))||
-        (textStr[i]==='\r'&&textStr[i+1]=='\n')){
-            res.push(<Paragraph className="textReader-p">
-              {temp}</Paragraph>)
-            temp=""
-        }else{
-            temp=temp.concat(new String(char))
-        }
-    }
-    res.push(<Paragraph className="textReader-p">{temp}</Paragraph>)
-    return res;
-}
-  refresh(contentProps){
-    getContentByTitle(contentProps.selectedTitle).then((response)=>{
-      console.log("contentBytitle",response)
-      let text=this.buildParagraph(response.data.data)
-      
-      this.textReader.setState((state) => ({
-        title: contentProps.selectedTitle,
-        author: contentProps.selectedAuthor,
-        content:text,
-      })); // state的更新是异步的
-    }).catch((e)=>{
-      console.log(e)
-    })
-  }
-  initialize(map){
-    var card = document.createElement('div')
-    map.getContainer().appendChild(card);
-    const root = createRoot(card);
-
-    class TextReaderDrawer extends React.Component {
-      constructor(props){
-        super(props)
-        this.state = {
-          // showRoadBook: false,
-          showText:false,
-          title: '',
-          author: '',
-          content:'',
-        }
-        this.container = props.container
-        this.textClose=this.textClose.bind(this)
-        this.textOpen=this.textOpen.bind(this)
-        
-      }
-      textOpen(){
-        this.setState({
-          showText: true
-        })
-      }
-      textClose(){
-        this.setState({
-          showText: false
-        })
-      }
-      
-      render(){
-        return (
-          <div>
-            <Button type="primary" id="textReader-btn" 
-              onClick={this.textOpen}>
-              展示文本
-            </Button>
-            <Drawer className = "drawer" id="textReaderDrawer" 
-              width={"30%"} title={"文本展示"} 
-              placement="left" closable={true} 
-              onClose={this.textClose} open={this.state.showText} 
-              getContainer={this.container.parentNode} 
-              mask={false} maskClosable={false} 
-              destroyOnClose
-              extra={
-              <Space>
-                <Button onClick={this.textClose} type="primary" className="drawerContent">
-                    关闭文本
-                </Button>
-              </Space>
-              }
-              rootStyle={{
-                  position: "absolute"
-              }}
-              bodyStyle={{
-                  color: "black"
-              }}>
-                <TextReader title={this.state.title} author={this.state.author} content={this.state.content}/>
-            </Drawer>
-          </div>
-        )
-      }
-    }
-    //TO-DO: 给上面这些按钮加onClick
-    root.render(<TextReaderDrawer container={this.map.getContainer() } ref={(ref) => {this.textReader = ref}}/>);
-    return card;
-  }
-}
-
-class mapSelectionController extends window.BMapGL.Control{
-  constructor(map){
-    super();
-    
-    this.defaultAnchor = window.BMAP_ANCHOR_TOP_RIGHT;
-    this.defaultOffset = new window.BMapGL.Size(20, 20);
-    this.map = map
-  }
-  refresh(contentProps){
-    
-  }
-  initialize(map){
-    var card = document.createElement('div')
-    map.getContainer().appendChild(card);
-    const root = createRoot(card);// todo: WTF
-
-    class MapSelectionDrawer extends React.Component {
-      constructor(props){
-        super(props)
-        this.state = {
-          open: false,
-          showRoadBook: false,
-        }
-        this.container = props.container
-        this.setOpen = this.setOpen.bind(this)
-        this.setClose = this.setClose.bind(this)
-      }
-      setOpen() {
-        this.setState({
-          open: true
-        })
-      }
-      setClose() {
-        this.setState({
-          open: false
-        })
-      }
-      render(){
-        // position is fucking so important!
-        return (
-          <div>
-
-            <Button type="primary" id="mapSelectionControllerButton" onClick={this.setOpen}>
-              地图选项
-            </Button>
-
-            <Drawer className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container.parentNode} destroyOnClose
-            extra={
-                  <Button onClick={this.setClose} type="primary" className="drawerContent">
-                    重置
-                  </Button>
-            }
-            rootStyle={{
-              position: "absolute"
-            }}
-            bodyStyle={{
-              color: "black"
-            }}>
-                <Space>启用路书<Switch className="drawerSwitch" defaultChecked={false} onChange={(checked) => {
-                  this.setState({
-                    showRoadBook: checked
-                  })
-                }} /></Space>
-                {this.state.showRoadBook?<div>移动速度<Slider/></div>:null}<br/>
-                <Space>显示路径<Switch className="drawerSwitch" defaultChecked onChange={(checked) => {}} /></Space>
-                <Space>显示标注<Switch className="drawerSwitch" defaultChecked onChange={(checked) => {}} /></Space>
-                <Space>显示折线<Switch className="drawerSwitch" defaultChecked onChange={(checked) => {}} /></Space>
-            </Drawer>
-          </div>
-        )
-      }
-    }
-    //TO-DO: 给上面这些按钮加onClick
-    root.render(<MapSelectionDrawer container={this.map.getContainer()}/>);
-    return card;
-  }
-}
-
 
 class MapComponent{
   constructor(type, value){
@@ -519,7 +327,7 @@ export default class MyMap extends React.Component {
       this._initMap();
       this.created = !this.created;
     }
-    this._addController(new mapSelectionController(this.map));
+    this._addController(new mapVisualizeController(this.map));
     this._addController(new textReaderController(this.map,this.props.selectedTitle,this.props.selectedAuthor));
     //axios请求获取城市id,城市名称对应列表
   }
