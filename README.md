@@ -1,70 +1,48 @@
-# Getting Started with Create React App
+<!-- Logo -->
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+	<a href="http://siyuan.feipa.top">
+		<img height="128" width="128" src="./README.assets/siyuan.webp"
+	</a>
+</p>
 
-## Available Scripts
+<!-- Name -->
+<h1 align="center">
+    <a href="http://siyuan.feipa.top">思源----面向人教版语文教材的数字人文地图可视化系统</a>
+</h1>
 
-In the project directory, you can run:
+<!-- Badges -->
+## 简介
+[思源siyuan](http://siyuan.feipa.top)根据高中人教版语文教材以及必读书目作者生平时空信息,课文相关地点地理,风景,风俗等内容制作数字文学地图,旨在系统地展现作者区域之间的流动，呈现作品内部蕴含的地域和空间特色。发掘其中的人文价值,拓宽文学作品的研究维度，丰富教学的形式和内容。
 
-### `npm start`
+## 项目构建
+<p align="center">
+  <a href="https://github.com/ant-design/ant-design">
+    <img height="50" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"/>
+  </a>
+  <a href="https://github.com/facebook/react">
+    <svg width="50" height="50" viewBox="-10.5 -9.45 21 18.9" fill="none" xmlns="http://www.w3.org/2000/svg" class="mt-4 mb-3 text-link dark:text-link-dark w-24 lg:w-28 self-center text-sm mr-0 text-link dark:text-link-dark flex origin-center transition-all ease-in-out"><circle cx="0" cy="0" r="2" fill="currentColor"></circle><g stroke="currentColor" stroke-width="1" fill="none"><ellipse rx="10" ry="4.5"></ellipse><ellipse rx="10" ry="4.5" transform="rotate(60)"></ellipse><ellipse rx="10" ry="4.5" transform="rotate(120)"></ellipse></g></svg>
+  </a>
+  <!-- <a href="https://github.com/nginx/nginx">
+    <img height="50" src="http://nginx.org/nginx.png">
+  </a> -->
+  <a href="https://lbsyun.baidu.com/">
+    <img height="50" src="https://mapopen-website-wiki.cdn.bcebos.com/homePage/images/logox1.png" />
+  </a>
+</p>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* 项目主要使用 **[React](https://github.com/facebook/react)+[Antd](https://github.com/ant-design/ant-design)** 的模式构建页面。
+* 使用 **[百度地图开放平台](https://lbsyun.baidu.com/)** 完成地图内容实现。
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 关于
+* 我们是谁？
+  
+  > 我们是来自[华东师范大学](https://www.ecnu.edu.cn)(East China Normal University, ECNU)计算机科学与技术、软件工程和汉语言文学的创新创业小组。
 
-### `npm test`
+* 能否部署镜像站？
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  > 项目完全开源，使用npm就可以打包部署，但也许你需要有一个百度地图开放平台的ak。
 
-### `npm run build`
+* 我是否可以使用你们的数据库？
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  > 也许后期会考虑开放数据库接口。
