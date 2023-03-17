@@ -224,7 +224,6 @@ export default class MyMap extends React.Component {
           {innerContent}
         </div>
     )
-    //
     let newMarkPoint=(
       <CustomOverlay position={point}>
         <Popover content={content} title={author+'-'+city} trigger={"hover"}>
