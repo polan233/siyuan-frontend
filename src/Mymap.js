@@ -7,6 +7,7 @@ import { textReaderController } from "./textReaderController";
 import {mapVisualizeController} from "./mapVisualizeController"
 import blackstyle from './map_style'
 
+
 const mapStyle = {
   position: "relative",
   width: "98%",
@@ -56,7 +57,6 @@ export default class MyMap extends React.Component {
     this.switchNovel = this.switchNovel.bind(this);
     this.addComponent = this.addComponent.bind(this);
     this.addArc = this.addArc.bind(this);
-    this.addMarkers = this.addMarkers.bind(this);
     this.addPolyline = this.addPolyline.bind(this);
     //this.addArcsAndInfoWindow = this.addArcsAndInfoWindow.bind(this);
     this.addArcs=this.addArcs.bind(this);
@@ -163,6 +163,72 @@ export default class MyMap extends React.Component {
     }
     setTimeout(setTimeOutCallBack);
   }
+
+
+  // addArcsAndInfoWindow(path_arr) {
+  //   let path=path_arr.map((e)=>{
+  //     return e.point
+  //   })
+  //   if (path.length >= 2) {
+  //     for (let i = 0; i < path.length - 1; i++) {
+  //       this.addArc({point: path[i], city: path_arr[i].cityName},
+  //         {point: path[i + 1], city: path_arr[i+1].cityName})
+  //     }
+  //   }
+  //   for(let i=0;i<path.length;i++){
+  //     this.addMarkPoint(path[i],path_arr[i].events,path_arr[i].times,path_arr[i].cityName)
+  //   }
+  // }
+  addArcs(points){
+    const setTimeOutCallBack=()=>{
+      // patharr {point, events, times, cityName}
+    const path=points;
+    let data=[];
+      if (path.length >= 2) {
+        for (let i = 0; i < path.length - 1; i++) {
+          data.push({
+            from:{point: path[i].point, name: path[i].cityName},
+            to:{point: path[i + 1].point, name: path[i+1].cityName}
+          })
+          // this.addArc({point: path[i].point, name: path[i].cityName},
+          //   {point: path[i + 1].point, name: path[i+1].cityName})
+        }
+      }
+    console.log("sb",data);
+    let newArc=(
+      <Arc
+        // key={Date.now()}
+        autoViewPort
+        showStartPoint
+        showEndPoint
+        enableAnimation
+        color={"#87CEFA"}
+        lineOptions={{
+          width: 5,
+          color: '#87cefa'
+        }}
+        arrowOptions={{
+          styleOptions: {
+            color: '#87cefa'
+          }
+        }}
+        pointOptions={{
+          size: 10,
+          color: '#87cefa',
+          shape: 'square'
+        }}
+        textOptions={{
+          fontSize:12,
+          color: '#4A27F9',
+          offset: [0, 9]
+        }}
+        data={data}
+      />
+    )
+    this.addComponent(TYPE.ARC, newArc);
+    }
+    setTimeOutCallBack();
+  }
   addArc(from, to) {
     var newArc = (
       <Arc
@@ -195,34 +261,6 @@ export default class MyMap extends React.Component {
       />
     );
     this.addComponent(TYPE.ARC, newArc);
-  }
-
-  // addArcsAndInfoWindow(path_arr) {
-  //   let path=path_arr.map((e)=>{
-  //     return e.point
-  //   })
-  //   if (path.length >= 2) {
-  //     for (let i = 0; i < path.length - 1; i++) {
-  //       this.addArc({point: path[i], city: path_arr[i].cityName},
-  //         {point: path[i + 1], city: path_arr[i+1].cityName})
-  //     }
-  //   }
-  //   for(let i=0;i<path.length;i++){
-  //     this.addMarkPoint(path[i],path_arr[i].events,path_arr[i].times,path_arr[i].cityName)
-  //   }
-  // }
-  addArcs(points){
-    const setTimeOutCallBack=()=>{
-      // patharr {point, events, times, cityName}
-    const path=points;
-      if (path.length >= 2) {
-        for (let i = 0; i < path.length - 1; i++) {
-          this.addArc({point: path[i].point, name: path[i].cityName},
-            {point: path[i + 1].point, name: path[i+1].cityName})
-        }
-      }
-    }
-    setTimeout(setTimeOutCallBack);
   }
 
   addMarkPoints(path_ark){
@@ -280,15 +318,6 @@ export default class MyMap extends React.Component {
       .catch((e) => {
         window.alert(e);
       });
-  }
-  addMarkers(positions) {
-    positions.forEach((element) => {
-      var marker = new window.BMapGL.Marker(element);        // 创建标注
-      marker.addEventListener("hover",function(e){
-        
-      })
-      this.map.addOverlay(marker);                     // 将标注添加到地图中
-    });
   }
 
   addRoadBook(path_ark,path_lushu) {
