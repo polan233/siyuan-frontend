@@ -5,7 +5,7 @@ import { Button, Popover} from 'antd';
 import "./Lushu.min"
 import { textReaderController } from "./textReaderController";
 import {mapVisualizeController} from "./mapVisualizeController"
-import blackstyle from './custom_map_config1'
+import blackstyle from './map_style'
 
 const mapStyle = {
   position: "relative",
