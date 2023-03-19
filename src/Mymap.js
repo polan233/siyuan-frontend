@@ -207,11 +207,7 @@ export default class MyMap extends React.Component {
           width: 5,
           color: '#87cefa'
         }}
-        arrowOptions={{
-          styleOptions: {
-            color: '#87cefa'
-          }
-        }}
+      
         pointOptions={{
           size: 10,
           color: '#87cefa',

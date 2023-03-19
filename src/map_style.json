@@ -999,12 +999,6 @@
         "visibility": "off"
     }
 }, {
-    "featureType": "roadarrow",
-    "elementType": "labels.icon",
-    "stylers": {
-        "visibility": "off"
-    }
-}, {
     "featureType": "footbridge",
     "elementType": "geometry",
     "stylers": {

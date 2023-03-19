@@ -6,10 +6,9 @@ import { Menu } from 'antd';
 import { Layout, Typography,Card  } from 'antd';
 import MyMap from './Mymap';
 import { getMenu, getAuthorPath } from './axios/api';
-
-
+import { getAuthorIntroduction } from './axios/api';
 const {  Sider, Content } = Layout;
-const { Title } = Typography;
+const { Paragraph } = Typography;
 
 
 const contentStyle = {
@@ -65,7 +64,7 @@ class MainContent extends React.Component{
       this.handleNavResponse=this.handleNavResponse.bind(this);
       this.componentDidMount=this.componentDidMount.bind(this);
       this.onMenuClick=this.onMenuClick.bind(this);
-      
+      this.getRightContent=this.getRightContent.bind(this);
       //this.refreshControllers=this.refreshControllers.bind(this)
       this.handleLoadRoadBook=this.handleLoadRoadBook.bind(this);
       this.onOpenChange=this.onOpenChange.bind(this);
@@ -76,6 +75,20 @@ class MainContent extends React.Component{
             return "";
         }
         return ' -- '+this.props.selectedAuthor;
+    }
+    getRightContent(){
+      console.log("getAuthorIntroduction",this.props.selectedAuthor)
+      if(this.props.selectedAuthor!==undefined&&
+        this.props.selectedAuthor!==""&&this.props.selectedAuthor!==null)
+      {
+        getAuthorIntroduction(this.props.selectedAuthor).then((res)=>{
+          const data=res.data;
+          console.log("getAuthorIntroduction",data);
+          this.setState({
+            rightContent:data.data,
+          })
+        })
+      }
     }
     
     
@@ -257,13 +270,14 @@ class MainContent extends React.Component{
         //getAuthorPath(res.author, this.handleGetAuthorPath);
         this.map.switchNovel();
         //this.map.addRoadBook(["北京","上海","南京","徐州","亳州","周口"]);
+        this.getRightContent();
+
         getAuthorPath(res.author,this.handleLoadRoadBook);
         this.map.refreshControllers({selectedTitle:res.title,selectedAuthor:res.author})
       });
     }
     componentDidMount(){
       getMenu(this.handleNavResponse);
-      
     }
     onOpenChange(keys){
       //console.log("keys",keys)
@@ -307,8 +321,7 @@ class MainContent extends React.Component{
               <Card className='info' bordered={true} title={this.props.selectedAuthor}>
                 <Typography>
                   {/* 现在这里放作者简介 */}
-                  <ol>{this.state.rightContent}</ol>
-                  
+                  <Paragraph>{this.state.rightContent}</Paragraph>
                 </Typography>
               </Card>
             </Sider>
