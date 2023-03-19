@@ -20,7 +20,7 @@ const contentStyle = {
 
 const leftNavStyle = {
   textAlign: 'left',
-  lineHeight: '80px',
+  lineHeight: '75px',
   color: '#fff',
   backgroundColor: '#fafafa',
 }
