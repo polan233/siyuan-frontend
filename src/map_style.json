@@ -3,7 +3,7 @@
     "elementType": "geometry",
     "stylers": {
         "visibility": "on",
-        "color": "#f3f3f3ff"
+        "color": "#eeeeeeff"
     }
 }, {
     "featureType": "water",
@@ -331,7 +331,8 @@
     "featureType": "manmade",
     "elementType": "geometry",
     "stylers": {
-        "visibility": "off"
+        "visibility": "on",
+        "color": "#d1d1d1ff"
     }
 }, {
     "featureType": "manmade",
@@ -2275,5 +2276,23 @@
         "curZoomRegionId": "0",
         "curZoomRegion": "6,21",
         "level": "21"
+    }
+}, {
+    "featureType": "building",
+    "elementType": "geometry.topfill",
+    "stylers": {
+        "color": "#fefefeff"
+    }
+}, {
+    "featureType": "building",
+    "elementType": "geometry.sidefill",
+    "stylers": {
+        "color": "#fefefeff"
+    }
+}, {
+    "featureType": "boundary",
+    "elementType": "geometry",
+    "stylers": {
+        "visibility": "on"
     }
 }]
