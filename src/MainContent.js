@@ -303,6 +303,15 @@ class MainContent extends React.Component{
             <Content style={contentStyle} id="content">
               {content}
             </Content>
+            <Sider style={siderStyle}>
+              <Card className='info' bordered={true} title={this.props.selectedAuthor}>
+                <Typography>
+                  {/* 现在这里放作者简介 */}
+                  <ol>{this.state.rightContent}</ol>
+                  
+                </Typography>
+              </Card>
+            </Sider>
             </Layout>
         </div>
       );
