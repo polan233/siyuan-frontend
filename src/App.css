@@ -16,6 +16,8 @@
   height: 98%;
   z-index: 2;
   box-shadow: 0 2px 6px 0 rgba(148, 147, 147, 0.5);
+  text-indent: 1.5rem;
+  
 }
 .leftNav{
   margin: 10px;
@@ -185,8 +187,25 @@ ul li {list-style: none;}
 
 .ant-drawer-body .drawerSlider {
   width: 100%;
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  align-content: space-around;
 }
 
+.buttonLeftText{
+  white-space: nowrap;
+}
+#mapSelectionDrawer{
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  align-content: space-around;
+}
 #mapSelectionControllerButton {
   padding: 10px;
   box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
