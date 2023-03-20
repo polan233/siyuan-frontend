@@ -36,5 +36,6 @@
     ]
   },
   "devDependencies": {
+    "react-load-script": "^0.0.6"
   }
 }

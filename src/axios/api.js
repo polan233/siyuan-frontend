@@ -151,3 +151,10 @@ export function getCityIdTab(){
     url:'/v1/city/getIdList',
   })
 }
+
+export function getAuthorIntroduction(authorName){
+  return axios({
+    method:"get",
+    url:"/v1/author/introduction"
+  })
+}

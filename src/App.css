@@ -11,7 +11,8 @@
   margin-top: 10px;
 }
 .info{
-  margin:10px;
+  margin:5px;
+  margin-top:10px;
   height: 98%;
   z-index: 2;
   box-shadow: 0 2px 6px 0 rgba(148, 147, 147, 0.5);
@@ -46,9 +47,12 @@
   text-indent: 1rem;
   margin: 4px;
 }
-.markPoint{
+.markPointContainer{
   width: fit-content;
   height: fit-content;
+}
+.markPoint{
+  padding-top: -10px;
 }
 #navMenu{
   border-radius: 10px;

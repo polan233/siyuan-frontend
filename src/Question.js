@@ -1,9 +1,9 @@
 import React from 'react';
 // import 'antd/dist/reset.css';
 import "./App.css"
-import {  Space,Typography,Card,Button } from 'antd';
+import {  Space,Typography,Card,Button,Divider } from 'antd';
 import {LeftOutlined,RightOutlined   } from '@ant-design/icons';
-import { getGroupProblem } from './axios/api';
+
 
 const { Paragraph  } = Typography;
 
@@ -71,6 +71,7 @@ class Question extends React.Component{
         let questions= this.props.questions;
         const question=questions.get();
         return(
+            <>
             <Card id='questionCard' size="default" title="小组思考" bordered >
             <div className='question'>
                 <Typography>
@@ -86,6 +87,8 @@ class Question extends React.Component{
                 </div>
             </div>
             </Card>
+            <Divider/>
+            </>
         );
     }
   }
