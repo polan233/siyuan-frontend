@@ -207,7 +207,11 @@ export default class MyMap extends React.Component {
           width: 5,
           color: '#87cefa'
         }}
-      
+        animationOptions={{
+            width: 2,
+            color: () => '#5452D1DD',
+            interval: 0.1
+          }}
         pointOptions={{
           size: 10,
           color: '#87cefa',
@@ -403,24 +407,33 @@ export default class MyMap extends React.Component {
         center={new window.BMapGL.Point(114, 38)}
         zoom={5}
       >
-        {/* 
-        <MapvglView effects={['bright']}>
+        {/*
+        <MapvglView effects={['lighter']}>
           <MapvglLayer
-            type="PointLayer"
+            type="LineLayer"
+            blend= 'lighter'
+            
             data={[{
               geometry: {
-                  type: 'Point',
-                  coordinates: [116.403748, 39.915055]
+              type: 'LineString',
+              coordinates: [
+                  [116.394191, 39.91334],
+                  [85.770182,30.765311]
+              ]
               }
           }]}
             options={{
-              blend: 'lighter',
-              size: 12,
-              color: 'rgb(255, 53, 0, 0.6)'
+              width: 12,
+              color: 'rgb(255, 53, 0, 0.6)',
+              animation:true,
+            }}
+            animationOptions={{
+              animation:true,
             }}
           />
         </MapvglView>
         */}
+        
         {components}
       </Map>
     );

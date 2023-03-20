@@ -1,6 +1,6 @@
 import React from "react";
 import {createRoot} from 'react-dom/client'
-import { Button,Drawer, Space, Switch, Slider} from 'antd';
+import { Button,Drawer, Space, Switch, Slider,Row,Col} from 'antd';
 
 export class mapVisualizeController extends window.BMapGL.Control{
     constructor(map){
@@ -41,6 +41,7 @@ export class mapVisualizeController extends window.BMapGL.Control{
         }
         render(){
           // position is fucking so important!
+          
           return (
             <div>
   
@@ -48,7 +49,7 @@ export class mapVisualizeController extends window.BMapGL.Control{
                 地图选项
               </Button>
   
-              <Drawer className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container.parentNode} destroyOnClose
+              <Drawer  className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container.parentNode} destroyOnClose
               extra={
                     <Button onClick={this.setClose} type="primary" className="drawerContent">
                       重置
@@ -58,17 +59,38 @@ export class mapVisualizeController extends window.BMapGL.Control{
                 position: "absolute"
               }}
               bodyStyle={{
-                color: "black"
+                color: "black",
               }}>
-                  <Space>启用路书<Switch className="drawerSwitch" defaultChecked={false} onChange={(checked) => {
-                    this.setState({
-                      showRoadBook: checked
-                    })
-                  }} /></Space>
-                  {this.state.showRoadBook?<div>移动速度<Slider/></div>:null}<br/>
-                  <Space>显示路径<Switch className="drawerSwitch" defaultChecked onChange={(checked) => {}} /></Space>
-                  <Space>显示标注<Switch className="drawerSwitch" defaultChecked onChange={(checked) => {}} /></Space>
-                  <Space>显示折线<Switch className="drawerSwitch" defaultChecked onChange={(checked) => {}} /></Space>
+                  <Row gutter={[24, 24]}
+                  justify="start">
+                    <Col className="startRoadBookCol" flex={"1 1 30px"} >
+                        <Space><p className="buttonLeftText">路书</p><Switch className="drawerSwitch" checkedChildren="开" unCheckedChildren="关" defaultChecked={false} onChange={(checked) => {
+                          this.setState({
+                            showRoadBook: checked
+                          })
+                        }} /></Space>
+                    </Col>
+                  </Row>
+                  <Row gutter={[22, 24]}
+                  justify="start">
+                    <Col  span={'24'} >
+                    {this.state.showRoadBook?<div><p className="buttonLeftText">路书移动速度</p><Slider/></div>:null}
+                    </Col>
+                  </Row>
+                  <Row
+                  gutter={[22, 24]}
+                  justify="start"
+                  >
+                    <Col flex={'auto'}>
+                      <Space><p className="buttonLeftText">路径</p><Switch className="drawerSwitch" checkedChildren="开" unCheckedChildren="关" defaultChecked onChange={(checked) => {}} /></Space>
+                    </Col>
+                    <Col  flex={'auto'}>
+                      <Space><p className="buttonLeftText">标注</p><Switch className="drawerSwitch" checkedChildren="开" unCheckedChildren="关" defaultChecked onChange={(checked) => {}} /></Space>
+                    </Col>
+                    <Col  flex={'auto'}>
+                      <Space><p className="buttonLeftText">折线</p><Switch className="drawerSwitch" checkedChildren="开" unCheckedChildren="关" defaultChecked onChange={(checked) => {}} /></Space>
+                    </Col>
+                  </Row>
               </Drawer>
             </div>
           )
