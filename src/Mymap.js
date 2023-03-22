@@ -5,7 +5,7 @@ import { Button, Popover} from 'antd';
 import "./Lushu.min"
 import { textReaderController } from "./textReaderController";
 import {mapVisualizeController} from "./mapVisualizeController"
-import blackstyle from './map_style'
+import lightstyle from './map_style/map_style_light'
 
 
 const mapStyle = {
@@ -31,6 +31,29 @@ class MapComponent{
     this.type = type;
     this.value = value;
     this.show = true;
+  }
+  toString(){
+    let type="";
+    switch(this.type){
+      case 1:
+        type="MARKER"
+        break;
+      case 1<<1:
+        type="ARC"
+        break;
+      case 1<<2:
+        type="POLYLINE"
+        break;
+      case 1<<3:
+        type="CONTROLLER"
+        break;
+      case 1<<4:
+        type="MARKPOINT"
+        break;
+      default:
+        type="UNDEFINED"
+    }
+    return type+this.value.toString();
   }
 }
 
@@ -63,6 +86,7 @@ export default class MyMap extends React.Component {
     this.addMarkPoints=this.addMarkPoints.bind(this);
     this.addRoadBook = this.addRoadBook.bind(this);
     this.addMarkPoint=this.addMarkPoint.bind(this);
+    this.setArcVisibility=this.setArcVisibility.bind(this);
   }
 
   _initMap() {
@@ -262,6 +286,16 @@ export default class MyMap extends React.Component {
     );
     this.addComponent(TYPE.ARC, newArc);
   }
+  setArcVisibility(show){
+    let _components=this.state.components.slice();
+    _components.forEach((element)=>{
+      if(element.type===TYPE.ARC)
+        element.show=show;
+    })
+    this.setState({
+      components:_components,
+    })
+  }
 
   addMarkPoints(path_ark){
     let points=path_ark.map((e)=>{return e.point})
@@ -386,7 +420,9 @@ export default class MyMap extends React.Component {
       this._initMap();
       this.created = !this.created;
     }
-    this._addController(new mapVisualizeController(this.map));
+    this._addController(new mapVisualizeController(this.map,{
+      setArcVisibility:this.setArcVisibility
+    }));
     this._addController(new textReaderController(this.map,this.props.selectedTitle,this.props.selectedAuthor));
     //axios请求获取城市id,城市名称对应列表
   }
@@ -396,14 +432,14 @@ export default class MyMap extends React.Component {
       if(value.show) return value.value;
       else return null;
     });
-
+    console.log(components)
     return (
       <Map
         ref={(ref) => {
           this.mapRef = ref;
         }}
         style={mapStyle}
-        mapStyleV2={{styleJson:blackstyle}}
+        mapStyleV2={{styleJson:lightstyle}}
         center={new window.BMapGL.Point(114, 38)}
         zoom={5}
       >

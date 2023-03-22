@@ -3,12 +3,13 @@ import {createRoot} from 'react-dom/client'
 import { Button,Drawer, Space, Switch, Slider,Row,Col} from 'antd';
 
 export class mapVisualizeController extends window.BMapGL.Control{
-    constructor(map){
+    constructor(map,callbackFns){
       super();
       
       this.defaultAnchor = window.BMAP_ANCHOR_TOP_RIGHT;
       this.defaultOffset = new window.BMapGL.Size(20, 20);
       this.map = map
+      this.setArcVisibility=callbackFns.setArcVisibility;
     }
     refresh(contentProps){
       
@@ -49,7 +50,7 @@ export class mapVisualizeController extends window.BMapGL.Control{
                 地图选项
               </Button>
   
-              <Drawer  className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container.parentNode} destroyOnClose
+              <Drawer  className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container.parentNode} 
               extra={
                     <Button onClick={this.setClose} type="primary" className="drawerContent">
                       重置
@@ -82,7 +83,7 @@ export class mapVisualizeController extends window.BMapGL.Control{
                   justify="start"
                   >
                     <Col flex={'auto'}>
-                      <Space><p className="buttonLeftText">路径</p><Switch className="drawerSwitch" checkedChildren="开" unCheckedChildren="关" defaultChecked onChange={(checked) => {}} /></Space>
+                      <Space><p className="buttonLeftText">路径</p><Switch className="drawerSwitch" checkedChildren="开" unCheckedChildren="关" defaultChecked onChange={(checked) => {this.props.setArcVisibility(checked)}} /></Space>
                     </Col>
                     <Col  flex={'auto'}>
                       <Space><p className="buttonLeftText">标注</p><Switch className="drawerSwitch" checkedChildren="开" unCheckedChildren="关" defaultChecked onChange={(checked) => {}} /></Space>
@@ -97,7 +98,7 @@ export class mapVisualizeController extends window.BMapGL.Control{
         }
       }
       //TO-DO: 给上面这些按钮加onClick
-      root.render(<MapSelectionDrawer container={this.map.getContainer()}/>);
+      root.render(<MapSelectionDrawer container={this.map.getContainer()} setArcVisibility={this.setArcVisibility}/>);
       return card;
     }
   }
