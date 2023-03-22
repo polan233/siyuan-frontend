@@ -1,6 +1,6 @@
 import React from "react";
 import {createRoot} from 'react-dom/client'
-import { Button,Drawer, Space, Switch, Slider,Row,Col} from 'antd';
+import { Button,Drawer, Space, Switch, Slider,Row,Col,Divider} from 'antd';
 
 export class mapVisualizeController extends window.BMapGL.Control{
     constructor(map,callbackFns){
@@ -10,6 +10,7 @@ export class mapVisualizeController extends window.BMapGL.Control{
       this.defaultOffset = new window.BMapGL.Size(20, 20);
       this.map = map
       this.setArcVisibility=callbackFns.setArcVisibility;
+      this.setMarkPointVisibility=callbackFns.setMarkPointVisibility;
     }
     refresh(contentProps){
       
@@ -42,55 +43,76 @@ export class mapVisualizeController extends window.BMapGL.Control{
         }
         render(){
           // position is fucking so important!
-          
+          const dividerStyle={
+            'border-top':'rgb(0,0,0)'
+          }
           return (
             <div>
-  
+
               <Button type="primary" id="mapSelectionControllerButton" onClick={this.setOpen}>
                 地图选项
               </Button>
-  
+
               <Drawer  className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container.parentNode} 
-              extra={
-                    <Button onClick={this.setClose} type="primary" className="drawerContent">
-                      重置
-                    </Button>
-              }
               rootStyle={{
                 position: "absolute"
               }}
               bodyStyle={{
                 color: "black",
               }}>
-                  <Row gutter={[24, 24]}
-                  justify="start">
-                    <Col className="startRoadBookCol" flex={"1 1 30px"} >
-                        <Space><p className="buttonLeftText">路书</p><Switch className="drawerSwitch" checkedChildren="开" unCheckedChildren="关" defaultChecked={false} onChange={(checked) => {
-                          this.setState({
-                            showRoadBook: checked
-                          })
-                        }} /></Space>
-                    </Col>
-                  </Row>
+                  <Divider dashed orientation="left" style={dividerStyle}>路书控制</Divider>
                   <Row gutter={[22, 24]}
                   justify="start">
                     <Col  span={'24'} >
-                    {this.state.showRoadBook?<div><p className="buttonLeftText">路书移动速度</p><Slider/></div>:null}
+                    <div><p className="buttonLeftText">路书移动速度</p><Slider/></div>
                     </Col>
                   </Row>
+                  <Row gutter={[24, 24]}
+                  justify="start">
+                    <Col className="startRoadBookCol" flex={"1 1 30px"} >
+                        <Space>
+                         <Button type="primary" className="drawerSwitch" defaultChecked={false} onClick={() => {
+                              this.setState({
+                                showRoadBook: true
+                              })
+                            }} >
+                            启动路书
+                          </Button>
+                        </Space>
+                    </Col>
+                  </Row>
+                  <Divider dashed orientation="left" style={dividerStyle}>作者轨迹控制</Divider>
                   <Row
                   gutter={[22, 24]}
                   justify="start"
                   >
                     <Col flex={'auto'}>
-                      <Space><p className="buttonLeftText">路径</p><Switch className="drawerSwitch" checkedChildren="开" unCheckedChildren="关" defaultChecked onChange={(checked) => {this.props.setArcVisibility(checked)}} /></Space>
+                      <Space>
+                        <p className="buttonLeftText">路径</p>
+                        <Switch className="drawerSwitch" checkedChildren="开" 
+                          unCheckedChildren="关" defaultChecked onChange={(checked) => 
+                          {this.props.setArcVisibility(checked)}} 
+                        />
+                      </Space>
                     </Col>
                     <Col  flex={'auto'}>
-                      <Space><p className="buttonLeftText">标注</p><Switch className="drawerSwitch" checkedChildren="开" unCheckedChildren="关" defaultChecked onChange={(checked) => {}} /></Space>
+                      <Space>
+                        <p className="buttonLeftText">标注</p>
+                        <Switch className="drawerSwitch" checkedChildren="开" 
+                          unCheckedChildren="关" defaultChecked 
+                          onChange={(checked) => {this.props.setMarkPointVisibility(checked)}} 
+                        />
+                      </Space>
                     </Col>
+                    {/* 
                     <Col  flex={'auto'}>
-                      <Space><p className="buttonLeftText">折线</p><Switch className="drawerSwitch" checkedChildren="开" unCheckedChildren="关" defaultChecked onChange={(checked) => {}} /></Space>
+                      <Space>
+                        <p className="buttonLeftText">折线</p>
+                        <Switch className="drawerSwitch" checkedChildren="开" unCheckedChildren="关" 
+                        defaultChecked onChange={(checked) => {}} />
+                      </Space>
                     </Col>
+                    */}
                   </Row>
               </Drawer>
             </div>
@@ -98,7 +120,13 @@ export class mapVisualizeController extends window.BMapGL.Control{
         }
       }
       //TO-DO: 给上面这些按钮加onClick
-      root.render(<MapSelectionDrawer container={this.map.getContainer()} setArcVisibility={this.setArcVisibility}/>);
+      root.render(
+        <MapSelectionDrawer 
+          container={this.map.getContainer()} 
+          setArcVisibility={this.setArcVisibility}
+          setMarkPointVisibility={this.setMarkPointVisibility}
+        />
+      );
       return card;
     }
   }

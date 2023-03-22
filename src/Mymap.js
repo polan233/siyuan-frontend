@@ -5,7 +5,7 @@ import { Button, Popover} from 'antd';
 import "./Lushu.min"
 import { textReaderController } from "./textReaderController";
 import {mapVisualizeController} from "./mapVisualizeController"
-import lightstyle from './map_style/map_style_light'
+import lightstyle from './map_style/map_style_tea'
 
 
 const mapStyle = {
@@ -87,6 +87,7 @@ export default class MyMap extends React.Component {
     this.addRoadBook = this.addRoadBook.bind(this);
     this.addMarkPoint=this.addMarkPoint.bind(this);
     this.setArcVisibility=this.setArcVisibility.bind(this);
+    this.setMarkPointVisibility=this.setMarkPointVisibility.bind(this);
   }
 
   _initMap() {
@@ -229,21 +230,26 @@ export default class MyMap extends React.Component {
         color={"#87CEFA"}
         lineOptions={{
           width: 5,
-          color: '#87cefa'
+          color: '#778899'
+        }}
+        arrowOptions={{
+          styleOptions: {
+            color: '#363738'
+          }
         }}
         animationOptions={{
             width: 2,
-            color: () => '#5452D1DD',
+            color: () => '#DCDCDCDD',
             interval: 0.1
           }}
         pointOptions={{
           size: 10,
-          color: '#87cefa',
+          color: '#708090',
           shape: 'square'
         }}
         textOptions={{
-          fontSize:12,
-          color: '#4A27F9',
+          fontSize:18,
+          color: '#172033',
           offset: [0, 9]
         }}
         data={data}
@@ -268,7 +274,7 @@ export default class MyMap extends React.Component {
         }}
         arrowOptions={{
           styleOptions: {
-            color: '#87cefa'
+            color: '#708090'
           }
         }}
         pointOptions={{
@@ -337,6 +343,16 @@ export default class MyMap extends React.Component {
       </CustomOverlay>
     )
     this.addComponent(TYPE.MARKPOINT,newMarkPoint);
+  }
+  setMarkPointVisibility(show){
+    let _components=this.state.components.slice();
+    _components.forEach((element)=>{
+      if(element.type===TYPE.MARKPOINT)
+        element.show=show;
+    })
+    this.setState({
+      components:_components,
+    })
   }
   addPolyline(path_city) {
     this.getCityPointArray(path_city)
@@ -421,7 +437,8 @@ export default class MyMap extends React.Component {
       this.created = !this.created;
     }
     this._addController(new mapVisualizeController(this.map,{
-      setArcVisibility:this.setArcVisibility
+      setArcVisibility:this.setArcVisibility,
+      setMarkPointVisibility:this.setMarkPointVisibility,
     }));
     this._addController(new textReaderController(this.map,this.props.selectedTitle,this.props.selectedAuthor));
     //axios请求获取城市id,城市名称对应列表
