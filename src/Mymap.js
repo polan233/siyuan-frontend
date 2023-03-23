@@ -1,10 +1,10 @@
 import React from "react";
 import {createRoot} from 'react-dom/client'
-import { Map, Arc, Polyline, CustomOverlay,MapvglView, MapvglLayer} from "react-bmapgl";
+import { Map, Arc, Polyline, CustomOverlay} from "react-bmapgl";
 import { Button, Popover} from 'antd';
 import "./Lushu.min"
 import { textReaderController } from "./textReaderController";
-import {mapVisualizeController} from "./mapVisualizeController"
+import {mapVisualizeController, roadBookController} from "./mapVisualizeController"
 import blackstyle from './map_style'
 
 
@@ -40,10 +40,8 @@ export default class MyMap extends React.Component {
     
     this.state = {
       components: [],
-      path_ark:[],
-      path_lushu:[],
       controllers: [],
-      
+      lushu: null
     };
 
     this.created = false;
@@ -141,7 +139,11 @@ export default class MyMap extends React.Component {
     this.map.clearOverlays();
     this.setState((state) => ({
       components: [],
+      lushu: null
     }))
+    if(this.state.lushu!=null && this.state.lushu.started){
+      this.state.lushu.stop()
+    }
   }
 
   switchNovel(){
@@ -194,7 +196,7 @@ export default class MyMap extends React.Component {
           //   {point: path[i + 1].point, name: path[i+1].cityName})
         }
       }
-    console.log("sb",data);
+
     let newArc=(
       <Arc
         // key={Date.now()}
@@ -263,11 +265,11 @@ export default class MyMap extends React.Component {
     this.addComponent(TYPE.ARC, newArc);
   }
 
-  addMarkPoints(path_ark){
-    let points=path_ark.map((e)=>{return e.point})
+  addMarkPoints(path_arc){
+    let points=path_arc.map((e)=>{return e.point})
     //this.addMarkers(points)
-    for(let i=0;i<path_ark.length;i++){
-      this.addMarkPoint(path_ark[i].point,path_ark[i].events,path_ark[i].times,path_ark[i].cityName,path_ark[i].author)
+    for(let i=0;i<path_arc.length;i++){
+      this.addMarkPoint(path_arc[i].point,path_arc[i].events,path_arc[i].times,path_arc[i].cityName,path_arc[i].author)
     }
   }
   
@@ -323,60 +325,53 @@ export default class MyMap extends React.Component {
       });
   }
 
-  addRoadBook(path_ark,path_lushu) {
-    this.setState({
-      path_ark:path_ark,
-      path_lushu:path_lushu,
-    })
+  addRoadBook(path_arc,path_lushu, speed, pauseTime) {
     let path=path_lushu.path;
-      
-    var polyline = new window.BMapGL.Polyline(path, {
-      clip: false,
-      geodesic: true,
-      strokeWeight: 3,
-    });
+
+    // speed = 100;
+    // pauseTime = 5;
+
+
+    var flytime = Math.round((150-600)/100*speed+600); // 150 600 s e
+
+
+    console.log(path_lushu)
+    // path是点数组,[{lng, lat}]，landmarkPois是要显示的特殊点 [{lng, lat, html, pauseTime}, {lng, lat, html, pauseTime}]
+    var landmarkPois = []
+    for(let i=0; i<path_lushu.path.length; ++i){
+      landmarkPois.push({
+        lng: path_lushu.path[i].lng,
+        lat: path_lushu.path[i].lat,
+        html: ('<div class="lushuInfoWindow">'
+                  +'<p class="lushuInfoWindowTitle">'
+                  +path_lushu.times[i]
+                  +'</p>'
+                +'<p class="lushuInfoWindowP">'
+                +path_lushu.events[i]
+                +'</p></div>'),
+        pauseTime: pauseTime
+      })
+    }
     var lushu = new window.BMapGLLib.LuShu(
-      this.map, polyline.getPath(), {
-      geodesic: true,
-      autoCenter: true,
-      speed: 1000000,
+      this.map, path, {
+      // geodesic: true,
+      // autoCenter: true,
+      autoCenterAndZoom: true,
       enableRotation: true,
       defaultContent:"出发",
-      landmarkPois:path
-    });
-    function startLushu(map) {
-      lushu.stop();
-      lushu.start();
-    }
+      odCurve:true,
+      landmarkPois: landmarkPois
+    }, flytime);
+
+    this.setState({
+      lushu: lushu
+    }); // state的更新是异步的
     //this.map.addOverlay(polyline);
     //this.addArcsAndInfoWindow(path_arr);
-    this.addArcs(path_ark)
-    this.addMarkPoints(path_ark)
+    this.addArcs(path_arc)
+    this.addMarkPoints(path_arc)
 
-    class roadBookController extends window.BMapGL.Control {
-      constructor(map){
-        super();
-        this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
-        this.defaultOffset = new window.BMapGL.Size(110, 20)
-        this.map = map
-      }
-      initialize(map){
-        var div = document.createElement('div');
-        // div.id = "roadBookController";
-        div.classList.add("delOnReset");
-
-        map.getContainer().appendChild(div);
-        const root = createRoot(div);
-        root.render(<Button type="primary" onClick={() => {
-          startLushu(this.map)
-        }} id="roadBookController">
-          开始
-        </Button>);
-        return div;
-      }
-    }
-
-    this.map.addControl(new roadBookController(this.map));
+    this.map.addControl(new roadBookController(this.map, lushu));
     this.centerAndZoom(path);
     // this.addComponent(TYPE.CONTROLLER, new window.BMapGL.ZoomControl(this.map))
   }
