@@ -101,3 +101,28 @@ export class mapVisualizeController extends window.BMapGL.Control{
       return card;
     }
   }
+
+export class roadBookController extends window.BMapGL.Control {
+  constructor(map, lushu){
+    super();
+    this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
+    this.defaultOffset = new window.BMapGL.Size(110, 20)
+    this.map = map
+    this.lushu = lushu
+  }
+  initialize(map){
+    var div = document.createElement('div');
+    // div.id = "roadBookController";
+    div.classList.add("delOnReset");
+
+    map.getContainer().appendChild(div);
+    const root = createRoot(div);
+    root.render(<Button type="primary" onClick={() => {
+      // this.lushu.stop();
+      this.lushu.start();
+    }} id="roadBookController">
+      开始
+    </Button>);
+    return div;
+  }
+}
