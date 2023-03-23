@@ -165,7 +165,7 @@ class MainContent extends React.Component{
                 return a.time.localeCompare(b.time);
             }
         })
-        console.log("handleLoadRoadBook data0",data0)
+        // console.log("handleLoadRoadBook data0",data0)
 
         let res_lushu={path:[],events:[],times:[],citys:[]}
         for(let i=0;i<data0.length;i++){
@@ -259,6 +259,7 @@ class MainContent extends React.Component{
         //TO-DO: 生成事件点的弹出窗口内容
         
         //TO-DO:改 addRoadBook
+        // 传speed 和pauseTime
         this.map.addRoadBook(res,res_lushu);
      }
       setTimeout(setTimeOutCallBack);
