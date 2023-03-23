@@ -90,13 +90,7 @@ export class textReaderController extends window.BMapGL.Control{
                 getContainer={this.container.parentNode} 
                 mask={false} maskClosable={false} 
                 destroyOnClose
-                extra={
-                <Space>
-                  <Button onClick={this.textClose} type="primary" className="drawerContent">
-                      关闭文本
-                  </Button>
-                </Space>
-                }
+                
                 rootStyle={{
                     position: "absolute"
                 }}

@@ -319,10 +319,10 @@ class MainContent extends React.Component{
               {content}
             </Content>
             <Sider style={siderStyle}>
-              <Card className='info' bordered={true} title={this.props.selectedAuthor}>
+              <Card className='info' bordered={true} title={this.props.selectedAuthor+"生平简介"}>
                 <Typography>
                   {/* 现在这里放作者简介 */}
-                  <Paragraph>{this.state.rightContent}</Paragraph>
+                  <Paragraph className='paragraph'>{this.state.rightContent}</Paragraph>
                 </Typography>
               </Card>
             </Sider>
