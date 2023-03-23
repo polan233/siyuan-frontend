@@ -11,6 +11,9 @@ export class mapVisualizeController extends window.BMapGL.Control{
       this.map = map
       this.setArcVisibility=callbackFns.setArcVisibility;
       this.setMarkPointVisibility=callbackFns.setMarkPointVisibility;
+      this.startRoadBook=callbackFns.startRoadBook;
+      this.onRoadBookSpeedChange=callbackFns.onRoadBookSpeedChange;
+      this.onRoadBookPauseTimeChange=callbackFns.onRoadBookPauseTimeChange;
     }
     refresh(contentProps){
       
@@ -64,18 +67,26 @@ export class mapVisualizeController extends window.BMapGL.Control{
                   <Row gutter={[22, 24]}
                   justify="start">
                     <Col  span={'24'} >
-                    <div><p className="buttonLeftText">路书移动速度</p><Slider/></div>
+                    <div>
+                    <p className="buttonLeftText">路书移动速度</p>
+                    <Slider defaultValue={50} onAfterChange={this.props.onRoadBookSpeedChange}/>
+                    </div>
+                    </Col>
+                    <Col  span={'24'} >
+                    <div>
+                    <p className="buttonLeftText">路书停留时间</p>
+                    <Slider defaultValue={3} min={1} max={8} onAfterChange={this.props.onRoadBookPauseTimeChange}/>
+                    </div>
                     </Col>
                   </Row>
                   <Row gutter={[24, 24]}
                   justify="start">
                     <Col className="startRoadBookCol" flex={"1 1 30px"} >
                         <Space>
-                         <Button type="primary" className="drawerSwitch" defaultChecked={false} onClick={() => {
-                              this.setState({
-                                showRoadBook: true
-                              })
-                            }} >
+                         <Button type="primary" className="drawerSwitch"  onClick={() => {
+                              this.setClose();
+                              this.props.startRoadBook();
+                            }}>
                             启动路书
                           </Button>
                         </Space>
@@ -125,33 +136,36 @@ export class mapVisualizeController extends window.BMapGL.Control{
           container={this.map.getContainer()} 
           setArcVisibility={this.setArcVisibility}
           setMarkPointVisibility={this.setMarkPointVisibility}
+          startRoadBook={this.startRoadBook}
+          onRoadBookSpeedChange={this.onRoadBookSpeedChange}
+          onRoadBookPauseTimeChange={this.onRoadBookPauseTimeChange}
         />
       );
       return card;
     }
   }
 
-export class roadBookController extends window.BMapGL.Control {
-  constructor(map, lushu){
-    super();
-    this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
-    this.defaultOffset = new window.BMapGL.Size(110, 20)
-    this.map = map
-    this.lushu = lushu
-  }
-  initialize(map){
-    var div = document.createElement('div');
-    // div.id = "roadBookController";
-    div.classList.add("delOnReset");
+// export class roadBookController extends window.BMapGL.Control {
+//   constructor(map, lushu){
+//     super();
+//     this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
+//     this.defaultOffset = new window.BMapGL.Size(110, 20)
+//     this.map = map
+//     this.lushu = lushu
+//   }
+//   initialize(map){
+//     var div = document.createElement('div');
+//     // div.id = "roadBookController";
+//     div.classList.add("delOnReset");
 
-    map.getContainer().appendChild(div);
-    const root = createRoot(div);
-    root.render(<Button type="primary" onClick={() => {
-      // this.lushu.stop();
-      this.lushu.start();
-    }} id="roadBookController">
-      开始
-    </Button>);
-    return div;
-  }
-}
+//     map.getContainer().appendChild(div);
+//     const root = createRoot(div);
+//     root.render(<Button type="primary" onClick={() => {
+//       // this.lushu.stop();
+//       this.lushu.start();
+//     }} id="roadBookController">
+//       开始
+//     </Button>);
+//     return div;
+//   }
+// }

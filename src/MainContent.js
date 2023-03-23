@@ -178,7 +178,7 @@ class MainContent extends React.Component{
           res_lushu.times.push(data0[i].time);
           res_lushu.citys.push(data0[i].cityName)
         }
-        console.log("res_lushu",res_lushu)
+        
 
         //生成按城市排序并合并同一城市点的res,为Arcs使用
         let path_city=[];
@@ -260,7 +260,9 @@ class MainContent extends React.Component{
         
         //TO-DO:改 addRoadBook
         // 传speed 和pauseTime
-        this.map.addRoadBook(res,res_lushu);
+        console.log("lushu",res,res_lushu)
+        this.map.addAuthorPath(res,res_lushu);
+        this.map.setRoadBookData(res_lushu)
      }
       setTimeout(setTimeOutCallBack);
     }
