@@ -322,28 +322,33 @@ export default class MyMap extends React.Component {
     }
   }
   startRoadBook(){
-      if(this.state.lushu!=null)
-        this.state.lushu.stop()
       const speed=this.state.lushuSpeed;
+      var flytime = Math.round((150-600)/100*speed+600); // 150 600 s e
       const pauseTime=this.state.lushuPauseTime;
       const path=this.state.lushu_path;
       const data=this.state.lushu_landmarks;
-
-      var flytime = Math.round((150-600)/100*speed+600); // 150 600 s e
-      var lushu = new window.BMapGLLib.LuShu(
-        this.map, path, {
-        // geodesic: true,
-        // autoCenter: true,
-        autoCenterAndZoom: true,
-        enableRotation: true,
-        defaultContent:"出发",
-        odCurve:true,
-        landmarkPois: data
-      }, flytime,pauseTime);
-      lushu.start();
-      this.setState({
-        lushu: lushu
-      });
+      if(this.state.lushu!=null)
+      {
+        this.state.lushu.stop()
+        this.state.lushu.setSpeedAndPauseTime(flytime,pauseTime)
+        this.state.lushu.start()
+      }
+      else{
+        var lushu = new window.BMapGLLib.LuShu(
+          this.map, path, {
+          // geodesic: true,
+          // autoCenter: true,
+          autoCenterAndZoom: true,
+          enableRotation: true,
+          defaultContent:"出发",
+          odCurve:true,
+          landmarkPois: data
+        }, flytime,pauseTime);
+        lushu.start();
+        this.setState({
+          lushu: lushu
+        });
+      }
   }
   onRoadBookSpeedChange(value){
     this.setState({
