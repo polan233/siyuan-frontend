@@ -46,7 +46,7 @@ class Exam extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            select:null,
+            select:'',
             moxieShow:false,
             shiciShow:false,
             juziShow:false,
@@ -68,15 +68,15 @@ class Exam extends React.Component{
     };
     onNext(e){
         const mode=this.state.select;
-        if(mode==="Moxie"){
+        if(mode=="Moxie"){
             let list=this.props.moxie;
             list.goNext();
         }
-        if(mode==="Shici"){
+        if(mode=="Shici"){
             let list=this.props.shici;
             list.goNext();
         }
-        if(mode==="Juzi"){
+        if(mode=="Juzi"){
             let list=this.props.juzi;
             list.goNext();
         }
@@ -90,17 +90,17 @@ class Exam extends React.Component{
         
         const mode=this.state.select;
       
-        if(mode==="Moxie"){
+        if(mode=="Moxie"){
             let list=this.props.moxie;
             list.goPre();
            
         }
-        if(mode==="Shici"){
+        if(mode=="Shici"){
             let list=this.props.shici;
             list.goPre();
             
         }
-        if(mode==="Juzi"){
+        if(mode=="Juzi"){
             let list=this.props.juzi;
             list.goPre();
             
@@ -114,17 +114,17 @@ class Exam extends React.Component{
 
     onShow(e){
         const mode=this.state.select;
-        if(mode==="Moxie"){
+        if(mode=="Moxie"){
             this.setState({
                 moxieShow:!this.state.moxieShow,
             })
         }
-        if(mode==="Shici"){
+        if(mode=="Shici"){
             this.setState({
                 shiciShow:!this.state.shiciShow,
             })
         }
-        if(mode==="Juzi"){
+        if(mode=="Juzi"){
             this.setState({
                 juziShow:!this.state.juziShow,
             })
