@@ -22,7 +22,7 @@ class Top extends React.Component{
           </Col>
           <Col flex="auto" />
           <Col flex={"300px"}>
-            {/*<Search id='topSearch' size='large' placeholder="查找课文或作者"  allowClear onSearch={onSearch} style={{ width: 300 }} />*/}
+            <Search id='topSearch' size='large' placeholder="查找课文或作者"  allowClear onSearch={onSearch} style={{ width: 300 }} />
           </Col>
           <Col flex="auto" />
         </Row>
