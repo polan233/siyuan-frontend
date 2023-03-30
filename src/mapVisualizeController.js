@@ -28,11 +28,15 @@ export class mapVisualizeController extends window.BMapGL.Control{
           super(props)
           this.state = {
             open: false,
-            showRoadBook: false,
+            showArc:true,
+            showMarkPoint:true,
           }
           this.container = props.container
           this.setOpen = this.setOpen.bind(this)
           this.setClose = this.setClose.bind(this)
+          this.handleShowArc=this.handleShowArc.bind(this)
+          this.handleShowMarkPoint=this.handleShowMarkPoint.bind(this)
+          this.onDrawerClose=this.onDrawerClose.bind(this)
         }
         setOpen() {
           this.setState({
@@ -43,6 +47,25 @@ export class mapVisualizeController extends window.BMapGL.Control{
           this.setState({
             open: false
           })
+        }
+        onDrawerClose(e){
+          this.setState({
+            showArc:true,
+            showMarkPoint:true,
+          })
+          this.setClose();
+        }
+        handleShowArc(checked){
+          this.setState({
+            showArc:checked,
+          })
+          this.props.setArcVisibility(checked)
+        }
+        handleShowMarkPoint(checked){
+          this.setState({
+            showMarkPoint:checked,
+          })
+          this.props.setMarkPointVisibility(checked)
         }
         render(){
           // position is fucking so important!
@@ -56,13 +79,14 @@ export class mapVisualizeController extends window.BMapGL.Control{
                 地图选项
               </Button>
 
-              <Drawer  className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.setClose} open={this.state.open} getContainer={this.container.parentNode} 
+              <Drawer  className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.onDrawerClose} open={this.state.open} 
               rootStyle={{
                 position: "absolute"
               }}
               bodyStyle={{
                 color: "black",
-              }}>
+              }}
+              >
                   <Divider dashed orientation="left" style={dividerStyle}>路书控制</Divider>
                   <Row gutter={[22, 24]}
                   justify="start">
@@ -81,7 +105,7 @@ export class mapVisualizeController extends window.BMapGL.Control{
                   </Row>
                   <Row gutter={[24, 24]}
                   justify="start">
-                    <Col className="startRoadBookCol" flex={"1 1 30px"} >
+                    <Col className="startRoadBookCol" flex={"auto"} >
                         <Space>
                          <Button type="primary" className="drawerSwitch"  onClick={() => {
                               this.setClose();
@@ -101,8 +125,7 @@ export class mapVisualizeController extends window.BMapGL.Control{
                       <Space>
                         <p className="buttonLeftText">路径</p>
                         <Switch className="drawerSwitch" checkedChildren="开" 
-                          unCheckedChildren="关" defaultChecked onChange={(checked) => 
-                          {this.props.setArcVisibility(checked)}} 
+                          unCheckedChildren="关" checked={this.state.showArc} onChange={this.handleShowArc} 
                         />
                       </Space>
                     </Col>
@@ -110,8 +133,8 @@ export class mapVisualizeController extends window.BMapGL.Control{
                       <Space>
                         <p className="buttonLeftText">标注</p>
                         <Switch className="drawerSwitch" checkedChildren="开" 
-                          unCheckedChildren="关" defaultChecked 
-                          onChange={(checked) => {this.props.setMarkPointVisibility(checked)}} 
+                          unCheckedChildren="关" checked={this.state.showMarkPoint}
+                          onChange={this.handleShowMarkPoint} 
                         />
                       </Space>
                     </Col>
