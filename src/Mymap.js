@@ -69,6 +69,8 @@ export default class MyMap extends React.Component {
       lushuPauseTime:3,
       lushu_path:[],
       lushu_landmarks:[],
+      showArc:true,
+      showMarkPoint:true,
     };
 
     this.created = false;
@@ -304,13 +306,8 @@ export default class MyMap extends React.Component {
     this.addComponent(TYPE.ARC, newArc);
   }
   setArcVisibility(show){
-    let _components=this.state.components.slice();
-    _components.forEach((element)=>{
-      if(element.type===TYPE.ARC)
-        element.show=show;
-    })
     this.setState({
-      components:_components,
+      showArc:show,
     })
   }
 
@@ -406,13 +403,8 @@ export default class MyMap extends React.Component {
     this.addComponent(TYPE.MARKPOINT,newMarkPoint);
   }
   setMarkPointVisibility(show){
-    let _components=this.state.components.slice();
-    _components.forEach((element)=>{
-      if(element.type===TYPE.MARKPOINT)
-        element.show=show;
-    })
     this.setState({
-      components:_components,
+      showMarkPoint:show,
     })
   }
   addPolyline(path_city) {
@@ -498,6 +490,8 @@ export default class MyMap extends React.Component {
   render() {
     // textReaderDrawerContent=<TextReader title={selectedTitle} author={selectedAuthor}/>
     var components = this.state.components.map((value, index, array) => {
+      if(!this.state.showArc&&value.type==TYPE.ARC) return null;
+      if(!this.state.showMarkPoint&&value.type==TYPE.MARKPOINT) return null;
       if(value.show) return value.value;
       else return null;
     });

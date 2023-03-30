@@ -49,10 +49,6 @@ export class mapVisualizeController extends window.BMapGL.Control{
           })
         }
         onDrawerClose(e){
-          this.setState({
-            showArc:true,
-            showMarkPoint:true,
-          })
           this.setClose();
         }
         handleShowArc(checked){
@@ -79,7 +75,7 @@ export class mapVisualizeController extends window.BMapGL.Control{
                 地图选项
               </Button>
 
-              <Drawer  className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.onDrawerClose} open={this.state.open} 
+              <Drawer  className = "drawer" id="mapSelectionDrawer" width={"30%"} title="地图选项" placement="right" closable={true} onClose={this.onDrawerClose} open={this.state.open} getContainer={this.container.parentNode} 
               rootStyle={{
                 position: "absolute"
               }}
