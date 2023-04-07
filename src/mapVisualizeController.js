@@ -1,6 +1,7 @@
 import React from "react";
 import {createRoot} from 'react-dom/client'
 import { Button,Drawer, Space, Switch, Slider,Row,Col,Divider} from 'antd';
+import {PlayCircleOutlined,PauseCircleOutlined } from '@ant-design/icons';
 
 export class mapVisualizeController extends window.BMapGL.Control{
     constructor(map,callbackFns){
@@ -14,8 +15,8 @@ export class mapVisualizeController extends window.BMapGL.Control{
       this.startRoadBook=callbackFns.startRoadBook;
       this.onRoadBookSpeedChange=callbackFns.onRoadBookSpeedChange;
       this.onRoadBookPauseTimeChange=callbackFns.onRoadBookPauseTimeChange;
-      this.pauseRoadBook=callbackFns.pauseRoadBook;
-      this.resumeRoadBook=callbackFns.resumeRoadBook;
+      this.roadBookPauseResume=callbackFns.roadBookPauseResume;
+      this.getRoadBookPause=callbackFns.getRoadBookPause;
     }
     initialize(map){
       var card = document.createElement('div')
@@ -29,7 +30,6 @@ export class mapVisualizeController extends window.BMapGL.Control{
             open: false,
             showArc:true,
             showMarkPoint:true,
-            roadBookPaused:false,
           }
           this.container = props.container
           this.setOpen = this.setOpen.bind(this)
@@ -65,16 +65,7 @@ export class mapVisualizeController extends window.BMapGL.Control{
           this.props.setMarkPointVisibility(checked)
         }
         handleRoadBookPauseResume(){
-          const paused=this.state.roadBookPaused;
-          if(paused){
-            this.props.resumeRoadBook();
-          }
-          else{
-            this.props.pauseRoadBook();
-          }
-          this.setState({
-            roadBookPaused:!paused,
-          })
+          this.props.roadBookPauseResume();
           this.setClose();
         }
         render(){
@@ -82,12 +73,12 @@ export class mapVisualizeController extends window.BMapGL.Control{
           const dividerStyle={
             'border-top':'rgb(0,0,0)'
           }
-          let roadBookPauseResumeText;
-          if(this.state.roadBookPaused){
-            roadBookPauseResumeText="开始路书"
+          let roadBookPauseResumeIcon;
+          if(this.props.getRoadBookPause()){
+            roadBookPauseResumeIcon=<PlayCircleOutlined />
           }
           else{
-            roadBookPauseResumeText="暂停路书"
+            roadBookPauseResumeIcon=<PauseCircleOutlined/>
           }
           return (
             <div>
@@ -130,10 +121,11 @@ export class mapVisualizeController extends window.BMapGL.Control{
                             }}>
                             启动路书
                           </Button>
-                          <Button  className="drawerSwitch"  onClick={() => {
+                          <Button shape="circle" style={{paddingInlineStart:0,paddingInlineEnd:0,}}
+                            icon={roadBookPauseResumeIcon}
+                            onClick={() => {
                               this.handleRoadBookPauseResume();
                             }}>
-                            {roadBookPauseResumeText}
                           </Button>
                         </Space>
                     </Col>
@@ -184,8 +176,8 @@ export class mapVisualizeController extends window.BMapGL.Control{
           startRoadBook={this.startRoadBook}
           onRoadBookSpeedChange={this.onRoadBookSpeedChange}
           onRoadBookPauseTimeChange={this.onRoadBookPauseTimeChange}
-          pauseRoadBook={this.pauseRoadBook}
-          resumeRoadBook={this.resumeRoadBook}
+          roadBookPauseResume={this.roadBookPauseResume}
+          getRoadBookPause={this.getRoadBookPause}
         />
       );
       return card;

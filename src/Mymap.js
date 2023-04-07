@@ -99,6 +99,8 @@ export default class MyMap extends React.Component {
     this.onRoadBookPauseTimeChange=this.onRoadBookPauseTimeChange.bind(this);
     this.pauseRoadBook=this.pauseRoadBook.bind(this);
     this.resumeRoadBook=this.resumeRoadBook.bind(this);
+    this.roadBookPauseResume=this.roadBookPauseResume.bind(this);
+    this.getRoadBookPause=this.getRoadBookPause.bind(this);
   }
 
   _initMap() {
@@ -361,6 +363,23 @@ export default class MyMap extends React.Component {
       this.state.lushu.start()
     }
   }
+  roadBookPauseResume(){
+    if(this.state.lushu!=null)
+    {
+      if(this.state.lushu._fromPause){
+        this.resumeRoadBook();
+      }
+      else{
+        this.pauseRoadBook();
+      }
+    }
+  }
+  getRoadBookPause(){
+    if(this.state.lushu!=null)
+    {
+      return this.state.lushu._fromPause;
+    }
+  }
   onRoadBookSpeedChange(value){
     this.setState({
       lushuSpeed:value,
@@ -496,8 +515,8 @@ export default class MyMap extends React.Component {
       startRoadBook:this.startRoadBook,
       onRoadBookSpeedChange:this.onRoadBookSpeedChange,
       onRoadBookPauseTimeChange:this.onRoadBookPauseTimeChange,
-      pauseRoadBook:this.pauseRoadBook,
-      resumeRoadBook:this.resumeRoadBook,
+      roadBookPauseResume:this.roadBookPauseResume,
+      getRoadBookPause:this.getRoadBookPause,
       }
       ));
     this._addController(new textReaderController(this.map,this.props.selectedTitle,this.props.selectedAuthor));
