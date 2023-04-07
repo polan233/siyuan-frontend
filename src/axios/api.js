@@ -161,3 +161,13 @@ export function getAuthorIntroduction(authorName){
     }
   })
 }
+
+export function getTextInfo(title){
+  return axios({
+    method:"get",
+    url:"/v1/text/info",
+    params:{
+      name:title
+    }
+  })
+}
