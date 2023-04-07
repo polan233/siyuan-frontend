@@ -97,6 +97,8 @@ export default class MyMap extends React.Component {
     this.setRoadBookData=this.setRoadBookData.bind(this);
     this.onRoadBookSpeedChange=this.onRoadBookSpeedChange.bind(this);
     this.onRoadBookPauseTimeChange=this.onRoadBookPauseTimeChange.bind(this);
+    this.pauseRoadBook=this.pauseRoadBook.bind(this);
+    this.resumeRoadBook=this.resumeRoadBook.bind(this);
   }
 
   _initMap() {
@@ -322,8 +324,6 @@ export default class MyMap extends React.Component {
       const speed=this.state.lushuSpeed;
       var flytime = Math.round((150-600)/100*speed+600); // 150 600 s e
       const pauseTime=this.state.lushuPauseTime;
-      const path=this.state.lushu_path;
-      const data=this.state.lushu_landmarks;
       if(this.state.lushu!=null)
       {
         this.state.lushu.stop()
@@ -331,6 +331,8 @@ export default class MyMap extends React.Component {
         this.state.lushu.start()
       }
       else{
+        const path=this.state.lushu_path;
+        const data=this.state.lushu_landmarks;
         var lushu = new window.BMapGLLib.LuShu(
           this.map, path, {
           // geodesic: true,
@@ -346,6 +348,18 @@ export default class MyMap extends React.Component {
           lushu: lushu
         });
       }
+  }
+  pauseRoadBook(){
+    if(this.state.lushu!=null)
+    {
+      this.state.lushu.pause()
+    }
+  }
+  resumeRoadBook(){
+    if(this.state.lushu!=null)
+    {
+      this.state.lushu.start()
+    }
   }
   onRoadBookSpeedChange(value){
     this.setState({
@@ -482,6 +496,8 @@ export default class MyMap extends React.Component {
       startRoadBook:this.startRoadBook,
       onRoadBookSpeedChange:this.onRoadBookSpeedChange,
       onRoadBookPauseTimeChange:this.onRoadBookPauseTimeChange,
+      pauseRoadBook:this.pauseRoadBook,
+      resumeRoadBook:this.resumeRoadBook,
       }
       ));
     this._addController(new textReaderController(this.map,this.props.selectedTitle,this.props.selectedAuthor));

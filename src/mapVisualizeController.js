@@ -14,9 +14,8 @@ export class mapVisualizeController extends window.BMapGL.Control{
       this.startRoadBook=callbackFns.startRoadBook;
       this.onRoadBookSpeedChange=callbackFns.onRoadBookSpeedChange;
       this.onRoadBookPauseTimeChange=callbackFns.onRoadBookPauseTimeChange;
-    }
-    refresh(contentProps){
-      
+      this.pauseRoadBook=callbackFns.pauseRoadBook;
+      this.resumeRoadBook=callbackFns.resumeRoadBook;
     }
     initialize(map){
       var card = document.createElement('div')
@@ -30,6 +29,7 @@ export class mapVisualizeController extends window.BMapGL.Control{
             open: false,
             showArc:true,
             showMarkPoint:true,
+            roadBookPaused:false,
           }
           this.container = props.container
           this.setOpen = this.setOpen.bind(this)
@@ -37,6 +37,7 @@ export class mapVisualizeController extends window.BMapGL.Control{
           this.handleShowArc=this.handleShowArc.bind(this)
           this.handleShowMarkPoint=this.handleShowMarkPoint.bind(this)
           this.onDrawerClose=this.onDrawerClose.bind(this)
+          this.handleRoadBookPauseResume=this.handleRoadBookPauseResume.bind(this)
         }
         setOpen() {
           this.setState({
@@ -63,10 +64,30 @@ export class mapVisualizeController extends window.BMapGL.Control{
           })
           this.props.setMarkPointVisibility(checked)
         }
+        handleRoadBookPauseResume(){
+          const paused=this.state.roadBookPaused;
+          if(paused){
+            this.props.resumeRoadBook();
+          }
+          else{
+            this.props.pauseRoadBook();
+          }
+          this.setState({
+            roadBookPaused:!paused,
+          })
+          this.setClose();
+        }
         render(){
           // position is fucking so important!
           const dividerStyle={
             'border-top':'rgb(0,0,0)'
+          }
+          let roadBookPauseResumeText;
+          if(this.state.roadBookPaused){
+            roadBookPauseResumeText="开始路书"
+          }
+          else{
+            roadBookPauseResumeText="暂停路书"
           }
           return (
             <div>
@@ -108,6 +129,11 @@ export class mapVisualizeController extends window.BMapGL.Control{
                               this.props.startRoadBook();
                             }}>
                             启动路书
+                          </Button>
+                          <Button  className="drawerSwitch"  onClick={() => {
+                              this.handleRoadBookPauseResume();
+                            }}>
+                            {roadBookPauseResumeText}
                           </Button>
                         </Space>
                     </Col>
@@ -158,6 +184,8 @@ export class mapVisualizeController extends window.BMapGL.Control{
           startRoadBook={this.startRoadBook}
           onRoadBookSpeedChange={this.onRoadBookSpeedChange}
           onRoadBookPauseTimeChange={this.onRoadBookPauseTimeChange}
+          pauseRoadBook={this.pauseRoadBook}
+          resumeRoadBook={this.resumeRoadBook}
         />
       );
       return card;
