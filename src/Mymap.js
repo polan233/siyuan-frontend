@@ -418,7 +418,7 @@ export default class MyMap extends React.Component {
 
 
     let newMarkPoint=(
-      <CustomOverlay autoViewPort position={point} offset={new window.BMapGL.Size(offsetx,3)}>
+      <CustomOverlay autoViewPort position={point} offset={new window.BMapGL.Size(offsetx,7)}>
         <Popover content={content} title={author+'-'+city} trigger={"hover"}>
           <div className="markPointContainer">
             {/*红色 */}
